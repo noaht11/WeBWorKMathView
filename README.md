@@ -1,5 +1,5 @@
 # WeBWorKLivePreview
-A Chrome extension to provide live previews of math equations entered into WeBWorK text fields using MathJax
+A Chrome extension to provide live previews of math equations entered into WeBWorK text fields using KaTeX and MathJax
 
 ![Screenshot](/docs/Screenshot.png?raw=true)
 
