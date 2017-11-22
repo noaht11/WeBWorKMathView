@@ -1,6 +1,12 @@
 # WeBWorKLivePreview
 A Chrome extension to provide live previews of math equations entered into WeBWorK text fields using MathJax
 
+# Installation
+1. Download the ```WeBWorKLivePreview.crx``` file
+2. Go to the Extensions Page in Chrome (Menu Button > More tools > Extensions or ```chrome://extensions/```)
+3. Drag and drop the downloaded file onto the Extensions page
+4. Click "Add Extension" when prompted
+
 # How it Works
 When a webwork page loads, the extension inserts ```<div>``` elements next to all input fields that have the class "codeshard"
 (this seems to be the identifying characteristic of an answer field).
