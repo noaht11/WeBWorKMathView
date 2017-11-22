@@ -6,7 +6,13 @@
   "description": "This extension provides live previews of math equations entered into WeBWorK text fields using MathJax",
 
   "content_scripts": [{
-    "js": ["content.js"],
+    "css": ["katex/katex.min.css"],
+    "js": ["ASCIIMathTeXImg.js", "katex/katex.min.js", "content.js"],
     "matches": ["https://webwork.elearning.ubc.ca/*"]
-  }]
+  }],
+
+  "web_accessible_resources": [
+    "katex/*",
+    "ASCIIMathTeXImg.js"
+  ]
 }
