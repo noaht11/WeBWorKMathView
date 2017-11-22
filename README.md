@@ -1,6 +1,8 @@
 # WeBWorKLivePreview
 A Chrome extension to provide live previews of math equations entered into WeBWorK text fields using MathJax
 
+![Screenshot](/docs/Screenshot.png?raw=true)
+
 # Installation
 1. Download the ```WeBWorKLivePreview.crx``` file
 2. Go to the Extensions Page in Chrome (Menu Button > More tools > Extensions or ```chrome://extensions/```)
