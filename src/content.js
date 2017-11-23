@@ -49,7 +49,14 @@ injectScript(function()
             }
             else
             {
-                outA.textContent = amath;
+                if(amath.length > 0)
+                {
+                    outA.textContent = amath;
+                }
+                else
+                {
+                    outA.innerHTML = "&nbsp;"; // Add a space so the box retains its height
+                }
             }
         }
     }
@@ -85,6 +92,7 @@ function setup()
     for(var i = 0; i < inputs.length; i++)
     {
         var theInput = inputs[i];
+        var theAMath = theInput.value;
 
         // Set a unique identifier on the field (so we can reference it later)
         theInput.setAttribute("wwLive_index", i);
@@ -111,7 +119,7 @@ function setup()
         try
         {
             // First try to render using LaTeX (way faster than MathJax)
-            var texstring = AMTparseMath(theInput.value);
+            var texstring = AMTparseMath(theAMath);
             katex.render(texstring, theMathOutA);
             katex.render(texstring, theMathOutB);
         }
@@ -121,12 +129,19 @@ function setup()
             if(USE_MATHJAX_BACKUP)
             {
                 // If LaTeX failed (since it doesn't support quite as many functions) revert to MathJax
-                theMathOutA.textContent = "`" + theInput.value + "`";        
-                theMathOutB.textContent = "`" + theInput.value + "`";
+                theMathOutA.textContent = "`" + theAMath + "`";        
+                theMathOutB.textContent = "`" + theAMath + "`";
             }
             else
             {
-                theMathOutA.textContent = theInput.value;
+                if(theAMath.length > 0)
+                {
+                    theMathOutA.textContent = theAMath;
+                }
+                else
+                {
+                    theMathOutA.innerHTML = "&nbsp;"; // Add a space so the box retains its height
+                }
             }
         }
     }
