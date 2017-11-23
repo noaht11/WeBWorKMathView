@@ -21,7 +21,7 @@ injectScript(function()
     var showOutput = function(element) {element.style.display = "inline-block";};
     var updateText = function(element, amath) {element.textContent = "`" + amath +  "`";};
 
-    var USE_MATHJAX_BACKUP = true;
+    var USE_MATHJAX_BACKUP = false;
 
     window.UpdateMath = function(i, amath)
     {
