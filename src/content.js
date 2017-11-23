@@ -83,5 +83,5 @@ script.src = chrome.runtime.getURL("katex/katex.min.js");
 document.head.appendChild(script);
 
 var script = document.createElement("script");
-script.src = chrome.runtime.getURL("ASCIIMathTeXImg.js");
+script.src = chrome.runtime.getURL("asciimath-based/ASCIIMathTeXImg.js");
 document.head.appendChild(script);

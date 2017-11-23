@@ -7,12 +7,12 @@
 
   "content_scripts": [{
     "css": ["katex/katex.min.css"],
-    "js": ["ASCIIMathTeXImg.js", "katex/katex.min.js", "content.js"],
+    "js": ["asciimath-based/ASCIIMathTeXImg.js", "katex/katex.min.js", "content.js"],
     "matches": ["https://webwork.elearning.ubc.ca/*"]
   }],
 
   "web_accessible_resources": [
     "katex/*",
-    "ASCIIMathTeXImg.js"
+    "asciimath-based/*"
   ]
 }
