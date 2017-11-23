@@ -74,53 +74,56 @@ function createMathOutDiv(i, subIndex, amath)
     return theMathJaxOut;
 }
 
-// Get all answer fields (they seem to all have the class name "codeshard")
-var inputs = document.getElementsByClassName("codeshard");
-for(var i = 0; i < inputs.length; i++)
+function setup()
 {
-    var theInput = inputs[i];
-
-    // Set a unique identifier on the field (so we can reference it later)
-    theInput.setAttribute("wwLive_index", i);
-
-    // Attach the onkeyup event to call our injected handler
-    var updateMathFuncCall = "UpdateMath(" + i + ", this.value)";
-    theInput.setAttribute("onkeyup", updateMathFuncCall);
-
-    // Create two math containers (a redundant one for while the other is updating if we're using MathJax)
-    var theMathOutA = createMathOutDiv(i, "a", theInput.value);
-    var theMathOutB = createMathOutDiv(i, "b", theInput.value);
-    theMathOutB.style.display = "none";
-
-    // Parent <div> for the two math containers
-    var theMathOut = document.createElement("div");
-    theMathOut.style.display = "inline-block";
-
-    theMathOut.appendChild(theMathOutA);
-    theMathOut.appendChild(theMathOutB);
-
-    // Insert the math containers directly after the text input
-    theInput.parentNode.insertBefore(theMathOut, theInput.nextSibling);
-
-    try
+    // Get all answer fields (they seem to all have the class name "codeshard")
+    var inputs = document.getElementsByClassName("codeshard");
+    for(var i = 0; i < inputs.length; i++)
     {
-        // First try to render using LaTeX (way faster than MathJax)
-        var texstring = AMTparseMath(theInput.value);
-        katex.render(texstring, theMathOutA);
-        katex.render(texstring, theMathOutB);
-    }
-    catch(err)
-    {
-        console.log(err);
-        if(USE_MATHJAX_BACKUP)
+        var theInput = inputs[i];
+
+        // Set a unique identifier on the field (so we can reference it later)
+        theInput.setAttribute("wwLive_index", i);
+
+        // Attach the onkeyup event to call our injected handler
+        var updateMathFuncCall = "UpdateMath(" + i + ", this.value)";
+        theInput.setAttribute("onkeyup", updateMathFuncCall);
+
+        // Create two math containers (a redundant one for while the other is updating if we're using MathJax)
+        var theMathOutA = createMathOutDiv(i, "a", theInput.value);
+        var theMathOutB = createMathOutDiv(i, "b", theInput.value);
+        theMathOutB.style.display = "none";
+
+        // Parent <div> for the two math containers
+        var theMathOut = document.createElement("div");
+        theMathOut.style.display = "inline-block";
+
+        theMathOut.appendChild(theMathOutA);
+        theMathOut.appendChild(theMathOutB);
+
+        // Insert the math containers directly after the text input
+        theInput.parentNode.insertBefore(theMathOut, theInput.nextSibling);
+
+        try
         {
-            // If LaTeX failed (since it doesn't support quite as many functions) revert to MathJax
-            theMathOutA.textContent = "`" + theInput.value + "`";        
-            theMathOutB.textContent = "`" + theInput.value + "`";
+            // First try to render using LaTeX (way faster than MathJax)
+            var texstring = AMTparseMath(theInput.value);
+            katex.render(texstring, theMathOutA);
+            katex.render(texstring, theMathOutB);
         }
-        else
+        catch(err)
         {
-            theMathOutA.textContent = theInput.value;
+            console.log(err);
+            if(USE_MATHJAX_BACKUP)
+            {
+                // If LaTeX failed (since it doesn't support quite as many functions) revert to MathJax
+                theMathOutA.textContent = "`" + theInput.value + "`";        
+                theMathOutB.textContent = "`" + theInput.value + "`";
+            }
+            else
+            {
+                theMathOutA.textContent = theInput.value;
+            }
         }
     }
 }
@@ -141,3 +144,5 @@ document.head.appendChild(katexCSS);
 var asciiMathJS = document.createElement("script");
 asciiMathJS.src = chrome.runtime.getURL("asciimath-based/ASCIIMathTeXImg.js");
 document.head.appendChild(asciiMathJS);
+
+document.addEventListener("DOMContentLoaded", setup);

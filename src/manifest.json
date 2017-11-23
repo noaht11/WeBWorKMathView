@@ -1,19 +1,31 @@
 {
-  "manifest_version": 2,
+    "manifest_version": 2,
 
-  "name": "WeBWorK Math Input",
-  "version": "1.0",
-  "description": "This extension provides live previews of math equations entered into WeBWorK text fields",
+    "name": "WeBWorK Math Input",
+    "version": "1.0",
+    "description": "This extension provides live previews of math equations entered into WeBWorK text fields",
 
-  "content_scripts": [{
-    "css": ["katex/katex.css"],
-    "js": ["asciimath-based/ASCIIMathTeXImg.js", "katex/katex.min.js", "content.js"],
-    "matches": ["https://webwork.elearning.ubc.ca/*"]
-  }],
+    "options_page": "options.html",
 
-  "web_accessible_resources": [
-    "katex/*",
-    "katex/fonts/*",
-    "asciimath-based/*"
-  ]
+    "background": {
+        "scripts": ["eventPage.js"],
+        "persistent": false
+    },
+
+    "web_accessible_resources": [
+        "katex/*",
+        "katex/fonts/*",
+        "asciimath-based/*"
+    ],
+
+    "permissions": [
+        "storage",
+        "activeTab",
+        "declarativeContent"
+    ],
+    "optional_permissions": [
+        "tabs",
+        "http://*/",
+        "https://*/"
+    ]
 }
