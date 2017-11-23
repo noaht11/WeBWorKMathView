@@ -1,4 +1,4 @@
-var USE_MATHJAX_BACKUP = true;
+var USE_MATHJAX_BACKUP = false;
 
 /**
  * Injects the provided function into the current webpage inside of a <script> tag in the <head> element
