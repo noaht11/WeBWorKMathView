@@ -1,9 +1,9 @@
 {
   "manifest_version": 2,
 
-  "name": "WeBWorK Live Preview",
+  "name": "WeBWorK Math Input",
   "version": "1.0",
-  "description": "This extension provides live previews of math equations entered into WeBWorK text fields using MathJax",
+  "description": "This extension provides live previews of math equations entered into WeBWorK text fields",
 
   "content_scripts": [{
     "css": ["katex/katex.css"],
