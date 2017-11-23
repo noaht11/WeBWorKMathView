@@ -31,7 +31,6 @@ injectScript(function()
         try
         {
             var texstring = AMTparseMath(amath);
-            console.log(texstring);
             hideOutput(outB);
             katex.render(texstring, outB);
             showOutput(outB);
