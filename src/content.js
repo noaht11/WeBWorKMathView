@@ -67,6 +67,10 @@ function createMathOutDiv(i, subIndex, amath)
     theMathJaxOut.id = "wwLive_out_" + i + "_" + subIndex;
     theMathJaxOut.style.display = "inline-block"; // so that it appears on the same line
     theMathJaxOut.style.padding = "8px";
+    theMathJaxOut.style.marginTop = "8px";
+    theMathJaxOut.style.marginBottom = "8px";
+    theMathJaxOut.style.marginLeft = "4px";
+    theMathJaxOut.style.marginRight = "4px";
     theMathJaxOut.style.color = "#000000";
     theMathJaxOut.style.backgroundColor = "#dddddd";
     theMathJaxOut.textContent = amath;
