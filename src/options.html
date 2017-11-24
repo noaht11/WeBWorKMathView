@@ -3,14 +3,154 @@
 
 <head>
     <title>WeBWorK Math Input Options</title>
+
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <style type="text/css">
+        body {
+            padding-top: 50px;
+            font-family: sans-serif;
+            background-color: #E9E9E9;
+        }
+
+        #title {
+            margin: 0px auto;
+            text-align: center;
+            font-size: 26pt;
+            font-weight: bold;
+            padding: 8px;
+            margin-top: 16px;
+            margin-bottom: 16px;
+        }
+
+        #content {
+            width: 600px;
+            margin: 0px auto;
+            text-align: left;
+            padding: 25px;
+            font-weight: bold;
+        }
+
+        input {
+            background-color: transparent;
+            color: white;
+            border: none;
+            border-bottom: 1px solid #ffffff;
+            outline: none;
+        }
+
+        input::-webkit-input-placeholder {
+            color: #b6b6b6 !important;
+        }
+
+        input:-moz-placeholder {
+            /* Firefox 18- */
+            color: #b6b6b6 !important;
+        }
+
+        input::-moz-placeholder {
+            /* Firefox 19+ */
+            color: #b6b6b6 !important;
+        }
+
+        input:-ms-input-placeholder {
+            color: #b6b6b6 !important;
+        }
+
+        .currentDataContainer {
+            display: table;
+            width: 100%;
+        }
+
+        .currentDataLabel {
+            display: table-cell;
+            width: auto;
+            white-space: nowrap;
+            padding-right: 8px;
+            vertical-align: middle;
+        }
+
+        .currentDataContent {
+            display: table-cell;
+            width: 90%;
+            padding-left: 16px;
+            padding-right: 16px;
+            border-radius: 16px 0px 0px 16px;
+            vertical-align: middle;
+        }
+
+        .currentDataEdit {
+            display: table-cell;
+            width: auto;
+            padding-right: 16px;
+            border-radius: 0px 16px 16px 0px;
+            cursor: hand;
+        }
+
+        .currentDataContent,
+        .currentDataEdit {
+            color: #ffffff;
+            background-color: #003388;
+            padding-top: 6px;
+            padding-bottom: 6px;
+        }
+
+        button.action {
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #c2c2c2;
+            outline: 0;
+        }
+
+        button.action:hover {
+            color: #ffffff;
+        }
+
+        button.action:active {
+            color: #2583ff
+        }
+
+        #dataValue {}
+    </style>
+
 </head>
 
 <body>
-    <input id="urlIn" type="url" size="50" />
+    <div id="title">
+        WeBWorK Math Input Chrome Extension
+    </div>
 
-    <div id="status"></div>
-    <button id="save">Save</button>
+    <div id="content">
 
+        <div id="currentData">
+            <div class="currentDataContainer">
+                <div class="currentDataLabel">
+                    WeBWorK Domain:
+                </div>
+                <div class="currentDataContent">
+                    <span id="currentDataContentText"></span>
+
+                    <div id="dataInputField" style="display:none;">
+                        <input id="urlIn" type="url" placeholder="e.g. https://webwork.university.ca" style="width: 100%" />
+                    </div>
+                </div>
+                <div class="currentDataEdit">
+                    <button id="editButton" class="action">
+                        <i class="material-icons">edit</i>
+                    </button>
+                    <button id="saveButton" class="action" style="display:none;">
+                        <i class="material-icons">done</i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div id="status"></div>
+
+    </div>
+
+    <script src="eventRegistration.js"></script>
     <script src="options.js"></script>
 </body>
 

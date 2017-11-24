@@ -8,7 +8,7 @@
     "options_page": "options.html",
 
     "background": {
-        "scripts": ["eventPage.js"],
+        "scripts": ["eventRegistration.js", "eventPage.js"],
         "persistent": false
     },
 
@@ -25,7 +25,6 @@
     ],
     "optional_permissions": [
         "tabs",
-        "http://*/",
-        "https://*/"
+        "*://*/*"
     ]
 }
