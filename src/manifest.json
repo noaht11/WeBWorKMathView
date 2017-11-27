@@ -1,7 +1,7 @@
 {
     "manifest_version": 2,
 
-    "name": "WeBWorK Math Input",
+    "name": "WeBWorK MathView",
     "version": "1.0",
     "description": "This extension provides live previews of math equations entered into WeBWorK text fields",
 
