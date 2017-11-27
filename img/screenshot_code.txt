@@ -1,0 +1,605 @@
+<html lang="en-US"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- This encourages IE to *not* use compatibility view, which breaks math4 -->
+<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+
+<!--
+################################################################################
+# WeBWorK Online Homework Delivery System
+# Copyright Â© 2000-2007 The WeBWorK Project, http://openwebwork.sf.net/
+# $CVSHeader: webwork2/conf/templates/math3/system.template,v 1.2 2008/06/26 19:46:02 gage Exp $
+# 
+# This program is free software; you can redistribute it and/or modify it under
+# the terms of either: (a) the GNU General Public License as published by the
+# Free Software Foundation; either version 2, or (at your option) any later
+# version, or (b) the "Artistic License" which comes with this package.
+# 
+# This program is distributed in the hope that it will be useful, but WITHOUT
+# ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+# FOR A PARTICULAR PURPOSE.  See either the GNU General Public License or the
+# Artistic License for more details.
+################################################################################
+-->
+
+<link rel="icon" type="x-image/icon" href="https://webworkstatic.elearning.ubc.ca/webwork2_files/images/favicon.ico">
+
+<!-- CSS Loads -->
+<link rel="stylesheet" type="text/css" href="https://webworkstatic.elearning.ubc.ca/webwork2_files/js/vendor/bootstrap/css/bootstrap.css">
+<link href="https://webworkstatic.elearning.ubc.ca/webwork2_files/js/vendor/bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="https://webworkstatic.elearning.ubc.ca/webwork2_files/css/vendor/font-awesome/css/font-awesome.min.css">
+<link rel="stylesheet" type="text/css" href="https://webworkstatic.elearning.ubc.ca/webwork2_files/themes/math4/math4.css">
+
+	<link rel="stylesheet" type="text/css" href="https://webworkstatic.elearning.ubc.ca/webwork2_files/css/jquery-ui-1.8.18.custom.css">
+
+
+<link rel="stylesheet" type="text/css" href="https://webworkstatic.elearning.ubc.ca/webwork2_files/themes/math4/achievements.css">
+
+
+
+	
+           <link href="https://webworkstatic.elearning.ubc.ca/webwork2_files/css/knowlstyle.css" rel="stylesheet" type="text/css">
+
+
+
+
+<!-- JS Loads -->
+<script type="text/javascript" src="https://webworkstatic.elearning.ubc.ca/webwork2_files/js/vendor/jquery/jquery.js"></script><script>(function ()
+{
+    var getOutput = function(i, subIndex) {return document.getElementById("wwLive_out_" + i + "_" + subIndex);};
+
+    var hideOutput = function(element) {element.style.display = "none";};
+    var showOutput = function(element) {element.style.display = "inline-block";};
+    var updateText = function(element, amath) {element.textContent = "`" + amath +  "`";};
+
+    var USE_MATHJAX_BACKUP = false;
+
+    window.UpdateMath = function(i, amath)
+    {
+        var outA = getOutput(i, "a");
+        var outB = getOutput(i, "b");
+
+        try
+        {
+            var texstring = AMTparseMath(amath);
+            hideOutput(outB);
+            katex.render(texstring, outB);
+            showOutput(outB);
+            hideOutput(outA);
+            katex.render(texstring, outA);
+            showOutput(outA);
+            hideOutput(outB);
+        }
+        catch(err)
+        {
+            console.log(err);
+            if(USE_MATHJAX_BACKUP)
+            {
+                MathJax.Hub.Queue([hideOutput, outB], [updateText, outB, amath], ["Typeset", MathJax.Hub, outB], [showOutput, outB],
+                                  [hideOutput, outA], [updateText, outA, amath], ["Typeset", MathJax.Hub, outA], [showOutput, outA], [hideOutput, outB]);
+            }
+            else
+            {
+                if(amath.length > 0)
+                {
+                    outA.textContent = amath;
+                }
+                else
+                {
+                    outA.innerHTML = "&nbsp;"; // Add a space so the box retains its height
+                }
+            }
+        }
+    }
+})();</script><script src="chrome-extension://ppiilfcdjoajmfbomheoaeafbgpahpnf/katex/katex.min.js"></script><link rel="stylesheet" type="text/css" href="chrome-extension://ppiilfcdjoajmfbomheoaeafbgpahpnf/katex/katex.css"><script src="chrome-extension://ppiilfcdjoajmfbomheoaeafbgpahpnf/asciimath-based/ASCIIMathTeXImg.js"></script>
+<script type="text/javascript" src="https://webworkstatic.elearning.ubc.ca/webwork2_files/mathjax/MathJax.js?config=TeX-MML-AM_HTMLorMML-full"></script>
+
+	<script type="text/javascript" src="https://webworkstatic.elearning.ubc.ca/webwork2_files/js/jquery-ui-1.9.0.js"></script>
+
+<script type="text/javascript" src="https://webworkstatic.elearning.ubc.ca/webwork2_files/js/vendor/bootstrap/js/bootstrap.js"></script>
+
+
+	<script src="https://webworkstatic.elearning.ubc.ca/webwork2_files/js/legacy/dragmath.js" type="text/javascript"></script><script src="https://webworkstatic.elearning.ubc.ca/webwork2_files/js/apps/AddOnLoad/addOnLoadEvent.js" type="text/javascript"></script><script src="https://webworkstatic.elearning.ubc.ca/webwork2_files/js/legacy/java_init.js" type="tesxt/javascript"></script><script src="https://webworkstatic.elearning.ubc.ca/webwork2_files/js/apps/InputColor/color.js" type="text/javascript"></script><script src="https://webworkstatic.elearning.ubc.ca/webwork2_files/js/apps/Base64/Base64.js" type="text/javascript"></script>
+           <script type="text/javascript" src="https://webworkstatic.elearning.ubc.ca/webwork2_files/js/vendor/underscore/underscore.js"></script>
+           <script type="text/javascript" src="https://webworkstatic.elearning.ubc.ca/webwork2_files/js/legacy/vendor/knowl.js"></script><script src="https://webworkstatic.elearning.ubc.ca/webwork2_files/js/apps/Problem/problem.js" type="text/javascript"></script>
+
+<script type="text/javascript" src="https://webworkstatic.elearning.ubc.ca/webwork2_files/themes/math4/math4.js"></script>	
+
+
+<title>WeBWorK : MATH217-101_2017W1 : Assignment11 : 6
+</title>
+
+
+<style type="text/css">.MathJax_Hover_Frame {border-radius: .25em; -webkit-border-radius: .25em; -moz-border-radius: .25em; -khtml-border-radius: .25em; box-shadow: 0px 0px 15px #83A; -webkit-box-shadow: 0px 0px 15px #83A; -moz-box-shadow: 0px 0px 15px #83A; -khtml-box-shadow: 0px 0px 15px #83A; border: 1px solid #A6D ! important; display: inline-block; position: absolute}
+.MathJax_Menu_Button .MathJax_Hover_Arrow {position: absolute; cursor: pointer; display: inline-block; border: 2px solid #AAA; border-radius: 4px; -webkit-border-radius: 4px; -moz-border-radius: 4px; -khtml-border-radius: 4px; font-family: 'Courier New',Courier; font-size: 9px; color: #F0F0F0}
+.MathJax_Menu_Button .MathJax_Hover_Arrow span {display: block; background-color: #AAA; border: 1px solid; border-radius: 3px; line-height: 0; padding: 4px}
+.MathJax_Hover_Arrow:hover {color: white!important; border: 2px solid #CCC!important}
+.MathJax_Hover_Arrow:hover span {background-color: #CCC!important}
+</style><style type="text/css">#MathJax_About {position: fixed; left: 50%; width: auto; text-align: center; border: 3px outset; padding: 1em 2em; background-color: #DDDDDD; color: black; cursor: default; font-family: message-box; font-size: 120%; font-style: normal; text-indent: 0; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal; word-wrap: normal; white-space: nowrap; float: none; z-index: 201; border-radius: 15px; -webkit-border-radius: 15px; -moz-border-radius: 15px; -khtml-border-radius: 15px; box-shadow: 0px 10px 20px #808080; -webkit-box-shadow: 0px 10px 20px #808080; -moz-box-shadow: 0px 10px 20px #808080; -khtml-box-shadow: 0px 10px 20px #808080; filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true')}
+#MathJax_About.MathJax_MousePost {outline: none}
+.MathJax_Menu {position: absolute; background-color: white; color: black; width: auto; padding: 2px; border: 1px solid #CCCCCC; margin: 0; cursor: default; font: menu; text-align: left; text-indent: 0; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal; word-wrap: normal; white-space: nowrap; float: none; z-index: 201; box-shadow: 0px 10px 20px #808080; -webkit-box-shadow: 0px 10px 20px #808080; -moz-box-shadow: 0px 10px 20px #808080; -khtml-box-shadow: 0px 10px 20px #808080; filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true')}
+.MathJax_MenuItem {padding: 2px 2em; background: transparent}
+.MathJax_MenuArrow {position: absolute; right: .5em; padding-top: .25em; color: #666666; font-size: .75em}
+.MathJax_MenuActive .MathJax_MenuArrow {color: white}
+.MathJax_MenuArrow.RTL {left: .5em; right: auto}
+.MathJax_MenuCheck {position: absolute; left: .7em}
+.MathJax_MenuCheck.RTL {right: .7em; left: auto}
+.MathJax_MenuRadioCheck {position: absolute; left: 1em}
+.MathJax_MenuRadioCheck.RTL {right: 1em; left: auto}
+.MathJax_MenuLabel {padding: 2px 2em 4px 1.33em; font-style: italic}
+.MathJax_MenuRule {border-top: 1px solid #CCCCCC; margin: 4px 1px 0px}
+.MathJax_MenuDisabled {color: GrayText}
+.MathJax_MenuActive {background-color: Highlight; color: HighlightText}
+.MathJax_MenuDisabled:focus, .MathJax_MenuLabel:focus {background-color: #E8E8E8}
+.MathJax_ContextMenu:focus {outline: none}
+.MathJax_ContextMenu .MathJax_MenuItem:focus {outline: none}
+#MathJax_AboutClose {top: .2em; right: .2em}
+.MathJax_Menu .MathJax_MenuClose {top: -10px; left: -10px}
+.MathJax_MenuClose {position: absolute; cursor: pointer; display: inline-block; border: 2px solid #AAA; border-radius: 18px; -webkit-border-radius: 18px; -moz-border-radius: 18px; -khtml-border-radius: 18px; font-family: 'Courier New',Courier; font-size: 24px; color: #F0F0F0}
+.MathJax_MenuClose span {display: block; background-color: #AAA; border: 1.5px solid; border-radius: 18px; -webkit-border-radius: 18px; -moz-border-radius: 18px; -khtml-border-radius: 18px; line-height: 0; padding: 8px 0 6px}
+.MathJax_MenuClose:hover {color: white!important; border: 2px solid #CCC!important}
+.MathJax_MenuClose:hover span {background-color: #CCC!important}
+.MathJax_MenuClose:hover:focus {outline: none}
+</style><style type="text/css">.MathJax_Preview .MJXf-math {color: inherit!important}
+</style><style type="text/css">.MJX_Assistive_MathML {position: absolute!important; top: 0; left: 0; clip: rect(1px, 1px, 1px, 1px); padding: 1px 0 0 0!important; border: 0!important; height: 1px!important; width: 1px!important; overflow: hidden!important; display: block!important; -webkit-touch-callout: none; -webkit-user-select: none; -khtml-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none}
+.MJX_Assistive_MathML.MJX_Assistive_MathML_Block {width: 100%!important}
+</style><style type="text/css">#MathJax_Zoom {position: absolute; background-color: #F0F0F0; overflow: auto; display: block; z-index: 301; padding: .5em; border: 1px solid black; margin: 0; font-weight: normal; font-style: normal; text-align: left; text-indent: 0; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal; word-wrap: normal; white-space: nowrap; float: none; -webkit-box-sizing: content-box; -moz-box-sizing: content-box; box-sizing: content-box; box-shadow: 5px 5px 15px #AAAAAA; -webkit-box-shadow: 5px 5px 15px #AAAAAA; -moz-box-shadow: 5px 5px 15px #AAAAAA; -khtml-box-shadow: 5px 5px 15px #AAAAAA; filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true')}
+#MathJax_ZoomOverlay {position: absolute; left: 0; top: 0; z-index: 300; display: inline-block; width: 100%; height: 100%; border: 0; padding: 0; margin: 0; background-color: white; opacity: 0; filter: alpha(opacity=0)}
+#MathJax_ZoomFrame {position: relative; display: inline-block; height: 0; width: 0}
+#MathJax_ZoomEventTrap {position: absolute; left: 0; top: 0; z-index: 302; display: inline-block; border: 0; padding: 0; margin: 0; background-color: white; opacity: 0; filter: alpha(opacity=0)}
+</style><style type="text/css">.MathJax_Preview {color: #888}
+#MathJax_Message {position: fixed; left: 1em; bottom: 1.5em; background-color: #E6E6E6; border: 1px solid #959595; margin: 0px; padding: 2px 8px; z-index: 102; color: black; font-size: 80%; width: auto; white-space: nowrap}
+#MathJax_MSIE_Frame {position: absolute; top: 0; left: 0; width: 0px; z-index: 101; border: 0px; margin: 0px; padding: 0px}
+.MathJax_Error {color: #CC0000; font-style: italic}
+</style><style type="text/css">div.MathJax_MathML {text-align: center; margin: .75em 0px; display: block!important}
+.MathJax_MathML {font-style: normal; font-weight: normal; line-height: normal; font-size: 100%; font-size-adjust: none; text-indent: 0; text-align: left; text-transform: none; letter-spacing: normal; word-spacing: normal; word-wrap: normal; white-space: nowrap; float: none; direction: ltr; max-width: none; max-height: none; min-width: 0; min-height: 0; border: 0; padding: 0; margin: 0}
+span.MathJax_MathML {display: inline!important}
+.MathJax_mmlExBox {display: block!important; overflow: hidden; height: 1px; width: 60ex; min-height: 0; max-height: none; padding: 0; border: 0; margin: 0}
+[class="MJX-tex-oldstyle"] {font-family: MathJax_Caligraphic, MathJax_Caligraphic-WEB}
+[class="MJX-tex-oldstyle-bold"] {font-family: MathJax_Caligraphic, MathJax_Caligraphic-WEB; font-weight: bold}
+[class="MJX-tex-caligraphic"] {font-family: MathJax_Caligraphic, MathJax_Caligraphic-WEB}
+[class="MJX-tex-caligraphic-bold"] {font-family: MathJax_Caligraphic, MathJax_Caligraphic-WEB; font-weight: bold}
+@font-face /*1*/ {font-family: MathJax_Caligraphic-WEB; src: url('https://webworkstatic.elearning.ubc.ca/webwork2_files/mathjax/fonts/HTML-CSS/TeX/otf/MathJax_Caligraphic-Regular.otf')}
+@font-face /*2*/ {font-family: MathJax_Caligraphic-WEB; font-weight: bold; src: url('https://webworkstatic.elearning.ubc.ca/webwork2_files/mathjax/fonts/HTML-CSS/TeX/otf/MathJax_Caligraphic-Bold.otf')}
+[mathvariant="double-struck"] {font-family: MathJax_AMS, MathJax_AMS-WEB}
+[mathvariant="script"] {font-family: MathJax_Script, MathJax_Script-WEB}
+[mathvariant="fraktur"] {font-family: MathJax_Fraktur, MathJax_Fraktur-WEB}
+[mathvariant="bold-script"] {font-family: MathJax_Script, MathJax_Caligraphic-WEB; font-weight: bold}
+[mathvariant="bold-fraktur"] {font-family: MathJax_Fraktur, MathJax_Fraktur-WEB; font-weight: bold}
+[mathvariant="monospace"] {font-family: monospace}
+[mathvariant="sans-serif"] {font-family: sans-serif}
+[mathvariant="bold-sans-serif"] {font-family: sans-serif; font-weight: bold}
+[mathvariant="sans-serif-italic"] {font-family: sans-serif; font-style: italic}
+[mathvariant="sans-serif-bold-italic"] {font-family: sans-serif; font-style: italic; font-weight: bold}
+@font-face /*3*/ {font-family: MathJax_AMS-WEB; src: url('https://webworkstatic.elearning.ubc.ca/webwork2_files/mathjax/fonts/HTML-CSS/TeX/otf/MathJax_AMS-Regular.otf')}
+@font-face /*4*/ {font-family: MathJax_Script-WEB; src: url('https://webworkstatic.elearning.ubc.ca/webwork2_files/mathjax/fonts/HTML-CSS/TeX/otf/MathJax_Script-Regular.otf')}
+@font-face /*5*/ {font-family: MathJax_Fraktur-WEB; src: url('https://webworkstatic.elearning.ubc.ca/webwork2_files/mathjax/fonts/HTML-CSS/TeX/otf/MathJax_Fraktur-Regular.otf')}
+@font-face /*6*/ {font-family: MathJax_Fraktur-WEB; font-weight: bold; src: url('https://webworkstatic.elearning.ubc.ca/webwork2_files/mathjax/fonts/HTML-CSS/TeX/otf/MathJax_Fraktur-Bold.otf')}
+</style><style type="text/css">.MJXp-script {font-size: .8em}
+.MJXp-right {-webkit-transform-origin: right; -moz-transform-origin: right; -ms-transform-origin: right; -o-transform-origin: right; transform-origin: right}
+.MJXp-bold {font-weight: bold}
+.MJXp-italic {font-style: italic}
+.MJXp-scr {font-family: MathJax_Script,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-frak {font-family: MathJax_Fraktur,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-sf {font-family: MathJax_SansSerif,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-cal {font-family: MathJax_Caligraphic,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-mono {font-family: MathJax_Typewriter,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-largeop {font-size: 150%}
+.MJXp-largeop.MJXp-int {vertical-align: -.2em}
+.MJXp-math {display: inline-block; line-height: 1.2; text-indent: 0; font-family: 'Times New Roman',Times,STIXGeneral,serif; white-space: nowrap; border-collapse: collapse}
+.MJXp-display {display: block; text-align: center; margin: 1em 0}
+.MJXp-math span {display: inline-block}
+.MJXp-box {display: block!important; text-align: center}
+.MJXp-box:after {content: " "}
+.MJXp-rule {display: block!important; margin-top: .1em}
+.MJXp-char {display: block!important}
+.MJXp-mo {margin: 0 .15em}
+.MJXp-mfrac {margin: 0 .125em; vertical-align: .25em}
+.MJXp-denom {display: inline-table!important; width: 100%}
+.MJXp-denom > * {display: table-row!important}
+.MJXp-surd {vertical-align: top}
+.MJXp-surd > * {display: block!important}
+.MJXp-script-box > *  {display: table!important; height: 50%}
+.MJXp-script-box > * > * {display: table-cell!important; vertical-align: top}
+.MJXp-script-box > *:last-child > * {vertical-align: bottom}
+.MJXp-script-box > * > * > * {display: block!important}
+.MJXp-mphantom {visibility: hidden}
+.MJXp-munderover {display: inline-table!important}
+.MJXp-over {display: inline-block!important; text-align: center}
+.MJXp-over > * {display: block!important}
+.MJXp-munderover > * {display: table-row!important}
+.MJXp-mtable {vertical-align: .25em; margin: 0 .125em}
+.MJXp-mtable > * {display: inline-table!important; vertical-align: middle}
+.MJXp-mtr {display: table-row!important}
+.MJXp-mtd {display: table-cell!important; text-align: center; padding: .5em 0 0 .5em}
+.MJXp-mtr > .MJXp-mtd:first-child {padding-left: 0}
+.MJXp-mtr:first-child > .MJXp-mtd {padding-top: 0}
+.MJXp-mlabeledtr {display: table-row!important}
+.MJXp-mlabeledtr > .MJXp-mtd:first-child {padding-left: 0}
+.MJXp-mlabeledtr:first-child > .MJXp-mtd {padding-top: 0}
+.MJXp-merror {background-color: #FFFF88; color: #CC0000; border: 1px solid #CC0000; padding: 1px 3px; font-style: normal; font-size: 90%}
+.MJXp-scale0 {-webkit-transform: scaleX(.0); -moz-transform: scaleX(.0); -ms-transform: scaleX(.0); -o-transform: scaleX(.0); transform: scaleX(.0)}
+.MJXp-scale1 {-webkit-transform: scaleX(.1); -moz-transform: scaleX(.1); -ms-transform: scaleX(.1); -o-transform: scaleX(.1); transform: scaleX(.1)}
+.MJXp-scale2 {-webkit-transform: scaleX(.2); -moz-transform: scaleX(.2); -ms-transform: scaleX(.2); -o-transform: scaleX(.2); transform: scaleX(.2)}
+.MJXp-scale3 {-webkit-transform: scaleX(.3); -moz-transform: scaleX(.3); -ms-transform: scaleX(.3); -o-transform: scaleX(.3); transform: scaleX(.3)}
+.MJXp-scale4 {-webkit-transform: scaleX(.4); -moz-transform: scaleX(.4); -ms-transform: scaleX(.4); -o-transform: scaleX(.4); transform: scaleX(.4)}
+.MJXp-scale5 {-webkit-transform: scaleX(.5); -moz-transform: scaleX(.5); -ms-transform: scaleX(.5); -o-transform: scaleX(.5); transform: scaleX(.5)}
+.MJXp-scale6 {-webkit-transform: scaleX(.6); -moz-transform: scaleX(.6); -ms-transform: scaleX(.6); -o-transform: scaleX(.6); transform: scaleX(.6)}
+.MJXp-scale7 {-webkit-transform: scaleX(.7); -moz-transform: scaleX(.7); -ms-transform: scaleX(.7); -o-transform: scaleX(.7); transform: scaleX(.7)}
+.MJXp-scale8 {-webkit-transform: scaleX(.8); -moz-transform: scaleX(.8); -ms-transform: scaleX(.8); -o-transform: scaleX(.8); transform: scaleX(.8)}
+.MJXp-scale9 {-webkit-transform: scaleX(.9); -moz-transform: scaleX(.9); -ms-transform: scaleX(.9); -o-transform: scaleX(.9); transform: scaleX(.9)}
+.MathJax_PHTML .noError {vertical-align: ; font-size: 90%; text-align: left; color: black; padding: 1px 3px; border: 1px solid}
+</style><style type="text/css">.MathJax_Display {text-align: center; margin: 1em 0em; position: relative; display: block!important; text-indent: 0; max-width: none; max-height: none; min-width: 0; min-height: 0; width: 100%}
+.MathJax .merror {background-color: #FFFF88; color: #CC0000; border: 1px solid #CC0000; padding: 1px 3px; font-style: normal; font-size: 90%}
+.MathJax .MJX-monospace {font-family: monospace}
+.MathJax .MJX-sans-serif {font-family: sans-serif}
+#MathJax_Tooltip {background-color: InfoBackground; color: InfoText; border: 1px solid black; box-shadow: 2px 2px 5px #AAAAAA; -webkit-box-shadow: 2px 2px 5px #AAAAAA; -moz-box-shadow: 2px 2px 5px #AAAAAA; -khtml-box-shadow: 2px 2px 5px #AAAAAA; filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true'); padding: 3px 4px; z-index: 401; position: absolute; left: 0; top: 0; width: auto; height: auto; display: none}
+.MathJax {display: inline; font-style: normal; font-weight: normal; line-height: normal; font-size: 100%; font-size-adjust: none; text-indent: 0; text-align: left; text-transform: none; letter-spacing: normal; word-spacing: normal; word-wrap: normal; white-space: nowrap; float: none; direction: ltr; max-width: none; max-height: none; min-width: 0; min-height: 0; border: 0; padding: 0; margin: 0}
+.MathJax:focus, body :focus .MathJax {display: inline-table}
+.MathJax img, .MathJax nobr, .MathJax a {border: 0; padding: 0; margin: 0; max-width: none; max-height: none; min-width: 0; min-height: 0; vertical-align: 0; line-height: normal; text-decoration: none}
+img.MathJax_strut {border: 0!important; padding: 0!important; margin: 0!important; vertical-align: 0!important}
+.MathJax span {display: inline; position: static; border: 0; padding: 0; margin: 0; vertical-align: 0; line-height: normal; text-decoration: none}
+.MathJax nobr {white-space: nowrap!important}
+.MathJax img {display: inline!important; float: none!important}
+.MathJax * {transition: none; -webkit-transition: none; -moz-transition: none; -ms-transition: none; -o-transition: none}
+.MathJax_Processing {visibility: hidden; position: fixed; width: 0; height: 0; overflow: hidden}
+.MathJax_Processed {display: none!important}
+.MathJax_ExBox {display: block!important; overflow: hidden; width: 1px; height: 60ex; min-height: 0; max-height: none}
+.MathJax .MathJax_EmBox {display: block!important; overflow: hidden; width: 1px; height: 60em; min-height: 0; max-height: none}
+.MathJax .MathJax_HitBox {cursor: text; background: white; opacity: 0; filter: alpha(opacity=0)}
+.MathJax .MathJax_HitBox * {filter: none; opacity: 1; background: transparent}
+#MathJax_Tooltip * {filter: none; opacity: 1; background: transparent}
+@font-face {font-family: MathJax_Main; src: url('https://webworkstatic.elearning.ubc.ca/webwork2_files/mathjax/fonts/HTML-CSS/TeX/woff/MathJax_Main-Regular.woff?rev=2.6.1') format('woff'), url('https://webworkstatic.elearning.ubc.ca/webwork2_files/mathjax/fonts/HTML-CSS/TeX/otf/MathJax_Main-Regular.otf?rev=2.6.1') format('opentype')}
+@font-face {font-family: MathJax_Main-bold; src: url('https://webworkstatic.elearning.ubc.ca/webwork2_files/mathjax/fonts/HTML-CSS/TeX/woff/MathJax_Main-Bold.woff?rev=2.6.1') format('woff'), url('https://webworkstatic.elearning.ubc.ca/webwork2_files/mathjax/fonts/HTML-CSS/TeX/otf/MathJax_Main-Bold.otf?rev=2.6.1') format('opentype')}
+@font-face {font-family: MathJax_Main-italic; src: url('https://webworkstatic.elearning.ubc.ca/webwork2_files/mathjax/fonts/HTML-CSS/TeX/woff/MathJax_Main-Italic.woff?rev=2.6.1') format('woff'), url('https://webworkstatic.elearning.ubc.ca/webwork2_files/mathjax/fonts/HTML-CSS/TeX/otf/MathJax_Main-Italic.otf?rev=2.6.1') format('opentype')}
+@font-face {font-family: MathJax_Math-italic; src: url('https://webworkstatic.elearning.ubc.ca/webwork2_files/mathjax/fonts/HTML-CSS/TeX/woff/MathJax_Math-Italic.woff?rev=2.6.1') format('woff'), url('https://webworkstatic.elearning.ubc.ca/webwork2_files/mathjax/fonts/HTML-CSS/TeX/otf/MathJax_Math-Italic.otf?rev=2.6.1') format('opentype')}
+@font-face {font-family: MathJax_Caligraphic; src: url('https://webworkstatic.elearning.ubc.ca/webwork2_files/mathjax/fonts/HTML-CSS/TeX/woff/MathJax_Caligraphic-Regular.woff?rev=2.6.1') format('woff'), url('https://webworkstatic.elearning.ubc.ca/webwork2_files/mathjax/fonts/HTML-CSS/TeX/otf/MathJax_Caligraphic-Regular.otf?rev=2.6.1') format('opentype')}
+@font-face {font-family: MathJax_Size1; src: url('https://webworkstatic.elearning.ubc.ca/webwork2_files/mathjax/fonts/HTML-CSS/TeX/woff/MathJax_Size1-Regular.woff?rev=2.6.1') format('woff'), url('https://webworkstatic.elearning.ubc.ca/webwork2_files/mathjax/fonts/HTML-CSS/TeX/otf/MathJax_Size1-Regular.otf?rev=2.6.1') format('opentype')}
+@font-face {font-family: MathJax_Size2; src: url('https://webworkstatic.elearning.ubc.ca/webwork2_files/mathjax/fonts/HTML-CSS/TeX/woff/MathJax_Size2-Regular.woff?rev=2.6.1') format('woff'), url('https://webworkstatic.elearning.ubc.ca/webwork2_files/mathjax/fonts/HTML-CSS/TeX/otf/MathJax_Size2-Regular.otf?rev=2.6.1') format('opentype')}
+@font-face {font-family: MathJax_Size3; src: url('https://webworkstatic.elearning.ubc.ca/webwork2_files/mathjax/fonts/HTML-CSS/TeX/woff/MathJax_Size3-Regular.woff?rev=2.6.1') format('woff'), url('https://webworkstatic.elearning.ubc.ca/webwork2_files/mathjax/fonts/HTML-CSS/TeX/otf/MathJax_Size3-Regular.otf?rev=2.6.1') format('opentype')}
+@font-face {font-family: MathJax_Size4; src: url('https://webworkstatic.elearning.ubc.ca/webwork2_files/mathjax/fonts/HTML-CSS/TeX/woff/MathJax_Size4-Regular.woff?rev=2.6.1') format('woff'), url('https://webworkstatic.elearning.ubc.ca/webwork2_files/mathjax/fonts/HTML-CSS/TeX/otf/MathJax_Size4-Regular.otf?rev=2.6.1') format('opentype')}
+.MathJax .noError {vertical-align: ; font-size: 90%; text-align: left; color: black; padding: 1px 3px; border: 1px solid}
+</style><style type="text/css">@font-face {font-family: MathJax_AMS; src: url('https://webworkstatic.elearning.ubc.ca/webwork2_files/mathjax/fonts/HTML-CSS/TeX/woff/MathJax_AMS-Regular.woff?rev=2.6.1') format('woff'), url('https://webworkstatic.elearning.ubc.ca/webwork2_files/mathjax/fonts/HTML-CSS/TeX/otf/MathJax_AMS-Regular.otf?rev=2.6.1') format('opentype')}
+</style></head>
+
+<body><div style="visibility: hidden; overflow: hidden; position: absolute; top: 0px; height: 1px; width: auto; padding: 0px; border: 0px; margin: 0px; text-align: left; text-indent: 0px; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal;"><div id="MathJax_Hidden"><br><br><br><br><br></div></div><div id="MathJax_Message" style="display: none;"></div><div id="WzTtDiV" style="visibility: hidden; position: absolute; overflow: hidden; padding: 0px; width: 1919px; left: -1920px; top: 0px;"></div>
+<a href="#page-title" id="stmc-link" class="sr-only sr-only-focusable">Skip to main content</a>
+ <!-- Please remind this -->
+	<script src="https://webworkstatic.elearning.ubc.ca/webwork2_files/js/legacy/vendor/wz_tooltip.js" type="text/javascript"></script>
+
+
+<!-- Bootstrap Fluid Layout Scaffolding start -->
+<div id="bs-container" class="container-fluid">
+<!-- Header -->
+<div id="masthead" class="row-fluid" role="banner">
+	<div class="span2 webwork_logo">
+		<a href="/webwork2"><img src="https://webworkstatic.elearning.ubc.ca/webwork2_files/images/webwork_transparent_logo_small.png" alt="to courses page">WeBWorK</a>
+	</div>
+	<div class="span4 maa_logo">
+		<a href="http://www.maa.org"><img src="https://webworkstatic.elearning.ubc.ca/webwork2_files/images/maa_logo_small.png" alt="to MAA (Mathematical Association of America) main web site"></a>
+	</div>
+	<div id="loginstatus" class="offset3 span3">
+		Logged in as Pythagoras. <a href="https://webwork.elearning.ubc.ca/webwork2/MATH217-101_2017W1/logout/?effectiveUser=BLA9YQ6E5S08&amp;user=BLA9YQ6E5S08&amp;key=1CCiCjGIIYamavbKUfZRHNVXYnuwPpKs" class="btn btn-small">Log Out <span class="icon icon-signout" data-alt="signout" aria-hidden="true"></span><span style="font-size:11.9px" class="sr-only-glyphicon">signout</span></a>
+	</div>
+</div>
+
+<!-- Run masthead class js because it gets rendered early -->
+<script type="text/javascript">
+  // Changes links in masthead
+  $('#loginstatus a').addClass('btn btn-small');
+  $('#loginstatus a').append(' <span class="icon icon-signout" data-alt="signout"></span>'); 
+</script>
+
+<div id="body-row" class="row-fluid"><div id="site-navigation" class="span2" role="navigation" aria-label="main navigation">
+  
+        <div id="site-links">
+	  <ul class="nav nav-list"><li class="nav-header"><h2>Main Menu</h2></li><li><a href="https://webwork.elearning.ubc.ca/webwork2/">Courses</a></li><li><a href="https://webwork.elearning.ubc.ca/webwork2/MATH217-101_2017W1/?effectiveUser=BLA9YQ6E5S08&amp;user=BLA9YQ6E5S08&amp;key=1CCiCjGIIYamavbKUfZRHNVXYnuwPpKs">Homework Sets</a></li><li><ul class="nav nav-list"><li><a href="https://webwork.elearning.ubc.ca/webwork2/MATH217-101_2017W1/Assignment11/?effectiveUser=BLA9YQ6E5S08&amp;user=BLA9YQ6E5S08&amp;key=1CCiCjGIIYamavbKUfZRHNVXYnuwPpKs">Assignment11</a></li><li><ul class="nav nav-list"><li class="active"><a href="https://webwork.elearning.ubc.ca/webwork2/MATH217-101_2017W1/Assignment11/6/?effectiveUser=BLA9YQ6E5S08&amp;user=BLA9YQ6E5S08&amp;key=1CCiCjGIIYamavbKUfZRHNVXYnuwPpKs" class="active">Problem 7</a></li></ul></li></ul></li><li><a href="https://webwork.elearning.ubc.ca/webwork2/MATH217-101_2017W1/options/?effectiveUser=BLA9YQ6E5S08&amp;user=BLA9YQ6E5S08&amp;key=1CCiCjGIIYamavbKUfZRHNVXYnuwPpKs">User Settings</a></li><li><a href="https://webwork.elearning.ubc.ca/webwork2/MATH217-101_2017W1/grades/?effectiveUser=BLA9YQ6E5S08&amp;user=BLA9YQ6E5S08&amp;key=1CCiCjGIIYamavbKUfZRHNVXYnuwPpKs">Grades</a></li></ul>
+	  </div>
+	
+
+	
+	<div id="siblings">
+	  <div id="fisheye" class="info-box"><h2>Problems</h2><ul class="problem-list nav nav-list"><div aria-label="progress bar for current problem set" class="progress-bar set-id-tooltip" data-original-title="" title=""><div data-toggle="tooltip" aria-label="correct progress bar for current problem set" class="correct-progress set-id-tooltip" title="" style="width:100%" data-original-title="Correct: 14/14" data-placement="bottom">?Perfect?</div></div><li><a href="https://webwork.elearning.ubc.ca/webwork2/MATH217-101_2017W1/Assignment11/1/?effectiveUser=BLA9YQ6E5S08&amp;user=BLA9YQ6E5S08&amp;key=1CCiCjGIIYamavbKUfZRHNVXYnuwPpKs">Problem 1 ?</a></li><li><a href="https://webwork.elearning.ubc.ca/webwork2/MATH217-101_2017W1/Assignment11/2/?effectiveUser=BLA9YQ6E5S08&amp;user=BLA9YQ6E5S08&amp;key=1CCiCjGIIYamavbKUfZRHNVXYnuwPpKs">Problem 2 ?</a></li><li><a href="https://webwork.elearning.ubc.ca/webwork2/MATH217-101_2017W1/Assignment11/3/?effectiveUser=BLA9YQ6E5S08&amp;user=BLA9YQ6E5S08&amp;key=1CCiCjGIIYamavbKUfZRHNVXYnuwPpKs">Problem 3 ?</a></li><li><a href="https://webwork.elearning.ubc.ca/webwork2/MATH217-101_2017W1/Assignment11/4/?effectiveUser=BLA9YQ6E5S08&amp;user=BLA9YQ6E5S08&amp;key=1CCiCjGIIYamavbKUfZRHNVXYnuwPpKs">Problem 4 ?</a></li><li><a href="https://webwork.elearning.ubc.ca/webwork2/MATH217-101_2017W1/Assignment11/5/?effectiveUser=BLA9YQ6E5S08&amp;user=BLA9YQ6E5S08&amp;key=1CCiCjGIIYamavbKUfZRHNVXYnuwPpKs">Problem 5 ?</a></li><li class=""><a href="https://webwork.elearning.ubc.ca/webwork2/MATH217-101_2017W1/Assignment11/6/?effectiveUser=BLA9YQ6E5S08&amp;user=BLA9YQ6E5S08&amp;key=1CCiCjGIIYamavbKUfZRHNVXYnuwPpKs">Problem 6 ?</a></li><li class="currentProblem active"><a href="https://webwork.elearning.ubc.ca/webwork2/MATH217-101_2017W1/Assignment11/7/?effectiveUser=BLA9YQ6E5S08&amp;user=BLA9YQ6E5S08&amp;key=1CCiCjGIIYamavbKUfZRHNVXYnuwPpKs">Problem 7 ?</a></li><li><a href="https://webwork.elearning.ubc.ca/webwork2/MATH217-101_2017W1/Assignment11/8/?effectiveUser=BLA9YQ6E5S08&amp;user=BLA9YQ6E5S08&amp;key=1CCiCjGIIYamavbKUfZRHNVXYnuwPpKs">Problem 8 ?</a></li><li><a href="https://webwork.elearning.ubc.ca/webwork2/MATH217-101_2017W1/Assignment11/9/?effectiveUser=BLA9YQ6E5S08&amp;user=BLA9YQ6E5S08&amp;key=1CCiCjGIIYamavbKUfZRHNVXYnuwPpKs">Problem 9 ?</a></li><li><a href="https://webwork.elearning.ubc.ca/webwork2/MATH217-101_2017W1/Assignment11/10/?effectiveUser=BLA9YQ6E5S08&amp;user=BLA9YQ6E5S08&amp;key=1CCiCjGIIYamavbKUfZRHNVXYnuwPpKs">Problem 10 ?</a></li><li><a href="https://webwork.elearning.ubc.ca/webwork2/MATH217-101_2017W1/Assignment11/11/?effectiveUser=BLA9YQ6E5S08&amp;user=BLA9YQ6E5S08&amp;key=1CCiCjGIIYamavbKUfZRHNVXYnuwPpKs">Problem 11 ?</a></li><li><a href="https://webwork.elearning.ubc.ca/webwork2/MATH217-101_2017W1/Assignment11/12/?effectiveUser=BLA9YQ6E5S08&amp;user=BLA9YQ6E5S08&amp;key=1CCiCjGIIYamavbKUfZRHNVXYnuwPpKs">Problem 12 ?</a></li><li><a href="https://webwork.elearning.ubc.ca/webwork2/MATH217-101_2017W1/Assignment11/13/?effectiveUser=BLA9YQ6E5S08&amp;user=BLA9YQ6E5S08&amp;key=1CCiCjGIIYamavbKUfZRHNVXYnuwPpKs">Problem 13 ?</a></li><li><a href="https://webwork.elearning.ubc.ca/webwork2/MATH217-101_2017W1/Assignment11/14/?effectiveUser=BLA9YQ6E5S08&amp;user=BLA9YQ6E5S08&amp;key=1CCiCjGIIYamavbKUfZRHNVXYnuwPpKs">Problem 14 ?</a></li></ul></div>
+	  </div>
+	
+	
+</div>
+
+<!-- Navigation -->
+
+
+<!-- Run site-navigation js because it gets loaded early -->
+<script type="text/javascript">
+  // Makes the fisheye stuff bootstrap nav
+  $('#site-navigation ul').addClass('nav nav-list');
+  $('#site-navigation li').each(function () { $(this).html($(this).html().replace(/<br>/g,"</li><li>")); });
+  $('#site-navigation a.active').parent().addClass('active');
+  $('#site-navigation strong.active').parent().addClass('active');
+  $('#site-navigation li').find('br').remove();
+  
+  $('img[src$="question_mark.png"]').replaceWith('<span class="icon icon-question-sign" data-alt="help" style="font-size:16px; margin-right:5px"></span>');
+
+  // Display options formatting
+  $('.facebookbox input:submit').addClass('btn-small');
+
+  $('#site-navigation').removeClass('hidden');
+  
+</script>
+
+
+<!-- Main Content Area -->
+<div id="content" class="span10">
+	<!-- Breadcrumb -->
+	<div id="breadcrumb-row" class="row-fluid">
+	  <div class="span12">
+	    <a href="#" class="btn btn" id="toggle-sidebar">
+	      <span id="toggle-sidebar-icon" class="icon icon-chevron-left" data-alt="close sidebar" aria-hidden="true"></span><span style="font-size:14px" class="sr-only-glyphicon">close sidebar</span></a>
+	    
+	    <div id="breadcrumb-navigation" role="navigation" aria-label="breadcrumb navigation">
+	      <ul class="breadcrumb">
+		<li><a href="/webwork2/?user=BLA9YQ6E5S08&amp;effectiveUser=BLA9YQ6E5S08&amp;key=1CCiCjGIIYamavbKUfZRHNVXYnuwPpKs">webwork</a></li><li><span aria-hidden="true" class="divider">/</span></li><li><a href="/webwork2/MATH217-101_2017W1/?user=BLA9YQ6E5S08&amp;effectiveUser=BLA9YQ6E5S08&amp;key=1CCiCjGIIYamavbKUfZRHNVXYnuwPpKs">math_101</a></li><li><span aria-hidden="true" class="divider">/</span></li><li><a href="/webwork2/MATH217-101_2017W1/Assignment11/?user=BLA9YQ6E5S08&amp;effectiveUser=BLA9YQ6E5S08&amp;key=1CCiCjGIIYamavbKUfZRHNVXYnuwPpKs">assignment11</a></li><li><span aria-hidden="true" class="divider">/</span></li><li class="active">7</li>
+
+	      </ul>
+	    </div>
+	</div></div>
+	<!-- Run breadcrumb js since it gets loaded early -->
+	<script type="text/javascript"> 
+	  $('#toggle-sidebar').removeClass('btn-primary')
+	</script>
+	
+	<!-- Page Title -->
+	
+	<div class="row-fluid"><div class="span12">
+		<h1 id="page-title" class="page-title">Assignment11: Problem 7</h1>
+	</div></div>
+	
+
+	 
+	<div class="row-fluid">
+	  <div id="problem-nav" class="problem-nav span7" role="navigation" aria-label="problem navigation">
+	<!-- Question Navigation, e.g.: Prev, Up, Next for homeworks -->
+	
+		<a class="nav_button btn btn-primary" href="/webwork2/MATH217-101_2017W1/Assignment11/5/?user=BLA9YQ6E5S08&amp;effectiveUser=BLA9YQ6E5S08&amp;key=1CCiCjGIIYamavbKUfZRHNVXYnuwPpKs&amp;displayMode=MathJax&amp;showOldAnswers=1">Previous</a>  <a class="nav_button btn btn-primary" href="/webwork2/MATH217-101_2017W1/Assignment11/?user=BLA9YQ6E5S08&amp;effectiveUser=BLA9YQ6E5S08&amp;key=1CCiCjGIIYamavbKUfZRHNVXYnuwPpKs&amp;displayMode=MathJax&amp;showOldAnswers=1">Problem List</a>  <a class="nav_button btn btn-primary" href="/webwork2/MATH217-101_2017W1/Assignment11/7/?user=BLA9YQ6E5S08&amp;effectiveUser=BLA9YQ6E5S08&amp;key=1CCiCjGIIYamavbKUfZRHNVXYnuwPpKs&amp;displayMode=MathJax&amp;showOldAnswers=1">Next</a>
+
+	
+	  </div>
+	  
+	  <div id="Message" class="Message span4 offset1">
+	    <!-- Message for the user -->
+	    
+	        
+<!-- BEGIN WeBWorK::ContentGenerator::message -->
+<!-- END WeBWorK::ContentGenerator::message -->
+
+	
+	  </div>
+	</div>
+	
+
+	<!-- Header Text for problem --> 
+	
+		
+	
+
+<!--	==============BEGIN BODY OF PROBLEM===============	-->
+
+	<!-- Indicate presence of perl warnings -->
+	
+             
+	
+	<div class="row-fluid">
+	  <div id="tag_info" class="span12">
+		
+	</div></div>
+	
+
+	  
+	    <!-- ==== in this case print body parts ELSE print entire body -->		<div class="row-fluid">
+		  <div id="problem_body" class="Body span12">
+
+			
+			<div id="custom_edit_message" class="row-fluid"><div class="span10">
+				
+			</div><div class="span2"></div></div>
+			
+			
+			<div class="row-fluid"><div id="output_summary" class="span10">
+					<script type="text/javascript">addOnLoadEvent(function () {color_inputs([
+  
+],[
+  ]
+)});</script>
+			</div><div class="span2"></div></div>
+			
+
+			
+			<div class="row-fluid"><div id="output_achievement_message" class="span10">
+					
+			</div><div class="span2"></div></div>
+			
+			
+			
+			<div class="row-fluid"><div id="output_comments" class="span10">
+				  
+			</div><div class="span2"></div></div>
+			
+				
+
+
+
+			
+			<div class="row-fluid">
+			  <div class="span10">
+				<form method="post" action="/webwork2/MATH217-101_2017W1/Assignment11/6/" enctype="multipart/form-data" onsubmit="submitAction()" name="problemMainForm" id="problemMainForm" class="problem-main-form form-inline">
+<input type="hidden" name="user" value="BLA9YQ6E5S08" id="hidden_user"><input type="hidden" name="effectiveUser" value="BLA9YQ6E5S08" id="hidden_effectiveUser"><input type="hidden" name="key" value="1CCiCjGIIYamavbKUfZRHNVXYnuwPpKs" id="hidden_key">
+			    
+				     <input type="hidden" name="templateName" value="system" id="templateName_id">
+			    
+
+				
+					<div class="problem">
+						
+						<div id="problem_body" class="problem-content well well-small">
+							
+<div><script type="text/x-mathjax-config;executed=true">
+                  MathJax.Hub.Config({
+                     MathMenu: {showContext: true}
+                  });
+                  </script>
+				  <script type="text/javascript"> 
+				  if(!window.MathJax) 
+				  (function () {
+  					var script = document.createElement("script");
+  					script.type = "text/javascript";
+  					script.src  = "https://webworkstatic.elearning.ubc.ca/webwork2_files/mathjax/MathJax.js?config=TeX-MML-AM_HTMLorMML-full";
+  					document.getElementsByTagName("head")[0].appendChild(script);
+					})();                
+                  </script>
+<p style="margin: 0">
+(a) What is the time dilation formula from special relativity?<br>
+ <input type="text" class="codeshard" size="40" name="AnSwEr0001" id="AnSwEr0001" aria-label="answer 1 " value="<6sin(t), cos(t)>" wwlive_index="0" onkeyup="UpdateMath(0, this.value)"><div style="display: inline-block;"><div id="wwLive_out_0_a" style="display: inline-block; padding: 8px; margin: 8px 4px; color: rgb(0, 0, 0); background-color: rgb(221, 221, 221);"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mstyle scriptlevel="0" displaystyle="true"><msup><mi>t</mi><mo mathvariant="normal">'</mo></msup><mo>=</mo><mrow><mi>t</mi></mrow><mfrac><mrow><mrow><mn>1</mn></mrow></mrow><mrow><msqrt><mrow><mrow><mrow><mn>1</mn></mrow><mo>-</mo><mfrac><mrow><msup><mi>v</mi><mrow><mn>2</mn></mrow></msup></mrow><mrow><msup><mi>c</mi><mrow><mn>2</mn></mrow></msup></mrow></mfrac></mrow></mrow></msqrt></mrow></mfrac></mstyle></mrow><annotation encoding="application/x-tex">\displaystyle{t}'={t}\frac{{1}}{\sqrt{{{1}-\frac{{v}^{{2}}}{{c}^{{2}}}}}}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height: 1.32144em;"></span><span class="strut bottom" style="height: 3.05144em; vertical-align: -1.73em;"></span><span class="base"><span class="mord"><span class="mord"><span class="mord mathit">t</span></span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height: 0.801892em;"><span class="" style="top: -3.113em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathrm mtight">'</span></span></span></span></span></span></span></span></span><span class="mrel">=</span><span class="mord"><span class="mord mathit">t</span></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 1.32144em;"><span class="" style="top: -2.11em;"><span class="pstrut" style="height: 3.27071em;"></span><span class="mord"><span class="mord sqrt"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist svg-align" style="height: 1.27071em;"><span class="" style="top: -3.8em;"><span class="pstrut" style="height: 3.8em;"></span><span class="mord" style="padding-left: 1em;"><span class="mord"><span class="mord"><span class="mord mathrm">1</span></span><span class="mbin">-</span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.91642em;"><span class="" style="top: -2.655em;"><span class="pstrut" style="height: 3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight"><span class="mord mtight"><span class="mord mathit mtight">c</span></span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height: 0.746314em;"><span class="" style="top: -2.786em; margin-right: 0.0714286em;"><span class="pstrut" style="height: 2.5em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mtight"><span class="mord mtight"><span class="mord mathrm mtight">2</span></span></span></span></span></span></span></span></span></span></span></span></span><span class="" style="top: -3.23em;"><span class="pstrut" style="height: 3em;"></span><span class="frac-line" style="border-bottom-width: 0.04em;"></span></span><span class="" style="top: -3.394em;"><span class="pstrut" style="height: 3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight"><span class="mord mtight"><span class="mord mathit mtight" style="margin-right: 0.03588em;">v</span></span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height: 0.746314em;"><span class="" style="top: -2.786em; margin-right: 0.0714286em;"><span class="pstrut" style="height: 2.5em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mtight"><span class="mord mtight"><span class="mord mathrm mtight">2</span></span></span></span></span></span></span></span></span></span></span></span></span></span><span class="vlist-s">&#8203;</span></span><span class="vlist-r"><span class="vlist" style="height: 0.345em;"></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span><span class="" style="top: -3.23071em;"><span class="pstrut" style="height: 3.8em;"></span><span class="hide-tail" style="min-width: 1.02em; height: 1.8em;"><svg width="400em" height="1.8em" viewBox="0 0 400000 1800" preserveAspectRatio="xMinYMin slice"><path d="M1001 0h398999v40H1013.084S929.667 308 749
+ 880s-277 876.333-289 913c-4.667 4.667-12.667 7-24 7h-12c-1.333-3.333-3.667
+-11.667-7-25-35.333-125.333-106.667-373.333-214-744-10 12-21 25-33 39l-32 39
+c-6-5.333-15-14-27-26l25-30c26.667-32.667 52-63 76-91l52-60 208 722c56-175.333
+ 126.333-397.333 211-666s153.833-488.167 207.5-658.5C944.167 129.167 975 32.667
+ 983 10c4-6.667 10-10 18-10zm0 0h398999v40H1013z"></path></svg></span></span></span><span class="vlist-s">&#8203;</span></span><span class="vlist-r"><span class="vlist" style="height: 0.56929em;"></span></span></span></span></span></span><span class="" style="top: -3.50071em;"><span class="pstrut" style="height: 3.27071em;"></span><span class="frac-line" style="border-bottom-width: 0.04em;"></span></span><span class="" style="top: -3.94771em;"><span class="pstrut" style="height: 3.27071em;"></span><span class="mord"><span class="mord"><span class="mord mathrm">1</span></span></span></span></span><span class="vlist-s">&#8203;</span></span><span class="vlist-r"><span class="vlist" style="height: 1.73em;"></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span></div><div id="wwLive_out_0_b" style="display: none; padding: 8px; margin: 8px 4px; color: rgb(0, 0, 0); background-color: rgb(221, 221, 221);"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mstyle scriptlevel="0" displaystyle="true"><msup><mi>t</mi><mo mathvariant="normal">'</mo></msup><mo>=</mo><mrow><mi>t</mi></mrow><mfrac><mrow><mrow><mn>1</mn></mrow></mrow><mrow><msqrt><mrow><mrow><mrow><mn>1</mn></mrow><mo>-</mo><mfrac><mrow><msup><mi>v</mi><mrow><mn>2</mn></mrow></msup></mrow><mrow><msup><mi>c</mi><mrow><mn>2</mn></mrow></msup></mrow></mfrac></mrow></mrow></msqrt></mrow></mfrac></mstyle></mrow><annotation encoding="application/x-tex">\displaystyle{t}'={t}\frac{{1}}{\sqrt{{{1}-\frac{{v}^{{2}}}{{c}^{{2}}}}}}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height: 1.32144em;"></span><span class="strut bottom" style="height: 3.05144em; vertical-align: -1.73em;"></span><span class="base"><span class="mord"><span class="mord"><span class="mord mathit">t</span></span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height: 0.801892em;"><span class="" style="top: -3.113em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathrm mtight">'</span></span></span></span></span></span></span></span></span><span class="mrel">=</span><span class="mord"><span class="mord mathit">t</span></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 1.32144em;"><span class="" style="top: -2.11em;"><span class="pstrut" style="height: 3.27071em;"></span><span class="mord"><span class="mord sqrt"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist svg-align" style="height: 1.27071em;"><span class="" style="top: -3.8em;"><span class="pstrut" style="height: 3.8em;"></span><span class="mord" style="padding-left: 1em;"><span class="mord"><span class="mord"><span class="mord mathrm">1</span></span><span class="mbin">-</span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.91642em;"><span class="" style="top: -2.655em;"><span class="pstrut" style="height: 3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight"><span class="mord mtight"><span class="mord mathit mtight">c</span></span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height: 0.746314em;"><span class="" style="top: -2.786em; margin-right: 0.0714286em;"><span class="pstrut" style="height: 2.5em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mtight"><span class="mord mtight"><span class="mord mathrm mtight">2</span></span></span></span></span></span></span></span></span></span></span></span></span><span class="" style="top: -3.23em;"><span class="pstrut" style="height: 3em;"></span><span class="frac-line" style="border-bottom-width: 0.04em;"></span></span><span class="" style="top: -3.394em;"><span class="pstrut" style="height: 3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight"><span class="mord mtight"><span class="mord mathit mtight" style="margin-right: 0.03588em;">v</span></span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height: 0.746314em;"><span class="" style="top: -2.786em; margin-right: 0.0714286em;"><span class="pstrut" style="height: 2.5em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mtight"><span class="mord mtight"><span class="mord mathrm mtight">2</span></span></span></span></span></span></span></span></span></span></span></span></span></span><span class="vlist-s">&#8203;</span></span><span class="vlist-r"><span class="vlist" style="height: 0.345em;"></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span><span class="" style="top: -3.23071em;"><span class="pstrut" style="height: 3.8em;"></span><span class="hide-tail" style="min-width: 1.02em; height: 1.8em;"><svg width="400em" height="1.8em" viewBox="0 0 400000 1800" preserveAspectRatio="xMinYMin slice"><path d="M1001 0h398999v40H1013.084S929.667 308 749
+ 880s-277 876.333-289 913c-4.667 4.667-12.667 7-24 7h-12c-1.333-3.333-3.667
+-11.667-7-25-35.333-125.333-106.667-373.333-214-744-10 12-21 25-33 39l-32 39
+c-6-5.333-15-14-27-26l25-30c26.667-32.667 52-63 76-91l52-60 208 722c56-175.333
+ 126.333-397.333 211-666s153.833-488.167 207.5-658.5C944.167 129.167 975 32.667
+ 983 10c4-6.667 10-10 18-10zm0 0h398999v40H1013z"></path></svg></span></span></span><span class="vlist-s">&#8203;</span></span><span class="vlist-r"><span class="vlist" style="height: 0.56929em;"></span></span></span></span></span></span><span class="" style="top: -3.50071em;"><span class="pstrut" style="height: 3.27071em;"></span><span class="frac-line" style="border-bottom-width: 0.04em;"></span></span><span class="" style="top: -3.94771em;"><span class="pstrut" style="height: 3.27071em;"></span><span class="mord"><span class="mord"><span class="mord mathrm">1</span></span></span></span></span><span class="vlist-s">&#8203;</span></span><span class="vlist-r"><span class="vlist" style="height: 1.73em;"></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span></div></div>
+<input type="hidden" name="previous_AnSwEr0001" value="<6sin(t), cos(t)>">
+
+<br>
+<br>
+(b) Euler's Formula states<input type="text" class="codeshard" size="40" name="AnSwEr0002" id="AnSwEr0002" aria-label="answer 2 " value="-e^(cos(t))sin(t)+6e^(6sin(t))cos(t)" wwlive_index="1" onkeyup="UpdateMath(1, this.value)"><div style="display: inline-block;"><div id="wwLive_out_1_a" style="display: inline-block; padding: 8px; margin: 8px 4px; color: rgb(0, 0, 0); background-color: rgb(221, 221, 221);"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mstyle scriptlevel="0" displaystyle="true"><msup><mi>e</mi><mrow><mrow><mi>i</mi></mrow><mi>?</mi></mrow></msup><mo>=</mo><mrow><mi>cos</mi><mrow><mrow><mrow><mo fence="true">(</mo><mi>?</mi><mo fence="true">)</mo></mrow></mrow></mrow></mrow><mo>+</mo><mrow><mi>i</mi></mrow><mrow><mi>sin</mi><mrow><mrow><mrow><mo fence="true">(</mo><mi>?</mi><mo fence="true">)</mo></mrow></mrow></mrow></mrow></mstyle></mrow><annotation encoding="application/x-tex">\displaystyle{e}^{{{i}\theta}}={\cos{{\left(\theta\right)}}}+{i}{\sin{{\left(\theta\right)}}}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height: 0.899108em;"></span><span class="strut bottom" style="height: 1.14911em; vertical-align: -0.25em;"></span><span class="base"><span class="mord"><span class="mord"><span class="mord mathit">e</span></span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height: 0.899108em;"><span class="" style="top: -3.113em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight"><span class="mord mtight"><span class="mord mathit mtight">i</span></span><span class="mord mathit mtight" style="margin-right: 0.02778em;">?</span></span></span></span></span></span></span></span></span></span><span class="mrel">=</span><span class="mord"><span class="mop">cos</span><span class="mord"><span class="mord"><span class="minner"><span class="mopen delimcenter" style="top: 0em;">(</span><span class="mord mathit" style="margin-right: 0.02778em;">?</span><span class="mclose delimcenter" style="top: 0em;">)</span></span></span></span></span><span class="mbin">+</span><span class="mord"><span class="mord mathit">i</span></span><span class="mord"><span class="mop">sin</span><span class="mord"><span class="mord"><span class="minner"><span class="mopen delimcenter" style="top: 0em;">(</span><span class="mord mathit" style="margin-right: 0.02778em;">?</span><span class="mclose delimcenter" style="top: 0em;">)</span></span></span></span></span></span></span></span></div><div id="wwLive_out_1_b" style="display: none; padding: 8px; margin: 8px 4px; color: rgb(0, 0, 0); background-color: rgb(221, 221, 221);"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mstyle scriptlevel="0" displaystyle="true"><msup><mi>e</mi><mrow><mrow><mi>i</mi></mrow><mi>?</mi></mrow></msup><mo>=</mo><mrow><mi>cos</mi><mrow><mrow><mrow><mo fence="true">(</mo><mi>?</mi><mo fence="true">)</mo></mrow></mrow></mrow></mrow><mo>+</mo><mrow><mi>i</mi></mrow><mrow><mi>sin</mi><mrow><mrow><mrow><mo fence="true">(</mo><mi>?</mi><mo fence="true">)</mo></mrow></mrow></mrow></mrow></mstyle></mrow><annotation encoding="application/x-tex">\displaystyle{e}^{{{i}\theta}}={\cos{{\left(\theta\right)}}}+{i}{\sin{{\left(\theta\right)}}}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height: 0.899108em;"></span><span class="strut bottom" style="height: 1.14911em; vertical-align: -0.25em;"></span><span class="base"><span class="mord"><span class="mord"><span class="mord mathit">e</span></span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height: 0.899108em;"><span class="" style="top: -3.113em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight"><span class="mord mtight"><span class="mord mathit mtight">i</span></span><span class="mord mathit mtight" style="margin-right: 0.02778em;">?</span></span></span></span></span></span></span></span></span></span><span class="mrel">=</span><span class="mord"><span class="mop">cos</span><span class="mord"><span class="mord"><span class="minner"><span class="mopen delimcenter" style="top: 0em;">(</span><span class="mord mathit" style="margin-right: 0.02778em;">?</span><span class="mclose delimcenter" style="top: 0em;">)</span></span></span></span></span><span class="mbin">+</span><span class="mord"><span class="mord mathit">i</span></span><span class="mord"><span class="mop">sin</span><span class="mord"><span class="mord"><span class="minner"><span class="mopen delimcenter" style="top: 0em;">(</span><span class="mord mathit" style="margin-right: 0.02778em;">?</span><span class="mclose delimcenter" style="top: 0em;">)</span></span></span></span></span></span></span></span></div></div>
+<input type="hidden" name="previous_AnSwEr0002" value="-e^(cos(t))sin(t)+6e^(6sin(t))cos(t)">
+
+
+<br>(c) The two roots of a quadratic equation are
+ <input type="text" class="codeshard" size="10" name="AnSwEr0003" id="AnSwEr0003" aria-label="answer 3 " value="0" wwlive_index="2" onkeyup="UpdateMath(2, this.value)"><div style="display: inline-block;"><div id="wwLive_out_2_a" style="display: inline-block; padding: 8px; margin: 8px 4px; color: rgb(0, 0, 0); background-color: rgb(221, 221, 221);"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mstyle scriptlevel="0" displaystyle="true"><mfrac><mrow><mrow><mo>-</mo><mrow><mi>b</mi></mrow><mo>+</mo><msqrt><mrow><mrow><msup><mi>b</mi><mrow><mn>2</mn></mrow></msup><mo>-</mo><mrow><mn>4</mn></mrow><mrow><mi>a</mi></mrow><mrow><mi>c</mi></mrow></mrow></mrow></msqrt></mrow></mrow><mrow><mrow><mrow><mn>2</mn></mrow><mrow><mi>a</mi></mrow></mrow></mrow></mfrac></mstyle></mrow><annotation encoding="application/x-tex">\displaystyle\frac{{-{b}+\sqrt{{{b}^{{2}}-{4}{a}{c}}}}}{{{2}{a}}}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height: 1.59039em;"></span><span class="strut bottom" style="height: 2.27639em; vertical-align: -0.686em;"></span><span class="base"><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 1.59039em;"><span class="" style="top: -2.314em;"><span class="pstrut" style="height: 3em;"></span><span class="mord"><span class="mord"><span class="mord"><span class="mord mathrm">2</span></span><span class="mord"><span class="mord mathit">a</span></span></span></span></span><span class="" style="top: -3.23em;"><span class="pstrut" style="height: 3em;"></span><span class="frac-line" style="border-bottom-width: 0.04em;"></span></span><span class="" style="top: -3.677em;"><span class="pstrut" style="height: 3em;"></span><span class="mord"><span class="mord"><span class="mord">-</span><span class="mord"><span class="mord mathit">b</span></span><span class="mbin">+</span><span class="mord sqrt"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist svg-align" style="height: 0.913389em;"><span class="" style="top: -3em;"><span class="pstrut" style="height: 3em;"></span><span class="mord" style="padding-left: 0.833em;"><span class="mord"><span class="mord"><span class="mord"><span class="mord mathit">b</span></span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height: 0.740108em;"><span class="" style="top: -2.989em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight"><span class="mord mathrm mtight">2</span></span></span></span></span></span></span></span></span></span><span class="mbin">-</span><span class="mord"><span class="mord mathrm">4</span></span><span class="mord"><span class="mord mathit">a</span></span><span class="mord"><span class="mord mathit">c</span></span></span></span></span><span class="" style="top: -2.87339em;"><span class="pstrut" style="height: 3em;"></span><span class="hide-tail" style="min-width: 0.853em; height: 1em;"><svg width="400em" height="1em" viewBox="0 0 400000 1000" preserveAspectRatio="xMinYMin slice"><path d="M95 622c-2.667 0-7.167-2.667-13.5
+-8S72 604 72 600c0-2 .333-3.333 1-4 1.333-2.667 23.833-20.667 67.5-54s
+65.833-50.333 66.5-51c1.333-1.333 3-2 5-2 4.667 0 8.667 3.333 12 10l173
+378c.667 0 35.333-71 104-213s137.5-285 206.5-429S812 17.333 812 14c5.333
+-9.333 12-14 20-14h399166v40H845.272L620 507 385 993c-2.667 4.667-9 7-19
+7-6 0-10-1-12-3L160 575l-65 47zM834 0h399166v40H845z"></path></svg></span></span></span><span class="vlist-s">&#8203;</span></span><span class="vlist-r"><span class="vlist" style="height: 0.126611em;"></span></span></span></span></span></span></span></span><span class="vlist-s">&#8203;</span></span><span class="vlist-r"><span class="vlist" style="height: 0.686em;"></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span></div><div id="wwLive_out_2_b" style="display: none; padding: 8px; margin: 8px 4px; color: rgb(0, 0, 0); background-color: rgb(221, 221, 221);"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mstyle scriptlevel="0" displaystyle="true"><mfrac><mrow><mrow><mo>-</mo><mrow><mi>b</mi></mrow><mo>+</mo><msqrt><mrow><mrow><msup><mi>b</mi><mrow><mn>2</mn></mrow></msup><mo>-</mo><mrow><mn>4</mn></mrow><mrow><mi>a</mi></mrow><mrow><mi>c</mi></mrow></mrow></mrow></msqrt></mrow></mrow><mrow><mrow><mrow><mn>2</mn></mrow><mrow><mi>a</mi></mrow></mrow></mrow></mfrac></mstyle></mrow><annotation encoding="application/x-tex">\displaystyle\frac{{-{b}+\sqrt{{{b}^{{2}}-{4}{a}{c}}}}}{{{2}{a}}}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height: 1.59039em;"></span><span class="strut bottom" style="height: 2.27639em; vertical-align: -0.686em;"></span><span class="base"><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 1.59039em;"><span class="" style="top: -2.314em;"><span class="pstrut" style="height: 3em;"></span><span class="mord"><span class="mord"><span class="mord"><span class="mord mathrm">2</span></span><span class="mord"><span class="mord mathit">a</span></span></span></span></span><span class="" style="top: -3.23em;"><span class="pstrut" style="height: 3em;"></span><span class="frac-line" style="border-bottom-width: 0.04em;"></span></span><span class="" style="top: -3.677em;"><span class="pstrut" style="height: 3em;"></span><span class="mord"><span class="mord"><span class="mord">-</span><span class="mord"><span class="mord mathit">b</span></span><span class="mbin">+</span><span class="mord sqrt"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist svg-align" style="height: 0.913389em;"><span class="" style="top: -3em;"><span class="pstrut" style="height: 3em;"></span><span class="mord" style="padding-left: 0.833em;"><span class="mord"><span class="mord"><span class="mord"><span class="mord mathit">b</span></span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height: 0.740108em;"><span class="" style="top: -2.989em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight"><span class="mord mathrm mtight">2</span></span></span></span></span></span></span></span></span></span><span class="mbin">-</span><span class="mord"><span class="mord mathrm">4</span></span><span class="mord"><span class="mord mathit">a</span></span><span class="mord"><span class="mord mathit">c</span></span></span></span></span><span class="" style="top: -2.87339em;"><span class="pstrut" style="height: 3em;"></span><span class="hide-tail" style="min-width: 0.853em; height: 1em;"><svg width="400em" height="1em" viewBox="0 0 400000 1000" preserveAspectRatio="xMinYMin slice"><path d="M95 622c-2.667 0-7.167-2.667-13.5
+-8S72 604 72 600c0-2 .333-3.333 1-4 1.333-2.667 23.833-20.667 67.5-54s
+65.833-50.333 66.5-51c1.333-1.333 3-2 5-2 4.667 0 8.667 3.333 12 10l173
+378c.667 0 35.333-71 104-213s137.5-285 206.5-429S812 17.333 812 14c5.333
+-9.333 12-14 20-14h399166v40H845.272L620 507 385 993c-2.667 4.667-9 7-19
+7-6 0-10-1-12-3L160 575l-65 47zM834 0h399166v40H845z"></path></svg></span></span></span><span class="vlist-s">&#8203;</span></span><span class="vlist-r"><span class="vlist" style="height: 0.126611em;"></span></span></span></span></span></span></span></span><span class="vlist-s">&#8203;</span></span><span class="vlist-r"><span class="vlist" style="height: 0.686em;"></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span></div></div>
+<input type="hidden" name="previous_AnSwEr0003" value="0">
+ and
+ <input type="text" class="codeshard" size="10" name="AnSwEr0004" id="AnSwEr0004" aria-label="answer 4 " value="pi/2" wwlive_index="3" onkeyup="UpdateMath(3, this.value)"><div style="display: inline-block;"><div id="wwLive_out_3_a" style="display: inline-block; padding: 8px; margin: 8px 4px; color: rgb(0, 0, 0); background-color: rgb(221, 221, 221);"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mstyle scriptlevel="0" displaystyle="true"><mfrac><mrow><mrow><mo>-</mo><mrow><mi>b</mi></mrow><mo>-</mo><msqrt><mrow><mrow><msup><mi>b</mi><mrow><mn>2</mn></mrow></msup><mo>-</mo><mrow><mn>4</mn></mrow><mrow><mi>a</mi></mrow><mrow><mi>c</mi></mrow></mrow></mrow></msqrt></mrow></mrow><mrow><mrow><mrow><mn>2</mn></mrow><mrow><mi>a</mi></mrow></mrow></mrow></mfrac></mstyle></mrow><annotation encoding="application/x-tex">\displaystyle\frac{{-{b}-\sqrt{{{b}^{{2}}-{4}{a}{c}}}}}{{{2}{a}}}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height: 1.59039em;"></span><span class="strut bottom" style="height: 2.27639em; vertical-align: -0.686em;"></span><span class="base"><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 1.59039em;"><span class="" style="top: -2.314em;"><span class="pstrut" style="height: 3em;"></span><span class="mord"><span class="mord"><span class="mord"><span class="mord mathrm">2</span></span><span class="mord"><span class="mord mathit">a</span></span></span></span></span><span class="" style="top: -3.23em;"><span class="pstrut" style="height: 3em;"></span><span class="frac-line" style="border-bottom-width: 0.04em;"></span></span><span class="" style="top: -3.677em;"><span class="pstrut" style="height: 3em;"></span><span class="mord"><span class="mord"><span class="mord">-</span><span class="mord"><span class="mord mathit">b</span></span><span class="mbin">-</span><span class="mord sqrt"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist svg-align" style="height: 0.913389em;"><span class="" style="top: -3em;"><span class="pstrut" style="height: 3em;"></span><span class="mord" style="padding-left: 0.833em;"><span class="mord"><span class="mord"><span class="mord"><span class="mord mathit">b</span></span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height: 0.740108em;"><span class="" style="top: -2.989em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight"><span class="mord mathrm mtight">2</span></span></span></span></span></span></span></span></span></span><span class="mbin">-</span><span class="mord"><span class="mord mathrm">4</span></span><span class="mord"><span class="mord mathit">a</span></span><span class="mord"><span class="mord mathit">c</span></span></span></span></span><span class="" style="top: -2.87339em;"><span class="pstrut" style="height: 3em;"></span><span class="hide-tail" style="min-width: 0.853em; height: 1em;"><svg width="400em" height="1em" viewBox="0 0 400000 1000" preserveAspectRatio="xMinYMin slice"><path d="M95 622c-2.667 0-7.167-2.667-13.5
+-8S72 604 72 600c0-2 .333-3.333 1-4 1.333-2.667 23.833-20.667 67.5-54s
+65.833-50.333 66.5-51c1.333-1.333 3-2 5-2 4.667 0 8.667 3.333 12 10l173
+378c.667 0 35.333-71 104-213s137.5-285 206.5-429S812 17.333 812 14c5.333
+-9.333 12-14 20-14h399166v40H845.272L620 507 385 993c-2.667 4.667-9 7-19
+7-6 0-10-1-12-3L160 575l-65 47zM834 0h399166v40H845z"></path></svg></span></span></span><span class="vlist-s">&#8203;</span></span><span class="vlist-r"><span class="vlist" style="height: 0.126611em;"></span></span></span></span></span></span></span></span><span class="vlist-s">&#8203;</span></span><span class="vlist-r"><span class="vlist" style="height: 0.686em;"></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span></div><div id="wwLive_out_3_b" style="display: none; padding: 8px; margin: 8px 4px; color: rgb(0, 0, 0); background-color: rgb(221, 221, 221);"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mstyle scriptlevel="0" displaystyle="true"><mfrac><mrow><mrow><mo>-</mo><mrow><mi>b</mi></mrow><mo>-</mo><msqrt><mrow><mrow><msup><mi>b</mi><mrow><mn>2</mn></mrow></msup><mo>-</mo><mrow><mn>4</mn></mrow><mrow><mi>a</mi></mrow><mrow><mi>c</mi></mrow></mrow></mrow></msqrt></mrow></mrow><mrow><mrow><mrow><mn>2</mn></mrow><mrow><mi>a</mi></mrow></mrow></mrow></mfrac></mstyle></mrow><annotation encoding="application/x-tex">\displaystyle\frac{{-{b}-\sqrt{{{b}^{{2}}-{4}{a}{c}}}}}{{{2}{a}}}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height: 1.59039em;"></span><span class="strut bottom" style="height: 2.27639em; vertical-align: -0.686em;"></span><span class="base"><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 1.59039em;"><span class="" style="top: -2.314em;"><span class="pstrut" style="height: 3em;"></span><span class="mord"><span class="mord"><span class="mord"><span class="mord mathrm">2</span></span><span class="mord"><span class="mord mathit">a</span></span></span></span></span><span class="" style="top: -3.23em;"><span class="pstrut" style="height: 3em;"></span><span class="frac-line" style="border-bottom-width: 0.04em;"></span></span><span class="" style="top: -3.677em;"><span class="pstrut" style="height: 3em;"></span><span class="mord"><span class="mord"><span class="mord">-</span><span class="mord"><span class="mord mathit">b</span></span><span class="mbin">-</span><span class="mord sqrt"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist svg-align" style="height: 0.913389em;"><span class="" style="top: -3em;"><span class="pstrut" style="height: 3em;"></span><span class="mord" style="padding-left: 0.833em;"><span class="mord"><span class="mord"><span class="mord"><span class="mord mathit">b</span></span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height: 0.740108em;"><span class="" style="top: -2.989em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight"><span class="mord mathrm mtight">2</span></span></span></span></span></span></span></span></span></span><span class="mbin">-</span><span class="mord"><span class="mord mathrm">4</span></span><span class="mord"><span class="mord mathit">a</span></span><span class="mord"><span class="mord mathit">c</span></span></span></span></span><span class="" style="top: -2.87339em;"><span class="pstrut" style="height: 3em;"></span><span class="hide-tail" style="min-width: 0.853em; height: 1em;"><svg width="400em" height="1em" viewBox="0 0 400000 1000" preserveAspectRatio="xMinYMin slice"><path d="M95 622c-2.667 0-7.167-2.667-13.5
+-8S72 604 72 600c0-2 .333-3.333 1-4 1.333-2.667 23.833-20.667 67.5-54s
+65.833-50.333 66.5-51c1.333-1.333 3-2 5-2 4.667 0 8.667 3.333 12 10l173
+378c.667 0 35.333-71 104-213s137.5-285 206.5-429S812 17.333 812 14c5.333
+-9.333 12-14 20-14h399166v40H845.272L620 507 385 993c-2.667 4.667-9 7-19
+7-6 0-10-1-12-3L160 575l-65 47zM834 0h399166v40H845z"></path></svg></span></span></span><span class="vlist-s">&#8203;</span></span><span class="vlist-r"><span class="vlist" style="height: 0.126611em;"></span></span></span></span></span></span></span></span><span class="vlist-s">&#8203;</span></span><span class="vlist-r"><span class="vlist" style="height: 0.686em;"></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span></div></div>
+<input type="hidden" name="previous_AnSwEr0004" value="pi/2">
+
+<br>
+<br>
+(d) The definition of the derivative is the limit as h approaches 0 of<br><input type="text" class="codeshard" size="20" name="AnSwEr0005" id="AnSwEr0005" aria-label="answer 5 " value="e^6-e" wwlive_index="4" onkeyup="UpdateMath(4, this.value)"><div style="display: inline-block;"><div id="wwLive_out_4_a" style="display: inline-block; padding: 8px; margin: 8px 4px; color: rgb(0, 0, 0); background-color: rgb(221, 221, 221);"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mstyle scriptlevel="0" displaystyle="true"><mfrac><mrow><mrow><mrow><mi>f</mi><mrow><mrow><mrow><mo fence="true">(</mo><mrow><mi>x</mi></mrow><mo>+</mo><mrow><mi>h</mi></mrow><mo fence="true">)</mo></mrow></mrow></mrow></mrow><mo>-</mo><mrow><mi>f</mi><mrow><mrow><mrow><mo fence="true">(</mo><mrow><mi>x</mi></mrow><mo fence="true">)</mo></mrow></mrow></mrow></mrow></mrow></mrow><mrow><mrow><mi>h</mi></mrow></mrow></mfrac></mstyle></mrow><annotation encoding="application/x-tex">\displaystyle\frac{{{f{{\left({x}+{h}\right)}}}-{f{{\left({x}\right)}}}}}{{h}}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height: 1.427em;"></span><span class="strut bottom" style="height: 2.113em; vertical-align: -0.686em;"></span><span class="base"><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 1.427em;"><span class="" style="top: -2.314em;"><span class="pstrut" style="height: 3em;"></span><span class="mord"><span class="mord"><span class="mord mathit">h</span></span></span></span><span class="" style="top: -3.23em;"><span class="pstrut" style="height: 3em;"></span><span class="frac-line" style="border-bottom-width: 0.04em;"></span></span><span class="" style="top: -3.677em;"><span class="pstrut" style="height: 3em;"></span><span class="mord"><span class="mord"><span class="mord"><span class="mord mathit" style="margin-right: 0.10764em;">f</span><span class="mord"><span class="mord"><span class="minner"><span class="mopen delimcenter" style="top: 0em;">(</span><span class="mord"><span class="mord mathit">x</span></span><span class="mbin">+</span><span class="mord"><span class="mord mathit">h</span></span><span class="mclose delimcenter" style="top: 0em;">)</span></span></span></span></span><span class="mbin">-</span><span class="mord"><span class="mord mathit" style="margin-right: 0.10764em;">f</span><span class="mord"><span class="mord"><span class="minner"><span class="mopen delimcenter" style="top: 0em;">(</span><span class="mord"><span class="mord mathit">x</span></span><span class="mclose delimcenter" style="top: 0em;">)</span></span></span></span></span></span></span></span></span><span class="vlist-s">&#8203;</span></span><span class="vlist-r"><span class="vlist" style="height: 0.686em;"></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span></div><div id="wwLive_out_4_b" style="display: none; padding: 8px; margin: 8px 4px; color: rgb(0, 0, 0); background-color: rgb(221, 221, 221);"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mstyle scriptlevel="0" displaystyle="true"><mfrac><mrow><mrow><mrow><mi>f</mi><mrow><mrow><mrow><mo fence="true">(</mo><mrow><mi>x</mi></mrow><mo>+</mo><mrow><mi>h</mi></mrow><mo fence="true">)</mo></mrow></mrow></mrow></mrow><mo>-</mo><mrow><mi>f</mi><mrow><mrow><mrow><mo fence="true">(</mo><mrow><mi>x</mi></mrow><mo fence="true">)</mo></mrow></mrow></mrow></mrow></mrow></mrow><mrow><mrow><mi>h</mi></mrow></mrow></mfrac></mstyle></mrow><annotation encoding="application/x-tex">\displaystyle\frac{{{f{{\left({x}+{h}\right)}}}-{f{{\left({x}\right)}}}}}{{h}}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height: 1.427em;"></span><span class="strut bottom" style="height: 2.113em; vertical-align: -0.686em;"></span><span class="base"><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 1.427em;"><span class="" style="top: -2.314em;"><span class="pstrut" style="height: 3em;"></span><span class="mord"><span class="mord"><span class="mord mathit">h</span></span></span></span><span class="" style="top: -3.23em;"><span class="pstrut" style="height: 3em;"></span><span class="frac-line" style="border-bottom-width: 0.04em;"></span></span><span class="" style="top: -3.677em;"><span class="pstrut" style="height: 3em;"></span><span class="mord"><span class="mord"><span class="mord"><span class="mord mathit" style="margin-right: 0.10764em;">f</span><span class="mord"><span class="mord"><span class="minner"><span class="mopen delimcenter" style="top: 0em;">(</span><span class="mord"><span class="mord mathit">x</span></span><span class="mbin">+</span><span class="mord"><span class="mord mathit">h</span></span><span class="mclose delimcenter" style="top: 0em;">)</span></span></span></span></span><span class="mbin">-</span><span class="mord"><span class="mord mathit" style="margin-right: 0.10764em;">f</span><span class="mord"><span class="mord"><span class="minner"><span class="mopen delimcenter" style="top: 0em;">(</span><span class="mord"><span class="mord mathit">x</span></span><span class="mclose delimcenter" style="top: 0em;">)</span></span></span></span></span></span></span></span></span><span class="vlist-s">&#8203;</span></span><span class="vlist-r"><span class="vlist" style="height: 0.686em;"></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span></div></div>
+<input type="hidden" name="previous_AnSwEr0005" value="e^6-e">
+
+
+</p></div>
+						</div>
+						
+						
+							
+						
+						
+							  
+						
+					</div>
+				
+
+				
+					<p>
+						
+							Show: &nbsp;&nbsp;<label for="showCorrectAnswers_id" class="checkbox"><input name="showCorrectAnswers" type="checkbox" value="1" id="showCorrectAnswers_id"> CorrectAnswers</label>&nbsp;<br>
+						
+						
+							<input name="previewAnswers" type="submit" value="Preview My Answers" onclick="this.form.target='_self'" id="previewAnswers_id" class="btn btn-primary"><input name="checkAnswers" type="submit" value="Check Answers" onclick="this.form.target='_self'" id="checkAnswers_id" class="btn btn-primary">
+						
+					</p>
+				
+				
+					<div id="score_summary" class="scoreSummary">
+						<p>You have attempted this problem 42 times.<br>Your overall recorded score is 100%.  <br>This homework set is closed.</p>
+					</div>
+				
+
+				
+					<input type="hidden" name="showOldAnswers" value="1"><input type="hidden" name="displayMode" value="MathJax">
+				
+				</form>
+			
+
+		<!-- inserted problem piece by piece -->
+
+		
+
+		</div><div class="span2"></div></div>
+                </div></div>
+
+	<!-- ====  end printing body parts   -->
+	  
+
+<!--			      ==============END BODY OF PROBLEM===============      -->
+	
+		<div id="problemFooter" class="problemFooter">
+			
+				
+			
+			
+				<form method="post" action="https://webwork.elearning.ubc.ca/webwork2/MATH217-101_2017W1/feedback/" enctype="multipart/form-data">
+
+<input type="hidden" name="user" value="BLA9YQ6E5S08" id="email-hidden_user"><input type="hidden" name="effectiveUser" value="BLA9YQ6E5S08" id="email-hidden_effectiveUser"><input type="hidden" name="key" value="1CCiCjGIIYamavbKUfZRHNVXYnuwPpKs" id="email-hidden_key">
+<input type="hidden" name="displayMode" value="MathJax">
+<input type="hidden" name="showSolutions" value="1">
+<input type="hidden" name="showCorrectAnswers" value="0">
+<input type="hidden" name="problem" value="6">
+<input type="hidden" name="showOldAnswers" value="1">
+<input type="hidden" name="module" value="WeBWorK::ContentGenerator::Problem">
+<input type="hidden" name="set" value="Assignment11">
+<input type="hidden" name="showHints" value="1">
+<p><input type="submit" name="feedbackForm" value="Email instructor" class="btn btn-primary"></p></form>
+
+			
+		</div>
+	
+
+
+
+<div id="Message_bottom" class="Message">
+  
+<!-- BEGIN WeBWorK::ContentGenerator::message -->
+<!-- END WeBWorK::ContentGenerator::message -->
+
+</div>
+
+		
+</div><!--content-->
+
+
+<!-- Bootstrap Fluid Layout Scaffolding stop -->
+</div> <!-- row-fluid -->
+</div> <!-- container-fluid -->
+
+
+<!-- Footer -->
+<div id="footer" role="contentinfo">
+	<div id="last-modified">Page generated at 11/27/2017 at 01:23am PST</div><div id="copyright">WeBWorK © 1996-2016 | theme: math4 | ww_version: 2.12 | pg_version: 2.12| <a href="http://webwork.maa.org/">The WeBWorK Project</a></div>
+</div>
+
+
+
+<div style="position: absolute; width: 0px; height: 0px; overflow: hidden; padding: 0px; border: 0px; margin: 0px;"><div id="MathJax_Font_Test" style="position: absolute; visibility: hidden; top: 0px; left: 0px; width: auto; padding: 0px; border: 0px; margin: 0px; white-space: nowrap; text-align: left; text-indent: 0px; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal; font-size: 40px; font-weight: normal; font-style: normal; font-family: MathJax_AMS, monospace;"></div></div></body></html>
