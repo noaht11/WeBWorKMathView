@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>WeBWorK MathView Options</title>
+    <title>WeBWorK MathView</title>
 
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
@@ -41,7 +41,7 @@
         }
 
         .instructions {
-            font-size: 12pt; 
+            font-size: 12pt;
         }
 
         .demo {
@@ -176,12 +176,12 @@
 
 <body>
     <div class="title">
-        <span>WeBWorK Math Input Chrome Extension</span>
+        <span>WeBWorK MathView</span>
     </div>
 
     <div id="content">
 
-        <p class="description">This extension will generate live previews of the equations you type into WeBWorK text boxes!</p>
+        <p class="description">This Chrome extension will generate live previews of the equations you type into WeBWorK text boxes!</p>
 
         <!--<h2>Demo</h2>
 
@@ -193,18 +193,13 @@
         <div class="instructions">
             <span>To enable this extension, perform the following steps:</span>
             <ol>
-                <li>
-                    <b>Open your WeBWorK website</b> (for any one of your courses) in a separate tab and login if necessary</li>
-                <li>
-                    <b>Copy the URL</b> from the address bar of Chrome</li>
-                <li>
-                    <b>Paste the full URL into the field below</b>
+                <li><b>Open your WeBWorK website</b> (for any one of your courses) in a separate tab and login if necessary</li>
+                <li><b>Copy the URL</b> from the address bar of Chrome</li>
+                <li><b>Paste the full URL into the field below</b>
                 </li>
-                <li>
-                    <b>Press the checkmark</b> to save your changes</li>
-                <li>
-                    <b>Select "Allow"</b> if Chrome asks you to give permission to this extension to modify content on webpages
-                    under the URL you entered</li>
+                <li><b>Press the checkmark</b> to save your changes</li>
+                <li><b>Select "Allow"</b> if Chrome asks you to give permission to this extension to modify content on webpages under the URL you entered</li>
+                <li><b>Refresh the WeBWorK page</b> and your live previews should now appear</li>
             </ol>
         </div>
 
@@ -232,13 +227,16 @@
                             <i class="material-icons">done</i>
                         </button>
                     </div>
-                </div> <!-- currentDataRow -->
+                </div>
+                <!-- currentDataRow -->
                 <div class="currentDataRow">
                     <div class="currentDataDummyCell"></div>
                     <div id="status" class="currentDataStatus"></div>
                 </div>
-            </div> <!-- currentDataContainer -->
-        </div> <!-- currentData -->
+            </div>
+            <!-- currentDataContainer -->
+        </div>
+        <!-- currentData -->
 
         <br/>
         <br/>
