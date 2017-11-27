@@ -3,7 +3,7 @@
 
     "name": "WeBWorK MathView",
     "version": "1.0",
-    "description": "This extension provides live previews of math equations entered into WeBWorK text fields",
+    "description": "Preview properly formatted math equations as you type them into WeBWorK answer boxes!",
 
     "icons": {
         "16": "icon/icon_16.png",
