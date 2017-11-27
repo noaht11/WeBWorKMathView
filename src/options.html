@@ -8,52 +8,75 @@
 
     <style type="text/css">
         body {
-            padding-top: 50px;
+            padding-top: 26px;
             font-family: sans-serif;
             background-color: #E9E9E9;
         }
 
-        #title {
+        .title {
             margin: 0px auto;
             text-align: center;
             font-size: 26pt;
             font-weight: bold;
             padding: 8px;
-            margin-top: 16px;
+            margin-top: 8px;
             margin-bottom: 16px;
         }
 
+        .title span {
+            padding-bottom: 16px;
+            border-bottom: 1px solid #003388;
+        }
+
         #content {
-            width: 600px;
+            width: 800px;
             margin: 0px auto;
             text-align: left;
             padding: 25px;
-            font-weight: bold;
+            margin-bottom: 50px;
         }
 
-        input {
+        .description {
+            font-size: 14pt;
+        }
+
+        .instructions {
+            font-size: 12pt; 
+        }
+
+        .demo {
+            border-left: 4px solid #414eff;
+            padding-left: 16px;
+        }
+
+        .demo input {
+            font-size: 16pt;
+        }
+
+        .settingField {
             background-color: transparent;
-            color: white;
+            color: #ffffff;
             border: none;
             border-bottom: 1px solid #ffffff;
             outline: none;
+            font-size: 14pt;
         }
 
-        input::-webkit-input-placeholder {
+        .settingField::-webkit-input-placeholder {
             color: #b6b6b6 !important;
         }
 
-        input:-moz-placeholder {
+        .settingField:-moz-placeholder {
             /* Firefox 18- */
             color: #b6b6b6 !important;
         }
 
-        input::-moz-placeholder {
+        .settingField::-moz-placeholder {
             /* Firefox 19+ */
             color: #b6b6b6 !important;
         }
 
-        input:-ms-input-placeholder {
+        .settingField:-ms-input-placeholder {
             color: #b6b6b6 !important;
         }
 
@@ -62,12 +85,18 @@
             width: 100%;
         }
 
+        .currentDataRow {
+            display: table-row;
+        }
+
         .currentDataLabel {
             display: table-cell;
             width: auto;
             white-space: nowrap;
             padding-right: 8px;
             vertical-align: middle;
+            font-size: 16pt;
+            font-weight: bold;
         }
 
         .currentDataContent {
@@ -77,6 +106,7 @@
             padding-right: 16px;
             border-radius: 16px 0px 0px 16px;
             vertical-align: middle;
+            font-size: 14pt;
         }
 
         .currentDataEdit {
@@ -99,7 +129,7 @@
             background: none;
             border: none;
             cursor: pointer;
-            color: #c2c2c2;
+            color: #ffffff;
             outline: 0;
         }
 
@@ -111,42 +141,115 @@
             color: #2583ff
         }
 
-        #dataValue {}
+        .currentDataDummyCell {
+            display: table-cell;
+        }
+
+        .currentDataStatus {
+            display: table-cell;
+            padding-top: 12px;
+            padding-bottom: 12px;
+            font-size: 10pt;
+        }
+
+        .footer {
+            position: fixed;
+            left: 0px;
+            bottom: 0px;
+            width: 100%;
+            margin: auto auto;
+            text-align: center;
+            background-color: #d8d8d8;
+        }
+
+        .footer p {
+            width: 80%;
+            max-width: 1000px;
+            margin: 0px auto;
+            padding: 16px;
+            font-size: 10pt;
+            color: #555555;
+        }
     </style>
 
 </head>
 
 <body>
-    <div id="title">
-        WeBWorK Math Input Chrome Extension
+    <div class="title">
+        <span>WeBWorK Math Input Chrome Extension</span>
     </div>
 
     <div id="content">
 
-        <div id="currentData">
-            <div class="currentDataContainer">
-                <div class="currentDataLabel">
-                    WeBWorK Domain:
-                </div>
-                <div class="currentDataContent">
-                    <span id="currentDataContentText"></span>
+        <p class="description">This extension will generate live previews of the equations you type into WeBWorK text boxes!</p>
 
-                    <div id="dataInputField" style="display:none;">
-                        <input id="urlIn" type="url" placeholder="e.g. https://webwork.university.ca" style="width: 100%" />
-                    </div>
-                </div>
-                <div class="currentDataEdit">
-                    <button id="editButton" class="action">
-                        <i class="material-icons">edit</i>
-                    </button>
-                    <button id="saveButton" class="action" style="display:none;">
-                        <i class="material-icons">done</i>
-                    </button>
-                </div>
-            </div>
+        <!--<h2>Demo</h2>
+
+        <div class="demo">
+            <input type="text" class="codeshard" size="25"/>
+            <script src="content.js"/>
+        </div>-->
+
+        <div class="instructions">
+            <span>To enable this extension, perform the following steps:</span>
+            <ol>
+                <li>
+                    <b>Open your WeBWorK website</b> (for any one of your courses) in a separate tab and login if necessary</li>
+                <li>
+                    <b>Copy the URL</b> from the address bar of Chrome</li>
+                <li>
+                    <b>Paste the full URL into the field below</b>
+                </li>
+                <li>
+                    <b>Press the checkmark</b> to save your changes</li>
+                <li>
+                    <b>Select "Allow"</b> if Chrome asks you to give permission to this extension to modify content on webpages
+                    under the URL you entered</li>
+            </ol>
         </div>
 
-        <div id="status"></div>
+        <br/>
+        <br/>
+
+        <div id="currentData">
+            <div class="currentDataContainer">
+                <div class="currentDataRow">
+                    <div class="currentDataLabel">
+                        WeBWorK Domain:
+                    </div>
+                    <div class="currentDataContent">
+                        <span id="currentDataContentText"></span>
+
+                        <div id="dataInputField" style="display:none;">
+                            <input id="urlIn" class="settingField" type="url" placeholder="e.g. https://webwork.university.ca" style="width: 100%" />
+                        </div>
+                    </div>
+                    <div class="currentDataEdit">
+                        <button id="editButton" class="action" title="Edit">
+                            <i class="material-icons">edit</i>
+                        </button>
+                        <button id="saveButton" class="action" style="display:none;" title="Done">
+                            <i class="material-icons">done</i>
+                        </button>
+                    </div>
+                </div> <!-- currentDataRow -->
+                <div class="currentDataRow">
+                    <div class="currentDataDummyCell"></div>
+                    <div id="status" class="currentDataStatus"></div>
+                </div>
+            </div> <!-- currentDataContainer -->
+        </div> <!-- currentData -->
+
+        <br/>
+        <br/>
+
+        <div class="footer">
+            <p>
+                Copyright &copy; Noah Tajwar 2017. All Rights Reserved. This software is not in any way affiliated with the official WeBWorK
+                project or the Mathematical Association of America. All names, logos, brands and other trademarks or images
+                featured within this software are the property of their respective trademark holders.
+            </p>
+        </div>
 
     </div>
 

@@ -3,6 +3,9 @@ function save_options() {
     var status = document.getElementById("status");
     var urlString = document.getElementById("urlIn").value;
 
+    var errorColor = "#ff0000";
+    var successColor = "#00bb44";
+
     var url;
     try {
         url = new URL(urlString);
@@ -10,6 +13,7 @@ function save_options() {
     catch (err) {
         console.log(err);
         status.textContent = "Invalid URL";
+        status.style.color = errorColor;
         return;
     }
 
@@ -28,17 +32,25 @@ function save_options() {
                     webworkHostname: hostname
                 },
                 function () {
-                    // Update status to let user know options were saved.
+                    // Listen for events on the new hostname
                     registerRules();
-                    status.textContent = "Options saved.";
-                    document.getElementById("currentDataContentText").textContent = hostname;
+
+                    // Update status to let user know options were saved.
+                    status.textContent = "Saved";
+                    status.style.color = successColor;
+
+                    // Update the view mode
+                    restore_options();
                     saveSuccess();
+
+                    // Remove the status message after a short delay
                     setTimeout(function () {
                         status.textContent = "";
                     }, 750);
                 });
         } else {
-            status.textContent = "You must grant the permission";
+            status.textContent = "You must click \"Allow\" on the permission popup";
+            status.style.color = errorColor;
         }
     });
 }
@@ -49,19 +61,31 @@ function restore_options() {
             webworkHostname: ""
         },
         function (items) {
-            document.getElementById("currentDataContentText").textContent = items.webworkHostname;
+            var contentText = document.getElementById("currentDataContentText");
+            if (items.webworkHostname.length > 0) {
+                contentText.textContent = items.webworkHostname;
+                console.log(items.webworkHostname);
+                document.getElementById("urlIn").value = ("https://" + items.webworkHostname);
+                contentText.style.color = "#ffffff";
+            }
+            else {
+                contentText.textContent = "Not Set";
+                contentText.style.color = "#b6b6b6";
+            }
         });
 }
 
 function editData() {
     document.getElementById("currentDataContentText").style.display = "none";
     var inputField = document.getElementById("dataInputField");
-    document.getElementById("dataInputField").style.display = "block";
+    inputField.style.display = "block";
 
     document.getElementById("editButton").style.display = "none";
     document.getElementById("saveButton").style.display = "block";
 
-    document.getElementById("urlIn").focus();
+    var urlIn = document.getElementById("urlIn");
+    urlIn.focus();
+    urlIn.select();
 }
 
 function saveData() {
