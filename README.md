@@ -1,4 +1,4 @@
-# WeBWorKLivePreview
+# WeBWorK MathView
 A Chrome extension to provide live previews of math equations entered into WeBWorK text fields using KaTeX, MathJax and AsciiMath
 
 ![Screenshot](/docs/Screenshot.png?raw=true)
