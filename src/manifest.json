@@ -22,7 +22,9 @@
     "web_accessible_resources": [
         "katex/*",
         "katex/fonts/*",
-        "asciimath-based/*"
+        "asciimath-based/*",
+        "math-view.js",
+        "math-view.css"
     ],
 
     "permissions": [

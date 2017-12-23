@@ -1,6 +1,6 @@
 var MathView = new function () {
 
-    this.USE_MATHJAX_BACKUP = false && (window.MathJax != undefined);
+    var USE_MATHJAX_BACKUP = false && (window.MathJax != undefined);
 
     var MV_CSS_CLASS_MATH_OUT = "mv_mathout";
     var MV_MATH_OUT_ID_PRE = "mv_out";
@@ -11,6 +11,19 @@ var MathView = new function () {
         } else {
             return path;
         }
+    }
+
+    /**
+     * Injects MathView itself (math-view.js) as well as all its dependencies into the current webpage
+     */
+    this.inject = function() {        
+        // Inject MathView itself (this script) into the webpage
+        var mathViewJS = document.createElement("script");
+        mathViewJS.src = getResourcePath("math-view.js");
+        document.head.appendChild(mathViewJS);
+
+        // Inject all dependencies
+        this.load();
     }
 
     /**

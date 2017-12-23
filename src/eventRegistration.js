@@ -13,13 +13,15 @@ function registerRules() {
                     actions: [
                         new chrome.declarativeContent.RequestContentScript({
                             "css": [
-                                "katex/katex.css"
+                                "katex/katex.css",
+                                "math-view.css"
                             ],
                             "js": [
                                 "asciimath-based/ASCIIMathTeXImg.js",
                                 "katex/katex.min.js",
+                                "math-view.js",
+                                "extUtils.js",
                                 "content.js",
-                                "injectScripts.js"
                             ]
                         })
                     ]
