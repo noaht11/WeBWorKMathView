@@ -1,6 +1,6 @@
 var MathView = new function () {
 
-    var USE_MATHJAX_BACKUP = false && MathJax;
+    this.USE_MATHJAX_BACKUP = false && (window.MathJax != undefined);
 
     var MV_CSS_CLASS_MATH_OUT = "mv_mathout";
     var MV_MATH_OUT_ID_PRE = "mv_out";
