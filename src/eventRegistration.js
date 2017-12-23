@@ -18,7 +18,8 @@ function registerRules() {
                             "js": [
                                 "asciimath-based/ASCIIMathTeXImg.js",
                                 "katex/katex.min.js",
-                                "content.js"
+                                "content.js",
+                                "injectScripts.js"
                             ]
                         })
                     ]

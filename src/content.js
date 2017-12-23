@@ -66,23 +66,16 @@ injectScript(function()
  * Creates and styles a <div> element to serve as a container for math-formatted text
  * @param {number} i the index of the corresponding input
  * @param {string} subIndex another identifier that should be unique within a single index
- * @param {string} amath the default AsciiMath text to insert in the <div>
+ * @param {string} aMath the default AsciiMath text to insert in the <div>
  */
-function createMathOutDiv(i, subIndex, amath)
+function createMathOutDiv(i, subIndex, aMath)
 {
-    var theMathJaxOut = document.createElement("div");
-    theMathJaxOut.id = "wwLive_out_" + i + "_" + subIndex;
-    theMathJaxOut.style.display = "inline-block"; // so that it appears on the same line
-    theMathJaxOut.style.padding = "8px";
-    theMathJaxOut.style.marginTop = "8px";
-    theMathJaxOut.style.marginBottom = "8px";
-    theMathJaxOut.style.marginLeft = "4px";
-    theMathJaxOut.style.marginRight = "4px";
-    theMathJaxOut.style.color = "#000000";
-    theMathJaxOut.style.backgroundColor = "#dddddd";
-    theMathJaxOut.textContent = amath;
+    var mathOut = document.createElement("div");
+    mathOut.id = "wwLive_out_" + i + "_" + subIndex;
+    mathOut.className = CSS_MATH_OUT;
+    mathOut.textContent = aMath;
 
-    return theMathJaxOut;
+    return mathOut;
 }
 
 function setup()
@@ -92,7 +85,7 @@ function setup()
     for(var i = 0; i < inputs.length; i++)
     {
         var theInput = inputs[i];
-        var theAMath = theInput.value;
+        var aMath = theInput.value;
 
         // Set a unique identifier on the field (so we can reference it later)
         theInput.setAttribute("wwLive_index", i);
@@ -102,26 +95,26 @@ function setup()
         theInput.setAttribute("onkeyup", updateMathFuncCall);
 
         // Create two math containers (a redundant one for while the other is updating if we're using MathJax)
-        var theMathOutA = createMathOutDiv(i, "a", theInput.value);
-        var theMathOutB = createMathOutDiv(i, "b", theInput.value);
-        theMathOutB.style.display = "none";
+        var mathOutA = createMathOutDiv(i, "a", theInput.value);
+        var mathOutB = createMathOutDiv(i, "b", theInput.value);
+        mathOutB.style.display = "none";
 
         // Parent <div> for the two math containers
-        var theMathOut = document.createElement("div");
-        theMathOut.style.display = "inline-block";
+        var mathOut = document.createElement("div");
+        mathOut.style.display = "inline-block";
 
-        theMathOut.appendChild(theMathOutA);
-        theMathOut.appendChild(theMathOutB);
+        mathOut.appendChild(mathOutA);
+        mathOut.appendChild(mathOutB);
 
         // Insert the math containers directly after the text input
-        theInput.parentNode.insertBefore(theMathOut, theInput.nextSibling);
+        theInput.parentNode.insertBefore(mathOut, theInput.nextSibling);
 
         try
         {
             // First try to render using LaTeX (way faster than MathJax)
-            var texstring = AMTparseMath(theAMath);
-            katex.render(texstring, theMathOutA);
-            katex.render(texstring, theMathOutB);
+            var texstring = AMTparseMath(aMath);
+            katex.render(texstring, mathOutA);
+            katex.render(texstring, mathOutB);
         }
         catch(err)
         {
@@ -129,39 +122,22 @@ function setup()
             if(USE_MATHJAX_BACKUP)
             {
                 // If LaTeX failed (since it doesn't support quite as many functions) revert to MathJax
-                theMathOutA.textContent = "`" + theAMath + "`";        
-                theMathOutB.textContent = "`" + theAMath + "`";
+                mathOutA.textContent = "`" + aMath + "`";        
+                mathOutB.textContent = "`" + aMath + "`";
             }
             else
             {
-                if(theAMath.length > 0)
+                if(aMath.length > 0)
                 {
-                    theMathOutA.textContent = theAMath;
+                    mathOutA.textContent = aMath;
                 }
                 else
                 {
-                    theMathOutA.innerHTML = "&nbsp;"; // Add a space so the box retains its height
+                    mathOutA.innerHTML = "&nbsp;"; // Add a space so the box retains its height
                 }
             }
         }
     }
 }
-
-// Inject KaTeX script into the webpage
-var katexJS = document.createElement("script");
-katexJS.src = chrome.runtime.getURL("katex/katex.min.js");
-document.head.appendChild(katexJS);
-
-// Inject KaTeX css into the webpage
-var katexCSS = document.createElement("link");
-katexCSS.rel = "stylesheet";
-katexCSS.type = "text/css";
-katexCSS.href = chrome.runtime.getURL("katex/katex.css");
-document.head.appendChild(katexCSS);
-
-// Inject ASCIIMathTeXImg script into the webpage
-var asciiMathJS = document.createElement("script");
-asciiMathJS.src = chrome.runtime.getURL("asciimath-based/ASCIIMathTeXImg.js");
-document.head.appendChild(asciiMathJS);
 
 document.addEventListener("DOMContentLoaded", setup);
