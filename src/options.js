@@ -101,6 +101,16 @@ function saveSuccess() {
     document.getElementById("saveButton").style.display = "none";
 }
 
+function allURLsPermission() {
+    chrome.permissions.request({
+        origins: ["<all_urls>"]
+    }, function (granted) {
+        console.log("granted");
+    });
+}
+
+document.getElementById("test").addEventListener("click", allURLsPermission);
+
 document.getElementById("editButton").addEventListener("click", editData);
 document.getElementById("saveButton").addEventListener("click", saveData);
 

@@ -1,3 +1,5 @@
+console.log(document.readyState);
+
 // Inject MathView and its dependencies
 MathView.inject();
 

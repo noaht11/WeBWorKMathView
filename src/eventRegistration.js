@@ -1,4 +1,20 @@
-function registerRules() {
+var createRequestContentScript = function () {
+    return new chrome.declarativeContent.RequestContentScript({
+        "css": [
+            "katex/katex.css",
+            "math-view.css"
+        ],
+        "js": [
+            "asciimath-based/ASCIIMathTeXImg.js",
+            "katex/katex.min.js",
+            "math-view.js",
+            "extUtils.js",
+            "content.js",
+        ]
+    })
+}
+
+var registerRules = function () {
     chrome.storage.sync.get(
         {
             webworkHostname: ""
@@ -11,19 +27,7 @@ function registerRules() {
                         pageUrl: { hostEquals: items.webworkHostname, schemes: ["https", "http"] },
                     })],
                     actions: [
-                        new chrome.declarativeContent.RequestContentScript({
-                            "css": [
-                                "katex/katex.css",
-                                "math-view.css"
-                            ],
-                            "js": [
-                                "asciimath-based/ASCIIMathTeXImg.js",
-                                "katex/katex.min.js",
-                                "math-view.js",
-                                "extUtils.js",
-                                "content.js",
-                            ]
-                        })
+                        createRequestContentScript()
                     ]
                 };
 
