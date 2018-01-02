@@ -1,4 +1,4 @@
-console.log(document.readyState);
+console.log("MathView Loaded");
 
 // Inject MathView and its dependencies
 MathView.inject();

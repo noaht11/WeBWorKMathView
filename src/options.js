@@ -1,3 +1,19 @@
+console.log("Before rules");
+
+//var rules = ExtConfig.generateRules(false, ["webwork.elearning.ubc.ca"], false);
+
+ExtConfig.Storage.setData(new ExtConfig.Storage.Data(true, ["test"], true), function () {
+    console.log("Saved");
+    ExtConfig.Storage.getData(function (data) {
+        console.log("Loaded");
+        console.log(data);
+    });
+});
+
+//console.log(rules);
+
+//registerRules(rules);
+
 // Saves options to chrome.storage
 function save_options() {
     var status = document.getElementById("status");

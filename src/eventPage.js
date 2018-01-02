@@ -1,4 +1,4 @@
-registerRules();
+//registerRules();
 
 chrome.runtime.onInstalled.addListener(function (object) {
     if (chrome.runtime.OnInstalledReason.INSTALL === object.reason) {

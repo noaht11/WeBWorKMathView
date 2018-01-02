@@ -11,7 +11,7 @@ var MathView = new function () {
         } else {
             return path;
         }
-    }
+    };
 
     /**
      * Injects MathView itself (math-view.js) as well as all its dependencies into the current webpage
@@ -24,7 +24,7 @@ var MathView = new function () {
 
         // Inject all dependencies
         this.load();
-    }
+    };
 
     /**
      * Injects required scripts/css files into the webpage.
@@ -55,7 +55,7 @@ var MathView = new function () {
         var asciiMathJS = document.createElement("script");
         asciiMathJS.src = getResourcePath("asciimath-based/ASCIIMathTeXImg.js");
         document.head.appendChild(asciiMathJS);
-    }
+    };
 
     var generateMathViewId = function (id, subIndex) {
         return MV_MATH_OUT_ID_PRE + id + "_" + subIndex;
@@ -104,7 +104,7 @@ var MathView = new function () {
 
     var getMathOut = function (id, subIndex) {
         return document.getElementById(generateMathViewId(id, subIndex));
-    }
+    };
 
     var hideOutput = function (element) { element.style.display = "none"; };
     var showOutput = function (element) { element.style.display = "inline-block"; };

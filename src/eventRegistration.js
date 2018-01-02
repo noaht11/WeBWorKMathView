@@ -1,4 +1,4 @@
-var createRequestContentScript = function () {
+/*var createRequestContentScript = function () {
     return new chrome.declarativeContent.RequestContentScript({
         "css": [
             "katex/katex.css",
@@ -12,9 +12,9 @@ var createRequestContentScript = function () {
             "content.js",
         ]
     })
-}
+};*/
 
-var registerRules = function () {
+/*var registerRules = function () {
     chrome.storage.sync.get(
         {
             webworkHostname: ""
@@ -36,4 +36,4 @@ var registerRules = function () {
                 });
             }
         });
-}
+};*/
