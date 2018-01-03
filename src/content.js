@@ -1,4 +1,4 @@
-console.log("MathView Loaded");
+console.log("WeBWorK MathView Loaded");
 
 // Inject MathView and its dependencies
 MathView.inject();

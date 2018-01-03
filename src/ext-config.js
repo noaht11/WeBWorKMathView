@@ -1,5 +1,7 @@
 var ExtConfig = new function () {
 
+    var HOSTNAME_WOLFRAM_ALPHA = "www.wolframalpha.com";
+
     /**
      * @typedef {Object} ExtConfig.Storage.Data
      * @property {boolean} autoDetectWW
@@ -46,10 +48,23 @@ var ExtConfig = new function () {
 
     this.Permissions = new function () {
 
-        var WOLFRAM_ALPHA_HOSTNAME = "www.wolframalpha.com";
-
-        var getUrlPattern = function(hostname) {
+        var getUrlPattern = function (hostname) {
             return "*://" + hostname + "/*";
+        }
+
+        var generatePermissions = function (data, callback) {
+            if (data.autoDetectWW) {
+                return { origins: ["<all_urls>"] };
+            }
+            else {
+                var urlPatterns = data.wwHosts.map(getUrlPattern);
+
+                if (data.enableWolfram) {
+                    urlPatterns.push(getUrlPattern(HOSTNAME_WOLFRAM_ALPHA));
+                }
+
+                return { origins: urlPatterns };
+            }
         }
 
         /**
@@ -57,112 +72,112 @@ var ExtConfig = new function () {
          * @param {ExtConfig.Storage.Data} data the configuration data
          * @param {Function} callback a function to call after the permission has been denied or granted
          */
-        this.requestPermissions = function (data, callback) {
-            if (data.autoDetectWW) {
-                chrome.permissions.request({
-                    origins: ["<all_urls>"]
-                }, callback);
-            }
-            else {
-                var urlPatterns = data.wwHosts.map(getUrlPattern);
-
-                if (data.enableWolfram) {
-                    urlPatterns.push(getUrlPattern(WOLFRAM_ALPHA_HOSTNAME));
-                }
-
-                chrome.permissions.request({
-                    origins: urlPatterns
-                }, callback);
-            }
+        this.updatePermissions = function (data, callback) {
+            chrome.permissions.remove({
+                origins: ["<all_urls>"]
+            }, function (removed) {
+                var newPermissions = generatePermissions(data, callback);
+                chrome.permissions.request(newPermissions, callback);
+            });
         };
 
     };
 
-    /**
-     * Core CSS files that are not specific to the extension's operation an any particular domain
-     */
-    var coreCSS = [
-        "katex/katex.css",
-        "math-view.css"
-    ];
+    this.Events = new function () {
 
-    /**
-     * Core JS files that are not specific to the extension's operation an any particular domain
-     */
-    var coreJS = [
-        "asciimath-based/ASCIIMathTeXImg.js",
-        "katex/katex.min.js",
-        "math-view.js",
-        "extUtils.js",
-    ];
+        /**
+         * Core CSS files that are not specific to the extension's operation an any particular domain
+         */
+        var coreCSS = [
+            "katex/katex.css",
+            "math-view.css"
+        ];
 
-    /**
-     * Creates a RequestContentScript object containing the CSS and JS files for operation on WeBWorK sites
-     */
-    var createWWRequestContentScript = function () {
-        var allJS = coreJS.slice();
-        allJS.push("content.js");
+        /**
+         * Core JS files that are not specific to the extension's operation an any particular domain
+         */
+        var coreJS = [
+            "asciimath-based/ASCIIMathTeXImg.js",
+            "katex/katex.min.js",
+            "math-view.js",
+            "extUtils.js",
+        ];
 
-        return new chrome.declarativeContent.RequestContentScript({
-            "css": coreCSS,
-            "js": allJS
-        });
-    };
+        /**
+         * Creates a RequestContentScript object containing the CSS and JS files for operation on WeBWorK sites
+         */
+        var createWWRequestContentScript = function () {
+            var allJS = coreJS.slice();
+            allJS.push("content.js");
 
-    /**
-     * Generates a set of rules describing when to run our scripts based on the provided conditions
-     * @param {boolean} autoDetectWW if true, the scripts will automatically run on WeBWorK sites
-     * @param {string[]} wwHosts a list of domains (e.g. "webwork.university.ca") on which to run the scripts,
-     *                             ignored if autoDetectWW is true
-     * @param {boolean} enableWolfram if true, the scripts will run on WolframAlpha
-     * @returns an array of JSON objects representing the onPageChanged rules to register based on
-     * the provided arguments
-     */
-    this.generateRules = function (autoDetectWW, wwHosts, enableWolfram) {
-
-        var rules = [];
-
-        if (autoDetectWW) {
-            rules.push({
-                id: "wwAutoDetect",
-                conditions: [new chrome.declarativeContent.PageStateMatcher({
-                    pageUrl: { schemes: ["https", "http"] },
-                    css: ["input.codeshard"]
-                })],
-                actions: [
-                    createWWRequestContentScript()
-                ]
+            return new chrome.declarativeContent.RequestContentScript({
+                "css": coreCSS,
+                "js": allJS
             });
-        }
-        else {
-            for (let i = 0; i < wwHosts.length; i++) {
+        };
+
+        /**
+         * Generates a set of rules describing when to run our scripts based on the provided configuration data
+         * @param {ExtConfig.Storage.Data} data the configuration data
+         * @returns an array of JSON objects representing the onPageChanged rules to register based on
+         * the provided arguments
+         */
+        var generateOnPageChangedRules = function (data) {
+            var rules = [];
+
+            if (data.autoDetectWW) {
                 rules.push({
-                    id: "wwDomain" + i,
+                    id: "wwAutoDetect",
                     conditions: [new chrome.declarativeContent.PageStateMatcher({
-                        pageUrl: { hostEquals: wwHosts[i], schemes: ["https", "http"] },
+                        pageUrl: { schemes: ["https", "http"] },
+                        css: ["input.codeshard"]
                     })],
                     actions: [
                         createWWRequestContentScript()
                     ]
                 });
             }
-        }
+            else {
+                for (let i = 0; i < data.wwHosts.length; i++) {
+                    rules.push({
+                        id: "wwDomain" + i,
+                        conditions: [new chrome.declarativeContent.PageStateMatcher({
+                            pageUrl: { hostEquals: data.wwHosts[i], schemes: ["https", "http"] },
+                        })],
+                        actions: [
+                            createWWRequestContentScript()
+                        ]
+                    });
+                }
+            }
 
-        if (enableWolfram) {
-            rules.push({
-                id: "wolfram",
-                conditions: [new chrome.declarativeContent.PageStateMatcher({
-                    pageUrl: { hostEquals: "www.wolframalpha.com", schemes: ["https", "http"] },
-                })],
-                actions: [
-                    createWWRequestContentScript() // TODO different content script
-                ]
+            if (data.enableWolfram) {
+                rules.push({
+                    id: "wolfram",
+                    conditions: [new chrome.declarativeContent.PageStateMatcher({
+                        pageUrl: { hostEquals: HOSTNAME_WOLFRAM_ALPHA, schemes: ["https", "http"] },
+                    })],
+                    actions: [
+                        createWWRequestContentScript() // TODO different content script
+                    ]
+                });
+            }
+
+            return rules;
+        };
+
+        /**
+         * Registers rules for the onPageChanged event to trigger our scripts according to the provided configuration data
+         * @param {ExtConfig.Storage.Data} data the configuration data
+         */
+        this.registerOnPageChangedRules = function (data) {
+            var newRules = generateOnPageChangedRules(data);
+
+            chrome.declarativeContent.onPageChanged.removeRules(undefined, function () {
+                chrome.declarativeContent.onPageChanged.addRules(newRules);
             });
-        }
+        };
 
-        return rules;
     };
-
-
 
 };
