@@ -2,7 +2,7 @@ console.log("Before rules");
 
 //var rules = ExtConfig.generateRules(false, ["webwork.elearning.ubc.ca"], false);
 
-ExtConfig.Storage.setData(new ExtConfig.Storage.Data(false, ["webwork.elearning.ubc.ca"], true), function () {
+ExtConfig.Storage.setData(new ExtConfig.Storage.Data(false, ["webwork.elearning.ubc.ca"], false), function () {
     console.log("Saved");
 });
 
