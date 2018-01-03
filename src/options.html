@@ -170,6 +170,74 @@
             font-size: 10pt;
             color: #555555;
         }
+
+        .checkButton {
+            background: #3498db;
+            background-image: -webkit-linear-gradient(top, #3498db, #2980b9);
+            -webkit-border-radius: 10px;
+            border-radius: 10px;
+            font-family: Arial;
+            color: #ffffff;
+            font-size: 20px;
+            padding: 10px 20px 10px 20px;
+            text-decoration: none;
+
+            cursor: pointer;
+            font-size: 14pt;
+            font-weight: bold;
+            width: 335px;
+            margin: 0px auto;
+        }
+
+        .checkButton:hover {
+            background: #3cb0fd;
+            background-image: -webkit-linear-gradient(top, #3cb0fd, #3498db);
+            text-decoration: none;
+        }
+
+        .checkButton input {
+            -webkit-transform: scale(1.5);
+            transform: scale(1.5);
+            cursor: inherit;
+        }
+
+        .checkButton label {
+            cursor: inherit;
+            padding-left: 10px;
+        }
+
+        .text {
+            width: 100%;
+            text-align: center;
+            margin: 0px;
+        }
+
+        .wwHostInput {
+            width: 100%;
+            background: #ffffff00;
+            border: none;
+            border-bottom: 2px solid gray;
+            padding: 5px;
+        }
+
+        .wwHostInput:focus {
+            outline: none;
+            border-bottom: 2px solid rgb(0, 132, 255);
+        }
+        
+        .wwHostInput::-webkit-input-placeholder {
+            color: #747474 !important;
+        }
+
+        #saveButton {
+            font-size: 10pt;
+            padding: 5px 10px 5px 10px;
+            border-radius: 5px;
+            text-align: center;
+            width: 40px;
+            margin-right: 0px;
+            margin-left: auto;
+        }
     </style>
 
 </head>
@@ -181,11 +249,9 @@
 
     <div id="content">
 
-        <p class="description">This Chrome extension will generate live previews of the equations you type into WeBWorK text boxes!</p>
-
-<div>
+        <!--<div>
     <button id="test">Test</button>
-</div>
+</div>-->
 
         <!--<h2>Demo</h2>
 
@@ -194,23 +260,37 @@
             <script src="content.js"/>
         </div>-->
 
-        <div class="instructions">
-            <span>To enable this extension, perform the following steps:</span>
-            <ol>
-                <li><b>Open your WeBWorK website</b> (for any one of your courses) in a separate tab and login if necessary</li>
-                <li><b>Copy the URL</b> from the address bar of Chrome</li>
-                <li><b>Paste the full URL into the field below</b>
-                </li>
-                <li><b>Press the checkmark</b> to save your changes</li>
-                <li><b>Select "Allow"</b> if Chrome asks you to give permission to this extension to modify content on webpages under the URL you entered</li>
-                <li><b>Refresh the WeBWorK page</b> and your live previews should now appear</li>
-            </ol>
+        <div id="autoDetectContainer" class="checkButton">
+            <input id="autoDetect" type="checkbox">
+            <label for="autoDetect">Auto-Enable on WeBWorK Pages</label>
+        </div>
+        
+        <br/>
+        <h3 class="text">(Requires permission to view your web traffic to identify WeBWorK sites when you visit them)</h3>
+
+        <br/>
+        <br/>
+        <br/>
+
+        <h2 class="text">&dash; OR &dash;</h2>
+
+        <br/>
+        <br/>
+        <br/>
+
+        <h2 class="text">Manually enter your WeBWorK URLs:</h2>
+        <!--<hr style="width: 350px">-->
+
+        <br/>
+
+        <div id="wwHostInputs" style="width: 350px; margin: 0px auto;">
+            <input class="wwHostInput" placeholder="e.g. https://webwork.elearning.ubc.ca/webwork2"/>
+            <br/>
+            <br/>
+            <div id="saveButton" class="checkButton">Save</div>
         </div>
 
-        <br/>
-        <br/>
-
-        <div id="currentData">
+        <!--<div id="currentData">
             <div class="currentDataContainer">
                 <div class="currentDataRow">
                     <div class="currentDataLabel">
@@ -232,15 +312,12 @@
                         </button>
                     </div>
                 </div>
-                <!-- currentDataRow -->
                 <div class="currentDataRow">
                     <div class="currentDataDummyCell"></div>
                     <div id="status" class="currentDataStatus"></div>
                 </div>
             </div>
-            <!-- currentDataContainer -->
-        </div>
-        <!-- currentData -->
+        </div>-->
 
         <br/>
         <br/>

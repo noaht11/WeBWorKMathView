@@ -1,14 +1,17 @@
-console.log("Before rules");
-
-//var rules = ExtConfig.generateRules(false, ["webwork.elearning.ubc.ca"], false);
-
 ExtConfig.Storage.setData(new ExtConfig.Storage.Data(false, ["webwork.elearning.ubc.ca"], false), function () {
     console.log("Saved");
 });
 
-//console.log(rules);
-
-//registerRules(rules);
+/**
+ * Handles click events on the checkbox button
+ * @param {Event} event the click event
+ */
+function toggleAutoDetect(event) {
+    var checkbox = document.getElementById("autoDetect");
+    if(event.target.id != "autoDetect") {
+        checkbox.checked = !checkbox.checked;
+    }
+}
 
 // Saves options to chrome.storage
 function save_options() {
@@ -121,11 +124,11 @@ function allURLsPermission() {
         console.log("Loaded");
         console.log(data);
 
-        ExtConfig.Permissions.updatePermissions(data, function(granted) {
+        ExtConfig.Permissions.updatePermissions(data, function (granted) {
             console.log("Permissions done");
             console.log(granted);
 
-            if(granted) {
+            if (granted) {
                 ExtConfig.Events.registerOnPageChangedRules(data);
             }
         })
@@ -138,7 +141,7 @@ function allURLsPermission() {
     });*/
 }
 
-document.getElementById("test").addEventListener("click", allURLsPermission);
+document.getElementById("autoDetectContainer").addEventListener("click", toggleAutoDetect);
 
 document.getElementById("editButton").addEventListener("click", editData);
 document.getElementById("saveButton").addEventListener("click", saveData);
