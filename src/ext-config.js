@@ -3,7 +3,7 @@ var ExtConfig = new function () {
     /**
      * @typedef {Object} ExtConfig.Storage.Data
      * @property {boolean} autoDetectWW
-     * @property {string[]} wwDomains
+     * @property {string[]} wwHosts
      * @property {boolean} enableWolfram
      */
 
@@ -13,15 +13,15 @@ var ExtConfig = new function () {
          * Constructor for an object to represent our stored data
          * 
          * @param {boolean} autoDetectWW if true, the scripts will automatically run on WeBWorK sites
-         * @param {string[]} wwDomains a list of domains (e.g. "webwork.university.ca") on which to run the scripts,
+         * @param {string[]} wwHosts a list of hosts (e.g. "webwork.university.ca") on which to run the scripts,
          *                             ignored if autoDetectWW is true
          * @param {boolean} enableWolfram if true, the scripts will run on WolframAlpha
          * 
          * @constructor
          */
-        this.Data = function (autoDetectWW, wwDomains, enableWolfram) {
+        this.Data = function (autoDetectWW, wwHosts, enableWolfram) {
             this.autoDetectWW = autoDetectWW;
-            this.wwDomains = wwDomains;
+            this.wwHosts = wwHosts;
             this.enableWolfram = enableWolfram;
         }
 
@@ -46,20 +46,33 @@ var ExtConfig = new function () {
 
     this.Permissions = new function () {
 
+        var WOLFRAM_ALPHA_HOSTNAME = "www.wolframalpha.com";
+
+        var getUrlPattern = function(hostname) {
+            return "*://" + hostname + "/*";
+        }
+
         /**
          * Requests extension permissions necessary for the provided configuration data
-         * @param {ExtConfig.Storage.Data} data configuration data
+         * @param {ExtConfig.Storage.Data} data the configuration data
+         * @param {Function} callback a function to call after the permission has been denied or granted
          */
-        this.requestPermissions = function (data) {
+        this.requestPermissions = function (data, callback) {
             if (data.autoDetectWW) {
-                // TODO Request all content permission
+                chrome.permissions.request({
+                    origins: ["<all_urls>"]
+                }, callback);
             }
             else {
-                // TODO Request for all wwDomains
-            }
+                var urlPatterns = data.wwHosts.map(getUrlPattern);
 
-            if(data.enableWolfram) {
-                // TODO Request for wolfram
+                if (data.enableWolfram) {
+                    urlPatterns.push(getUrlPattern(WOLFRAM_ALPHA_HOSTNAME));
+                }
+
+                chrome.permissions.request({
+                    origins: urlPatterns
+                }, callback);
             }
         };
 
@@ -99,13 +112,13 @@ var ExtConfig = new function () {
     /**
      * Generates a set of rules describing when to run our scripts based on the provided conditions
      * @param {boolean} autoDetectWW if true, the scripts will automatically run on WeBWorK sites
-     * @param {string[]} wwDomains a list of domains (e.g. "webwork.university.ca") on which to run the scripts,
+     * @param {string[]} wwHosts a list of domains (e.g. "webwork.university.ca") on which to run the scripts,
      *                             ignored if autoDetectWW is true
      * @param {boolean} enableWolfram if true, the scripts will run on WolframAlpha
      * @returns an array of JSON objects representing the onPageChanged rules to register based on
      * the provided arguments
      */
-    this.generateRules = function (autoDetectWW, wwDomains, enableWolfram) {
+    this.generateRules = function (autoDetectWW, wwHosts, enableWolfram) {
 
         var rules = [];
 
@@ -122,11 +135,11 @@ var ExtConfig = new function () {
             });
         }
         else {
-            for (let i = 0; i < wwDomains.length; i++) {
+            for (let i = 0; i < wwHosts.length; i++) {
                 rules.push({
                     id: "wwDomain" + i,
                     conditions: [new chrome.declarativeContent.PageStateMatcher({
-                        pageUrl: { hostEquals: wwDomains[i], schemes: ["https", "http"] },
+                        pageUrl: { hostEquals: wwHosts[i], schemes: ["https", "http"] },
                     })],
                     actions: [
                         createWWRequestContentScript()

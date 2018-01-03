@@ -2,12 +2,8 @@ console.log("Before rules");
 
 //var rules = ExtConfig.generateRules(false, ["webwork.elearning.ubc.ca"], false);
 
-ExtConfig.Storage.setData(new ExtConfig.Storage.Data(true, ["test"], true), function () {
+ExtConfig.Storage.setData(new ExtConfig.Storage.Data(true, ["webwork.elearning.ubc.ca"], true), function () {
     console.log("Saved");
-    ExtConfig.Storage.getData(function (data) {
-        console.log("Loaded");
-        console.log(data);
-    });
 });
 
 //console.log(rules);
@@ -118,11 +114,24 @@ function saveSuccess() {
 }
 
 function allURLsPermission() {
-    chrome.permissions.request({
+
+    console.log("Permission click");
+
+    ExtConfig.Storage.getData(function (data) {
+        console.log("Loaded");
+        console.log(data);
+
+        ExtConfig.Permissions.requestPermissions(data, function(granted) {
+            console.log("Permissions done");
+            console.log(granted);
+        })
+    });
+
+    /*chrome.permissions.request({
         origins: ["<all_urls>"]
     }, function (granted) {
         console.log("granted");
-    });
+    });*/
 }
 
 document.getElementById("test").addEventListener("click", allURLsPermission);
