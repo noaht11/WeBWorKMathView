@@ -48,13 +48,15 @@ var ExtConfig = new function () {
 
     this.Permissions = new function () {
 
+        var PERMISSION_ALL_URLS = "<all_urls>";
+
         var getUrlPattern = function (hostname) {
             return "*://" + hostname + "/*";
         }
 
         var generatePermissions = function (data, callback) {
             if (data.autoDetectWW) {
-                return { origins: ["<all_urls>"] };
+                return { origins: [PERMISSION_ALL_URLS] };
             }
             else {
                 var urlPatterns = data.wwHosts.map(getUrlPattern);
@@ -74,7 +76,7 @@ var ExtConfig = new function () {
          */
         this.updatePermissions = function (data, callback) {
             chrome.permissions.remove({
-                origins: ["<all_urls>"]
+                origins: [PERMISSION_ALL_URLS]
             }, function (removed) {
                 var newPermissions = generatePermissions(data, callback);
                 chrome.permissions.request(newPermissions, callback);
@@ -85,10 +87,13 @@ var ExtConfig = new function () {
 
     this.Events = new function () {
 
+        var CONTENT_WEBWORK_JS = "content_webwork.js";
+        var CONTENT_WOLFRAM_JS = "content_wolfram.js";
+
         /**
          * Core CSS files that are not specific to the extension's operation an any particular domain
          */
-        var coreCSS = [
+        var CORE_CSS = [
             "katex/katex.css",
             "math-view.css"
         ];
@@ -96,7 +101,7 @@ var ExtConfig = new function () {
         /**
          * Core JS files that are not specific to the extension's operation an any particular domain
          */
-        var coreJS = [
+        var CORE_JS = [
             "asciimath-based/ASCIIMathTeXImg.js",
             "katex/katex.min.js",
             "math-view.js",
@@ -104,14 +109,15 @@ var ExtConfig = new function () {
         ];
 
         /**
-         * Creates a RequestContentScript object containing the CSS and JS files for operation on WeBWorK sites
+         * Creates a RequestContentScript object containing the CSS and JS files required for operation
+         * @param {string} contentJSFile the filename of the content script to use
          */
-        var createWWRequestContentScript = function () {
-            var allJS = coreJS.slice();
-            allJS.push("content.js");
+        var createRequestContentScript = function (contentJSFile) {
+            var allJS = CORE_JS.slice();
+            allJS.push(contentJSFile);
 
             return new chrome.declarativeContent.RequestContentScript({
-                "css": coreCSS,
+                "css": CORE_CSS,
                 "js": allJS
             });
         };
@@ -133,7 +139,7 @@ var ExtConfig = new function () {
                         css: ["input.codeshard"]
                     })],
                     actions: [
-                        createWWRequestContentScript()
+                        createRequestContentScript(CONTENT_WEBWORK_JS)
                     ]
                 });
             }
@@ -145,7 +151,7 @@ var ExtConfig = new function () {
                             pageUrl: { hostEquals: data.wwHosts[i], schemes: ["https", "http"] },
                         })],
                         actions: [
-                            createWWRequestContentScript()
+                            createRequestContentScript(CONTENT_WEBWORK_JS)
                         ]
                     });
                 }
@@ -158,7 +164,7 @@ var ExtConfig = new function () {
                         pageUrl: { hostEquals: HOSTNAME_WOLFRAM_ALPHA, schemes: ["https", "http"] },
                     })],
                     actions: [
-                        createWWRequestContentScript() // TODO different content script
+                        createRequestContentScript(CONTENT_WOLFRAM_JS)
                     ]
                 });
             }

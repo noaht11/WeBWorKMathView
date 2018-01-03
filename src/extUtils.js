@@ -13,8 +13,8 @@ var injectScript = function (func) {
  * Registers a set of rules for the onPageChanged event
  * @param {[]} rules an array of the rules to register
  */
-var registerRules = function (rules) {
+/*var registerRules = function (rules) {
     chrome.declarativeContent.onPageChanged.removeRules(undefined, function () {
         chrome.declarativeContent.onPageChanged.addRules(rules);
     });
-} 
+}*/
