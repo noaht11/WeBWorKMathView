@@ -4,22 +4,46 @@
  */
 function toggleAutoDetect(event) {
     var checkbox = document.getElementById("autoDetect");
+
+    var pendingChecked = checkbox.checked;
+
+    // We don't want to visibly toggle state yet
     if (event.target.id != "autoDetect") {
         event.preventDefault(); // Stops the event from firing twice
-        checkbox.checked = !checkbox.checked;
+        pendingChecked = !pendingChecked;
+        // Do nothing
+    } else {
+        // Undo the check the automatically happened
+        checkbox.checked = !pendingChecked;
     }
 
-    saveData();
+    ExtConfig.Storage.getData(function (data) {
+        data.autoDetectWW = pendingChecked;
+
+        ExtConfig.Permissions.updatePermissions(data, function (granted) {
+            var permissionsMsg = document.getElementById("autoDetectPermissionMsg");
+
+            if(granted) {
+                checkbox.checked = pendingChecked;
+                ExtConfig.Events.registerOnPageChangedRules(data);
+                saveData(data);
+                
+                permissionsMsg.style.display = "none";
+            }
+            else {
+                permissionsMsg.style.display = "block";
+            }
+        });
+    });
 }
 
 function loadData() {
     ExtConfig.Storage.getData(function (data) {
-        console.log("Load Data");
-        console.log(data);
-
+        document.getElementById("autoDetect").checked = data.autoDetectWW;
         if (data.autoDetectWW) {
-            document.getElementById("autoDetect").checked = true;
             disableManual();
+        } else {
+            enableManual();
         }
 
         // Clear all current ww host elements
@@ -37,7 +61,17 @@ function loadData() {
 }
 
 function disableManual() {
-    // TODO 
+    document.getElementById("manual").className = "manualDisabled";
+    var addButton = document.getElementById("addButton");
+    addButton.disabled = true;
+    addButton.title = "You have to disable Auto-Detect to manually add WeBWorK sites";
+}
+
+function enableManual() {
+    document.getElementById("manual").className = "";
+    var addButton = document.getElementById("addButton");
+    addButton.disabled = false;
+    addButton.title = "";
 }
 
 function saveData(data) {
@@ -166,10 +200,17 @@ function extractHostname(text) {
     return null;
 }
 
+function handleWWHostInputKeyup(event) {
+    if(event.keyCode == 13) {
+        validateWWHost();
+    }
+}
+
 document.getElementById("autoDetectContainer").addEventListener("click", toggleAutoDetect);
 
 document.getElementById("addButton").addEventListener("click", showWWHostInputDialog);
 document.getElementById("wwHostInputClose").addEventListener("click", hideWWHostInputDialog);
+document.getElementById("wwHostInputField").addEventListener("keyup", handleWWHostInputKeyup);
 document.getElementById("wwHostInputSave").addEventListener("click", validateWWHost);
 
 document.addEventListener("DOMContentLoaded", loadData);

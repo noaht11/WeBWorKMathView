@@ -115,8 +115,16 @@
         }
 
         #addButton {
-            width: 140px;
+            width: 150px;
             margin-top: 20px;
+            display: block;
+            -webkit-appearance: none;
+            border: none;
+        }
+
+        #addButton:disabled {
+            background-image: -webkit-linear-gradient(top, #d6d6d6, #b6b6b6);
+            cursor: default;
         }
 
         .wwHost {
@@ -258,6 +266,10 @@
         .inputMsg {
             color: red;
         }
+
+        .manualDisabled {
+            color: rgb(167, 166, 166);
+        }
     </style>
 
 </head>
@@ -275,7 +287,7 @@
         </div>
 
         <br/>
-        <h3 class="text" style="display: none;">(Requires permission to view your web traffic to identify WeBWorK sites when you visit them)</h3>
+        <h3 id="autoDetectPermissionMsg" class="text" style="display: none; font-weight: normal; color: red;">(Auto-Detect requires permission to view your web traffic to identify which sites are WeBWorK sites)</h3>
 
         <br/>
         <br/>
@@ -287,14 +299,16 @@
         <br/>
         <br/>
 
-        <h2 class="text">Manually add WeBWorK site(s) below:</h2>
-        <hr style="width: 350px">
+        <div id="manual">
+            <h2 class="text">Manually add WeBWorK site(s) below:</h2>
+            <hr style="width: 350px">
 
-        <br/>
+            <br/>
 
-        <div id="wwHosts" style="width: 350px; margin: 0px auto;">
+            <div id="wwHosts" style="width: 350px; margin: 0px auto;">
+            </div>
+            <button id="addButton" class="smallButton checkButton">Add WeBWorK Site</button>
         </div>
-        <div id="addButton" class="smallButton checkButton">Add WeBWorK Site</div>
 
         <br/>
         <br/>
@@ -318,7 +332,7 @@
                 <h2>Paste the URL to your WeBWorK site below:</h2>
             </div>
             <div class="modal-body">
-                <input id="wwHostInputField" class="wwHostInput" type="url" placeholder="e.g. https://webwork.university.ca/..."/>
+                <input id="wwHostInputField" class="wwHostInput" type="url" placeholder="e.g. https://webwork.university.ca/..." />
                 <div id="wwHostInputMsg" class="inputMsg"></div>
                 <div id="wwHostInputSave" class="smallButton checkButton">Save</div>
                 <div style="clear: both; margin-bottom: 10px;"></div>
