@@ -113,25 +113,7 @@ var ExtConfig = new function () {
                     }, callback);
                 });
             });
-
-
-            /*chrome.permissions.remove({
-                origins: [PERMISSION_ALL_URLS]
-            }, function (removed) {
-                var newPermissions = generatePermissions(data, callback);
-                chrome.permissions.request(newPermissions, callback);
-            });*/
         };
-
-        /**
-         * Requests permissions for all URLs on the provided hostname
-         * @param {string} hostname the hostname
-         */
-        this.newHostname = function (hostname) {
-            chrome.permissions.request({
-                origins: [getUrlPattern(hostname)]
-            }, callback);
-        }
 
     };
 

@@ -80,20 +80,6 @@ function saveData(data) {
     });
 }
 
-/*function collectData() {
-    var autoDetectWW = document.getElementById("autoDetect").checked;
-    var enableWolfram = false;
-    var wwHosts = [];
-
-    var wwHostElements = getWWHostElements();
-    for (var i = 0; i < wwHostElements.length; i++) {
-        var wwHost = wwHostElements[i].textContent;
-        wwHosts.push(wwHost);
-    }
-
-    return new ExtConfig.Storage.Data(autoDetectWW, wwHosts, enableWolfram);
-}*/
-
 function getWWHostElements() {
     return document.getElementsByClassName("wwHostText");
 }
