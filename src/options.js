@@ -1,7 +1,3 @@
-/*ExtConfig.Storage.setData(new ExtConfig.Storage.Data(false, ["webwork.elearning.ubc.ca"], false), function () {
-    //console.log("Saved");
-});*/
-
 /**
  * Handles click events on the checkbox button
  * @param {Event} event the click event
@@ -18,18 +14,21 @@ function toggleAutoDetect(event) {
 
 function loadData() {
     ExtConfig.Storage.getData(function (data) {
+        console.log("Load Data");
+        console.log(data);
+
         if (data.autoDetectWW) {
             document.getElementById("autoDetect").checked = true;
             disableManual();
         }
 
         // Clear all current ww host elements
-        var wwHostElements = getWWHostElements();
         var wwHostsContainer = document.getElementById("wwHosts");
-        for(var i = 0; i < wwHostElements.length; i++) {
-            wwHostsContainer.removeChild(wwHostElements[i].parentNode);
+        while(wwHostsContainer.firstChild) {
+            wwHostsContainer.removeChild(wwHostsContainer.firstChild);
         }
 
+        // Add elements for all the hosts
         for (var j = 0; j < data.wwHosts.length; j++) {
             var theHost = data.wwHosts[j];
             addWWHostElement(theHost);
@@ -47,7 +46,7 @@ function saveData(data) {
     });
 }
 
-function collectData() {
+/*function collectData() {
     var autoDetectWW = document.getElementById("autoDetect").checked;
     var enableWolfram = false;
     var wwHosts = [];
@@ -59,7 +58,7 @@ function collectData() {
     }
 
     return new ExtConfig.Storage.Data(autoDetectWW, wwHosts, enableWolfram);
-}
+}*/
 
 function getWWHostElements() {
     return document.getElementsByClassName("wwHostText");
@@ -94,7 +93,7 @@ function addWWHostElement(text) {
     container.appendChild(deleteButton);
 
     var parent = document.getElementById("wwHosts");
-    parent.insertBefore(container, document.getElementById("addButton"));
+    parent.appendChild(container);
 }
 
 function showWWHostInputDialog() {
@@ -120,8 +119,6 @@ function validateWWHost() {
             // Add the hostname we want permission for
             data.wwHosts.push(hostname);
             // Request the new permissions
-            console.log("Pre-permissions:");
-            console.log(data);
             ExtConfig.Permissions.updatePermissions(data, function (granted) {
                 if(granted) {
                     // Permission granted! Register rules and save the data

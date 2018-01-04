@@ -50,11 +50,15 @@ var ExtConfig = new function () {
 
         var PERMISSION_ALL_URLS = "<all_urls>";
 
+        /**
+         * Converts a hostname string into a URL pattern string representing all URLs with that hostname
+         * @param {string} hostname the hostname
+         */
         var getUrlPattern = function (hostname) {
             return "*://" + hostname + "/*";
         }
 
-        var generatePermissions = function (data, callback) {
+        var generatePermissions = function (data) {
             if (data.autoDetectWW) {
                 return { origins: [PERMISSION_ALL_URLS] };
             }
@@ -75,13 +79,59 @@ var ExtConfig = new function () {
          * @param {Function} callback a function to call after the permission has been denied or granted
          */
         this.updatePermissions = function (data, callback) {
-            chrome.permissions.remove({
+            // Generate new origins
+            var newPermissions = generatePermissions(data);
+            var newOrigins = newPermissions.origins;
+
+            // Retrieve old origins
+            chrome.permissions.getAll(function (oldPermissions) {
+                var oldOrigins = oldPermissions.origins;
+
+                // Compare new and old origins
+                var originsToRemove = [];
+                var originsToRequest = [];
+                
+                for(var i = 0; i < oldOrigins.length; i++) {
+                    var origin = oldOrigins[i];
+                    if(!newOrigins.includes(origin)) {
+                        originsToRemove.push(origin);
+                    }
+                }
+
+                for(var i = 0; i < newOrigins.length; i++) {
+                    var origin = newOrigins[i];
+                    if(!oldOrigins.includes(origin)) {
+                        originsToRequest.push(origin);
+                    }
+                }
+
+                chrome.permissions.remove({
+                    origins: originsToRemove
+                }, function (removed) {
+                    chrome.permissions.request({
+                        origins: originsToRequest
+                    }, callback);
+                });
+            });
+
+
+            /*chrome.permissions.remove({
                 origins: [PERMISSION_ALL_URLS]
             }, function (removed) {
                 var newPermissions = generatePermissions(data, callback);
                 chrome.permissions.request(newPermissions, callback);
-            });
+            });*/
         };
+
+        /**
+         * Requests permissions for all URLs on the provided hostname
+         * @param {string} hostname the hostname
+         */
+        this.newHostname = function (hostname) {
+            chrome.permissions.request({
+                origins: [getUrlPattern(hostname)]
+            }, callback);
+        }
 
     };
 
