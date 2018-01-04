@@ -1,5 +1,5 @@
 ExtConfig.Storage.setData(new ExtConfig.Storage.Data(false, ["webwork.elearning.ubc.ca"], false), function () {
-    console.log("Saved");
+    //console.log("Saved");
 });
 
 /**
@@ -8,9 +8,111 @@ ExtConfig.Storage.setData(new ExtConfig.Storage.Data(false, ["webwork.elearning.
  */
 function toggleAutoDetect(event) {
     var checkbox = document.getElementById("autoDetect");
-    if(event.target.id != "autoDetect") {
+    if (event.target.id != "autoDetect") {
+        event.preventDefault(); // Stops the event from firing twice
         checkbox.checked = !checkbox.checked;
     }
+
+    saveData();
+}
+
+function loadData() {
+    ExtConfig.Storage.getData(function (data) {
+        if (data.autoDetectWW) {
+            document.getElementById("autoDetect").checked = true;
+            disableManual();
+        }
+
+        var wwHostInputs = getWWHostInputs();
+        for (var i = 0; i < wwHostInputs.length; i++) {
+            var theHost = data.wwHosts[i];
+            if (theHost) {
+                wwHostInputs[i].value = theHost;
+            }
+        }
+    });
+}
+
+function saveData() {
+    var data = collectData();
+    ExtConfig.Storage.setData(data, function () {
+        console.log(data);
+        loadData();
+    });
+}
+
+function collectData() {
+    var autoDetectWW = document.getElementById("autoDetect").checked;
+    var enableWolfram = false;
+    var wwHosts = [];
+
+    var wwHostInputs = getWWHostInputs();
+    for (var i = 0; i < wwHostInputs.length; i++) {
+        var inputText = wwHostInputs[i].value;
+        var theWWHost = extractHostname(inputText);
+        if (theWWHost) {
+            wwHosts.push(theWWHost);
+        }
+    }
+
+    return new ExtConfig.Storage.Data(autoDetectWW, wwHosts, enableWolfram);
+}
+
+/**
+ * Extracts the hostname from a piece of text that either contains just a hostname or a full URL
+ * @param {string} text the text from which to extract the hostname
+ */
+function extractHostname(text) {
+    var validHostnameRegex = /^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\-]*[a-zA-Z0-9])\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\-]*[A-Za-z0-9])$/;
+
+    if (text) {
+        text = text.trim();
+    }
+
+    if (text) {
+        if (validHostnameRegex.test(text)) {
+            return text;
+        }
+        else {
+            try {
+                var url = new URL(text);
+                return url.hostname;
+            }
+            catch (err) {
+                return null;
+            }
+        }
+    }
+    return null;
+}
+
+function validateWWHostInputs() {
+    var wwHostInputs = getWWHostInputs();
+    for (var i = 0; i < wwHostInputs.length; i++) {
+        var theWWHost = wwHostInputs[i].value;
+
+        if (theWWHost) {
+            var url;
+            try {
+                url = new URL(theWWHost);
+            }
+            catch (err) {
+
+            }
+        }
+    }
+}
+
+function getWWHostInputs() {
+    var wwHostInputs = [];
+    for (var i = 0; i < 3; i++) {
+        wwHostInputs.push(document.getElementById("wwHostInput" + i));
+    }
+    return wwHostInputs;
+}
+
+function disableManual() {
+    // TODO 
 }
 
 // Saves options to chrome.storage
@@ -103,9 +205,9 @@ function editData() {
     urlIn.select();
 }
 
-function saveData() {
+/*function saveData() {
     save_options();
-}
+}*/
 
 function saveSuccess() {
     document.getElementById("currentDataContentText").style.display = "block";
@@ -142,8 +244,9 @@ function allURLsPermission() {
 }
 
 document.getElementById("autoDetectContainer").addEventListener("click", toggleAutoDetect);
-
-document.getElementById("editButton").addEventListener("click", editData);
 document.getElementById("saveButton").addEventListener("click", saveData);
 
-document.addEventListener("DOMContentLoaded", restore_options);
+//document.getElementById("editButton").addEventListener("click", editData);
+//document.getElementById("saveButton").addEventListener("click", saveData);
+
+document.addEventListener("DOMContentLoaded", loadData);
