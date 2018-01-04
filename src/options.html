@@ -36,14 +36,6 @@
             margin-bottom: 50px;
         }
 
-        .description {
-            font-size: 14pt;
-        }
-
-        .instructions {
-            font-size: 12pt;
-        }
-
         .demo {
             border-left: 4px solid #414eff;
             padding-left: 16px;
@@ -51,105 +43,6 @@
 
         .demo input {
             font-size: 16pt;
-        }
-
-        .settingField {
-            background-color: transparent;
-            color: #ffffff;
-            border: none;
-            border-bottom: 1px solid #ffffff;
-            outline: none;
-            font-size: 14pt;
-        }
-
-        .settingField::-webkit-input-placeholder {
-            color: #b6b6b6 !important;
-        }
-
-        .settingField:-moz-placeholder {
-            /* Firefox 18- */
-            color: #b6b6b6 !important;
-        }
-
-        .settingField::-moz-placeholder {
-            /* Firefox 19+ */
-            color: #b6b6b6 !important;
-        }
-
-        .settingField:-ms-input-placeholder {
-            color: #b6b6b6 !important;
-        }
-
-        .currentDataContainer {
-            display: table;
-            width: 100%;
-        }
-
-        .currentDataRow {
-            display: table-row;
-        }
-
-        .currentDataLabel {
-            display: table-cell;
-            width: auto;
-            white-space: nowrap;
-            padding-right: 8px;
-            vertical-align: middle;
-            font-size: 16pt;
-            font-weight: bold;
-        }
-
-        .currentDataContent {
-            display: table-cell;
-            width: 90%;
-            padding-left: 16px;
-            padding-right: 16px;
-            border-radius: 16px 0px 0px 16px;
-            vertical-align: middle;
-            font-size: 14pt;
-        }
-
-        .currentDataEdit {
-            display: table-cell;
-            width: auto;
-            padding-right: 16px;
-            border-radius: 0px 16px 16px 0px;
-            cursor: hand;
-        }
-
-        .currentDataContent,
-        .currentDataEdit {
-            color: #ffffff;
-            background-color: #003388;
-            padding-top: 6px;
-            padding-bottom: 6px;
-        }
-
-        button.action {
-            background: none;
-            border: none;
-            cursor: pointer;
-            color: #ffffff;
-            outline: 0;
-        }
-
-        button.action:hover {
-            color: #ffffff;
-        }
-
-        button.action:active {
-            color: #2583ff
-        }
-
-        .currentDataDummyCell {
-            display: table-cell;
-        }
-
-        .currentDataStatus {
-            display: table-cell;
-            padding-top: 12px;
-            padding-bottom: 12px;
-            font-size: 10pt;
         }
 
         .footer {
@@ -212,31 +105,158 @@
             margin: 0px;
         }
 
+        .smallButton {
+            font-size: 10pt;
+            padding: 5px 10px 5px 10px;
+            border-radius: 5px;
+            text-align: center;
+            margin-right: auto;
+            margin-left: auto;
+        }
+
+        #addButton {
+            width: 140px;
+            margin-top: 20px;
+        }
+
+        .wwHost {
+            font-size: 14pt;
+            padding: 0px 5px 0px 5px;
+            margin-bottom: 10px;
+        }
+
+        .wwHostText {
+            display: inline-block;
+            width: auto;
+        }
+
+        .deleteButton {
+            float: right;
+            padding: 0px 5px 0px 5px;
+            cursor: pointer;
+        }
+
+        .deleteButton:hover {
+            color: #ff0000;
+        }
+
+        /* The Modal (background) */
+
+        .modal {
+            display: none;
+            /* Hidden by default */
+            position: fixed;
+            /* Stay in place */
+            z-index: 1;
+            /* Sit on top */
+            padding-top: 100px;
+            /* Location of the box */
+            left: 0;
+            top: 0;
+            width: 100%;
+            /* Full width */
+            height: 100%;
+            /* Full height */
+            overflow: auto;
+            /* Enable scroll if needed */
+            background-color: rgb(0, 0, 0);
+            /* Fallback color */
+            background-color: rgba(0, 0, 0, 0.4);
+            /* Black w/ opacity */
+        }
+
+        /* Modal Content */
+
+        .modal-content {
+            position: relative;
+            background-color: #fefefe;
+            margin: auto;
+            padding: 0;
+            border: 1px solid #888;
+            width: 700px;
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+            -webkit-animation-name: animatetop;
+            -webkit-animation-duration: 0.4s;
+            animation-name: animatetop;
+            animation-duration: 0.4s
+        }
+
+        /* Add Animation */
+
+        @-webkit-keyframes animatetop {
+            from {
+                top: -300px;
+                opacity: 0
+            }
+            to {
+                top: 0;
+                opacity: 1
+            }
+        }
+
+        @keyframes animatetop {
+            from {
+                top: -300px;
+                opacity: 0
+            }
+            to {
+                top: 0;
+                opacity: 1
+            }
+        }
+
+        /* The Close Button */
+
+        .close {
+            color: white;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: #000;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .modal-header {
+            padding: 2px 16px;
+            background-color: #5c5c5c;
+            color: white;
+        }
+
+        .modal-body {
+            padding: 2px 16px;
+        }
+
         .wwHostInput {
             width: 100%;
             background: #ffffff00;
             border: none;
             border-bottom: 2px solid gray;
             padding: 5px;
+            font-size: 16pt;
+            margin: 10px 0px 10px 0px;
         }
 
         .wwHostInput:focus {
             outline: none;
             border-bottom: 2px solid rgb(0, 132, 255);
         }
-        
+
         .wwHostInput::-webkit-input-placeholder {
             color: #a5a5a5 !important;
         }
 
-        #saveButton {
-            font-size: 10pt;
-            padding: 5px 10px 5px 10px;
-            border-radius: 5px;
-            text-align: center;
-            width: 40px;
-            margin-right: 0px;
-            margin-left: auto;
+        #wwHostInputSave {
+            width: 50px;
+            float: right;
+        }
+
+        .inputMsg {
+            color: red;
         }
     </style>
 
@@ -249,22 +269,11 @@
 
     <div id="content">
 
-        <!--<div>
-    <button id="test">Test</button>
-</div>-->
-
-        <!--<h2>Demo</h2>
-
-        <div class="demo">
-            <input type="text" class="codeshard" size="25"/>
-            <script src="content.js"/>
-        </div>-->
-
         <div id="autoDetectContainer" class="checkButton">
             <input id="autoDetect" type="checkbox">
             <label for="autoDetect">Auto-Detect WeBWorK Pages</label>
         </div>
-        
+
         <br/>
         <h3 class="text" style="display: none;">(Requires permission to view your web traffic to identify WeBWorK sites when you visit them)</h3>
 
@@ -278,50 +287,14 @@
         <br/>
         <br/>
 
-        <h2 class="text">Paste the URL(s) to your WeBWorK site(s) below:</h2>
-        <!--<hr style="width: 350px">-->
+        <h2 class="text">Manually add WeBWorK site(s) below:</h2>
+        <hr style="width: 350px">
 
         <br/>
 
-        <div id="wwHostInputs" style="width: 350px; margin: 0px auto;">
-            <input id="wwHostInput0" class="wwHostInput" type="url" placeholder="e.g. https://webwork.university.ca/webwork2/..."/>
-            <br/>
-            <input id="wwHostInput1" class="wwHostInput" type="url" placeholder="e.g. https://webwork.university.ca/webwork2/..."/>
-            <br/>
-            <input id="wwHostInput2" class="wwHostInput" type="url" placeholder="e.g. https://webwork.university.ca/webwork2/..."/>
-            <br/>
-            <br/>
-            <div id="saveButton" class="checkButton">Save</div>
+        <div id="wwHosts" style="width: 350px; margin: 0px auto;">
+            <div id="addButton" class="smallButton checkButton">Add WeBWorK Site</div>
         </div>
-
-        <!--<div id="currentData">
-            <div class="currentDataContainer">
-                <div class="currentDataRow">
-                    <div class="currentDataLabel">
-                        WeBWorK Domain:
-                    </div>
-                    <div class="currentDataContent">
-                        <span id="currentDataContentText"></span>
-
-                        <div id="dataInputField" style="display:none;">
-                            <input id="urlIn" class="settingField" type="url" placeholder="e.g. https://webwork.university.ca" style="width: 100%" />
-                        </div>
-                    </div>
-                    <div class="currentDataEdit">
-                        <button id="editButton" class="action" title="Edit">
-                            <i class="material-icons">edit</i>
-                        </button>
-                        <button id="saveButton" class="action" style="display:none;" title="Done">
-                            <i class="material-icons">done</i>
-                        </button>
-                    </div>
-                </div>
-                <div class="currentDataRow">
-                    <div class="currentDataDummyCell"></div>
-                    <div id="status" class="currentDataStatus"></div>
-                </div>
-            </div>
-        </div>-->
 
         <br/>
         <br/>
@@ -332,6 +305,24 @@
                 project or the Mathematical Association of America. All names, logos, brands and other trademarks or images
                 featured within this software are the property of their respective trademark holders.
             </p>
+        </div>
+
+    </div>
+
+    <!-- Popup for entering a new WeBWorK site -->
+    <div id="wwHostInputDialog" class="modal">
+
+        <div class="modal-content">
+            <div class="modal-header">
+                <span id="wwHostInputClose" class="close">&times;</span>
+                <h2>Paste the URL to your WeBWorK site below:</h2>
+            </div>
+            <div class="modal-body">
+                <input id="wwHostInputField" class="wwHostInput" type="url" placeholder="e.g. https://webwork.university.ca/..."/>
+                <div id="wwHostInputMsg" class="inputMsg"></div>
+                <div id="wwHostInputSave" class="smallButton checkButton">Save</div>
+                <div style="clear: both; margin-bottom: 10px;"></div>
+            </div>
         </div>
 
     </div>
