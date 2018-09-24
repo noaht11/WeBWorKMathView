@@ -1,7 +1,7 @@
 /*
 ASCIIMathTeXImg.js
 
-Modified by Noah Tajwar, Nov 22, 2017
+Modified by Noah Tajwar, Nov 22, 2017. All modifications labelled with a comment containing 'MOD'
 
 Based on ASCIIMathML, Version 1.4.7 Aug 30, 2005, (c) Peter Jipsen http://www.chapman.edu/~jipsen
 Modified with TeX conversion for IMG rendering Sept 6, 2006 (c) David Lippman http://www.pierce.ctc.edu/dlippman
@@ -197,9 +197,9 @@ var AMsymbols = [
 {input:"oint", tag:"mo", output:"\u222E", tex:null, ttype:CONST},
 {input:"del",  tag:"mo", output:"\u2202", tex:"partial", ttype:CONST},
 {input:"grad", tag:"mo", output:"\u2207", tex:"nabla", ttype:CONST},
-//{input:"+-",   tag:"mo", output:"\u00B1", tex:"pm", ttype:CONST}, // Disable \pm behavior - in WeBWorK +- is plus a negative number
+//{input:"+-",   tag:"mo", output:"\u00B1", tex:"pm", ttype:CONST}, // MOD: Disable \pm behavior - in WeBWorK +- is plus a negative number
 {input:"O/",   tag:"mo", output:"\u2205", tex:"emptyset", ttype:CONST},
-{input:"oo",   tag:"mo", output:"\u221E", tex:"infty", ttype:CONST},
+{input:"inf",   tag:"mo", output:"\u221E", tex:"infty", ttype:CONST}, // MOD: in WeBWorK infinity is 'inf'
 {input:"aleph", tag:"mo", output:"\u2135", tex:null, ttype:CONST},
 {input:"...",  tag:"mo", output:"...",    tex:"ldots", ttype:CONST},
 {input:":.",  tag:"mo", output:"\u2234",  tex:"therefore", ttype:CONST},
