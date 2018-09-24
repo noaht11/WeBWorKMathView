@@ -1,3 +1,5 @@
+console.log("[WeBWorK MathView] ext-config.js");
+
 var ExtConfig = new function () {
 
     var HOSTNAME_WOLFRAM_ALPHA = "www.wolframalpha.com";
@@ -119,25 +121,21 @@ var ExtConfig = new function () {
 
     this.Events = new function () {
 
-        var CONTENT_WEBWORK_JS = "content_webwork.js";
-        var CONTENT_WOLFRAM_JS = "content_wolfram.js";
+        var CONTENT_WEBWORK_JS = "content-webwork.js";
+        var CONTENT_WOLFRAM_JS = "content-wolfram.js";
 
         /**
-         * Core CSS files that are not specific to the extension's operation an any particular domain
+         * Core CSS files that are not specific to the extension's operation on any particular domain
          */
         var CORE_CSS = [
-            "katex/katex.css",
-            "math-view.css"
         ];
 
         /**
-         * Core JS files that are not specific to the extension's operation an any particular domain
+         * Core JS files that are not specific to the extension's operation on any particular domain
          */
         var CORE_JS = [
-            "asciimath-based/ASCIIMathTeXImg.js",
-            "katex/katex.min.js",
-            "math-view.js",
-            "extUtils.js",
+            "math-view-utils.js",
+            "math-view-ext.js"
         ];
 
         /**

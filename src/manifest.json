@@ -15,7 +15,7 @@
     "options_page": "options.html",
 
     "background": {
-        "scripts": ["eventPage.js"],
+        "scripts": ["event-page.js"],
         "persistent": false
     },
 
