@@ -29,34 +29,34 @@ var MathViewExt = new function () {
         mvCSS.rel = "stylesheet";
         mvCSS.type = "text/css";
         mvCSS.href = getResourcePath("math-view.css");
-        document.head.appendChild(mvCSS);
+        (document.head || document.documentElement).appendChild(mvCSS);
 
         // KaTeX JS
         var katexJS = document.createElement("script");
         katexJS.id = MV_SCRIPT_ID_KATEX;
         katexJS.src = getResourcePath("katex/katex.min.js");
         //katexJS.defer = "defer"; // We don't actually need to defer these scripts because we're using listeners on the load events
-        document.head.appendChild(katexJS);
+        (document.head || document.documentElement).appendChild(katexJS);
 
         // KaTeX CSS
         var katexCSS = document.createElement("link");
         katexCSS.rel = "stylesheet";
         katexCSS.type = "text/css";
         katexCSS.href = getResourcePath("katex/katex.css");
-        document.head.appendChild(katexCSS);
+        (document.head || document.documentElement).appendChild(katexCSS);
 
         // ASCIIMathTeXImg JS
         var asciiMathJS = document.createElement("script");
         asciiMathJS.id = MV_SCRIPT_ID_ASCIIMATH;
         asciiMathJS.src = getResourcePath("asciimath-based/ASCIIMathTeXImg.js");
         //asciiMathJS.defer = "defer"; // We don't actually need to defer these scripts because we're using listeners on the load events
-        document.head.appendChild(asciiMathJS);
+        (document.head || document.documentElement).appendChild(asciiMathJS);
         
         // MathView itself (this script)
         var mathViewJS = document.createElement("script");
         mathViewJS.id = MV_SCRIPT_ID;
         mathViewJS.src = getResourcePath("math-view.js");
-        document.head.appendChild(mathViewJS);
+        (document.head || document.documentElement).appendChild(mathViewJS);
     };
 
     /**
@@ -77,14 +77,28 @@ var MathViewExt = new function () {
      *                         Use MathViewUtils.onMathViewReady(...) in your setup function if you need access to a MathView reference.
      */
     this.inject = function (setup) {
-        // Inject all dependencies
-        injectDependencies();
+        var doInjection = function () {
+            console.log("[WeBWorK MathView] Injecting MathView");
+            // Inject all dependencies
+            injectDependencies();
 
-        // Convert function to text and combine with MathViewUtils declaration
-        var setupScript = "(" + MathViewUtilsWrapper + ")();";
-        setupScript += "(" + setup + ")();";
+            // Convert function to text and combine with MathViewUtils declaration
+            var setupScript = "(" + MathViewUtilsWrapper + ")();";
+            setupScript += "(" + setup + ")();";
 
-        // Inject setup script
-        injectInlineScriptText(setupScript);
+            // Inject setup script
+            injectInlineScriptText(setupScript);
+        }
+
+        if (document.head || document.documentElement) {
+            doInjection();
+        }
+        else {
+            console.log("[WeBWorK MathView] DOM not available. Waiting to inject MathView...");
+            document.addEventListener("DOMContentLoaded", function() {
+                console.log("[WeBWorK MathView] DOM available");
+                doInjection();
+            });
+        }
     };
 }

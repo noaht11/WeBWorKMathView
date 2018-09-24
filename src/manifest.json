@@ -15,7 +15,7 @@
     "options_page": "options.html",
 
     "background": {
-        "scripts": ["event-page.js"],
+        "scripts": ["ext-config.js", "event-page.js"],
         "persistent": false
     },
 
