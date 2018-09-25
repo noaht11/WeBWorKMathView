@@ -6,7 +6,7 @@ var launchOptions = function () {
     });
 }
 
-var handleUpdate2To3 = function () {
+var handleUpdate1_1To1_2 = function () {
     // Main Changes:
     //   - New system for storing the webwork domain
     //   - Addition of automatic detection of webwork sites
@@ -60,8 +60,8 @@ chrome.runtime.onInstalled.addListener(function (object) {
         var currentVersion = chrome.runtime.getManifest().version;
         var previousVersion = object.previousVersion;
 
-        if (previousVersion == 2 && currentVersion == 3) {
-            handleUpdate2To3();
+        if (previousVersion == "1.1" && currentVersion == "1.2") {
+            handleUpdate1_1To1_2();
         }
     }
 });
