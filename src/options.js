@@ -1,3 +1,5 @@
+console.log("[WeBWorK MathView] options.js");
+
 /**
  * Handles click events on the checkbox button
  * @param {Event} event the click event
@@ -20,10 +22,11 @@ function toggleAutoDetect(event) {
     ExtConfig.Storage.getData(function (data) {
         data.autoDetectWW = pendingChecked;
 
-        ExtConfig.Permissions.updatePermissions(data, function (granted) {
+        ExtConfig.Permissions.updatePermissions(data, function (success) {
             var permissionsMsg = document.getElementById("autoDetectPermissionMsg");
 
-            if(granted) {
+            // If we're just disabling autoDetectWW we don't care if it was successful
+            if(success || (!data.autoDetectWW)) {
                 checkbox.checked = pendingChecked;
                 ExtConfig.Events.registerOnPageChangedRules(data);
                 saveData(data);
@@ -100,8 +103,9 @@ function addWWHostElement(text) {
 
         ExtConfig.Storage.getData(function (data) {
             data.wwHosts.splice(data.wwHosts.indexOf(text), 1);
+            console.log(data.wwHosts);
             
-            ExtConfig.Permissions.updatePermissions(data, function (granted) {
+            ExtConfig.Permissions.updatePermissions(data, function (success) {
                 ExtConfig.Events.registerOnPageChangedRules(data);
 
                 saveData(data);
@@ -139,8 +143,8 @@ function validateWWHost() {
             // Add the hostname we want permission for
             data.wwHosts.push(hostname);
             // Request the new permissions
-            ExtConfig.Permissions.updatePermissions(data, function (granted) {
-                if(granted) {
+            ExtConfig.Permissions.updatePermissions(data, function (success) {
+                if(success) {
                     // Permission granted! Register rules and save the data
                     ExtConfig.Events.registerOnPageChangedRules(data);
                     saveData(data);

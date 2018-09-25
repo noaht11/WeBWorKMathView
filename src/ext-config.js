@@ -78,7 +78,8 @@ var ExtConfig = new function () {
         /**
          * Requests extension permissions necessary for the provided configuration data
          * @param {ExtConfig.Storage.Data} data the configuration data
-         * @param {Function} callback a function to call after the permission has been denied or granted
+         * @param {Function} callback a function to call after the permission has been denied or granted.
+         *                            Argument to the function indicates if the permissions were successfully updated
          */
         this.updatePermissions = function (data, callback) {
             // Generate new origins
@@ -107,13 +108,48 @@ var ExtConfig = new function () {
                     }
                 }
 
-                chrome.permissions.remove({
-                    origins: originsToRemove
-                }, function (removed) {
+                // Remove old origins and add new origins if required
+
+                console.log("Remove: ");
+                console.log(originsToRemove);
+                console.log("Request: ");
+                console.log(originsToRequest);
+
+                if (originsToRemove.length > 0) {
+                    // Remove old permissions
+                    chrome.permissions.remove({
+                        origins: originsToRemove
+                    }, function (removed) {
+                        if (removed) {
+                            // Old permissions removed
+                            // Request new permissions
+                            if (originsToRequest.length > 0) {
+                                chrome.permissions.request({
+                                    origins: originsToRequest
+                                }, callback);
+                            }
+                            else {
+                                // No permissions to add, remove was successful
+                                callback(true);
+                            }
+                        }
+                        else {
+                            // Failed to remove permissions
+                            callback(false);
+                        }
+                    });
+                }
+                else if (originsToRequest.length > 0) {
+                    // No permissions to remove
+                    // Request new permissions
                     chrome.permissions.request({
                         origins: originsToRequest
                     }, callback);
-                });
+                }
+                else {
+                    // No permissions to remove or request
+                    callback(true);
+                }
             });
         };
 

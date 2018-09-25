@@ -6,6 +6,15 @@ var MathView = new function () {
 
     var MV_CSS_CLASS_MATH_OUT = "mv_mathout";
     var MV_MATH_OUT_ID_PRE = "mv_out";
+    var MV_ATTR_ATTACHED = "mv_attached";
+
+    /**
+     * Checks if an input element has a MathView currently attached to it
+     * @param {Element} inputSource the input element to check for an attached MathView
+     */
+    this.hasMathView = function (inputSource) {
+        return inputSource.hasAttribute(MV_ATTR_ATTACHED);
+    }
 
     var generateMathViewId = function (id, subIndex) {
         return MV_MATH_OUT_ID_PRE + id + "_" + subIndex;
@@ -29,9 +38,12 @@ var MathView = new function () {
     /**
      * Creates and styles a <div> element to serve as a container for math-formatted text
      * @param {number} id the id of the corresponding input
-     * @param {Element} inputSource 
+     * @param {Element} inputSource the input element to attach the MathView to
      */
     this.createMathView = function (id, inputSource) {
+        // Flag the input as having a MathView attached
+        inputSource.setAttribute(MV_ATTR_ATTACHED, "");
+
         // Attach the onkeyup event
         inputSource.addEventListener("keyup", function () {
             MathView.updateMath(id, this.value);

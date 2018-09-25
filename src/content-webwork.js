@@ -7,13 +7,17 @@ var webworkSetup = function () {
             console.log("[WeBWorK MathView] Inserting MathView elements");
             for (var i = 0; i < inputs.length; i++) {
                 var theInput = inputs[i];
-                var aMath = theInput.value;
-        
-                var mathView = MathView.createMathView(i, theInput);
-        
-                // Insert the math containers directly after the text input
-                theInput.parentNode.insertBefore(mathView, theInput.nextSibling);
-                MathView.updateMath(i, aMath);
+
+                // Only attach a MathView if one hasn't already been attached
+                if (!MathView.hasMathView(theInput)) {
+                    var aMath = theInput.value;
+            
+                    var mathView = MathView.createMathView(i, theInput);
+            
+                    // Insert the math containers directly after the text input
+                    theInput.parentNode.insertBefore(mathView, theInput.nextSibling);
+                    MathView.updateMath(i, aMath);
+                }
             }
             console.log("[WeBWorK MathView] Rendered");
         }
