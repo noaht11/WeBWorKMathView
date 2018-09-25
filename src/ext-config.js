@@ -110,11 +110,6 @@ var ExtConfig = new function () {
 
                 // Remove old origins and add new origins if required
 
-                console.log("Remove: ");
-                console.log(originsToRemove);
-                console.log("Request: ");
-                console.log(originsToRequest);
-
                 if (originsToRemove.length > 0) {
                     // Remove old permissions
                     chrome.permissions.remove({
