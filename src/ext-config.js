@@ -15,7 +15,6 @@ var ExtConfig = new function () {
 
         /**
          * Constructor for an object to represent our stored data
-         * 
          * @param {boolean} autoDetectWW if true, the scripts will automatically run on WeBWorK sites
          * @param {string[]} wwHosts a list of hosts (e.g. "webwork.university.ca") on which to run the scripts,
          *                             ignored if autoDetectWW is true
@@ -31,8 +30,7 @@ var ExtConfig = new function () {
 
         /**
          * Persists data in this extension's local storage
-         * 
-         * @param {ExtConfig.Storage.Data} data the data to persist
+         * @param {Object} data the data to persist
          * @param {setCallback} callback a function to call after the data is persisted
          */
         this.setData = function (data, callback) {
@@ -46,6 +44,15 @@ var ExtConfig = new function () {
         this.getData = function (callback) {
             chrome.storage.sync.get(new this.Data(false, [], false), callback);
         };
+
+        /**
+         * Deletes the provided keys from this extension's local storage
+         * @param {string[]} keys keys to be deleted
+         * @param {Function} callback a function to call after the data is deleted
+         */
+        this.delete = function (keys, callback) {
+            chrome.storage.sync.remove(keys, callback);
+        }
     };
 
     this.Permissions = new function () {
