@@ -10,6 +10,7 @@ var webworkSetup = function () {
 
                 // Only attach a MathView if one hasn't already been attached
                 if (!MathView.hasMathView(theInput)) {
+                    /********* Attach MathView *********/
                     var aMath = theInput.value;
             
                     var mathView = MathView.createMathView(i, theInput);
@@ -17,6 +18,12 @@ var webworkSetup = function () {
                     // Insert the math containers directly after the text input
                     theInput.parentNode.insertBefore(mathView, theInput.nextSibling);
                     MathView.updateMath(i, aMath);
+
+                    /********* Disable spell check *********/
+                    theInput.setAttribute("autocomplete", "off");
+                    theInput.setAttribute("autocorrect", "off");
+                    theInput.setAttribute("autocapitalize", "off");
+                    theInput.setAttribute("spellcheck", "false");
                 }
             }
             console.log("[WeBWorK MathView] Rendered");
