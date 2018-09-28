@@ -24,6 +24,9 @@ var webworkSetup = function () {
                     theInput.setAttribute("autocorrect", "off");
                     theInput.setAttribute("autocapitalize", "off");
                     theInput.setAttribute("spellcheck", "false");
+
+                    /********* Custom font *********/
+                    theInput.style.font = "normal 1.21em KaTeX_Main, Times New Roman, serif";
                 }
             }
             console.log("[WeBWorK MathView] Rendered");
