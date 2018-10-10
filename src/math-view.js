@@ -2,18 +2,20 @@ console.log("[WeBWorK MathView] math-view.js");
 
 var MathView = new function () {
 
+    this.MV_ATTR_ATTACHED = "mv_attached";
+
     var USE_MATHJAX_BACKUP = false && (window.MathJax != undefined);
 
     var MV_CSS_CLASS_MATH_OUT = "mv_mathout";
     var MV_MATH_OUT_ID_PRE = "mv_out";
-    var MV_ATTR_ATTACHED = "mv_attached";
+    
 
     /**
      * Checks if an input element has a MathView currently attached to it
      * @param {Element} inputSource the input element to check for an attached MathView
      */
     this.hasMathView = function (inputSource) {
-        return inputSource.hasAttribute(MV_ATTR_ATTACHED);
+        return inputSource.hasAttribute(this.MV_ATTR_ATTACHED);
     }
 
     var generateMathViewId = function (id, subIndex) {
@@ -42,7 +44,7 @@ var MathView = new function () {
      */
     this.createMathView = function (id, inputSource) {
         // Flag the input as having a MathView attached
-        inputSource.setAttribute(MV_ATTR_ATTACHED, "");
+        inputSource.setAttribute(this.MV_ATTR_ATTACHED, id);
 
         // Attach the onkeyup event
         inputSource.addEventListener("keyup", function () {
