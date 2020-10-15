@@ -1,7 +1,7 @@
 # WeBWorK MathView
 A Chrome extension to provide live previews of math equations entered into WeBWorK text fields using KaTeX, MathJax and AsciiMath
 
-![Screenshot](/docs/Screenshot.png?raw=true)
+![Screenshot](/img/screenshot.png?raw=true)
 
 # Installation
 1. Download the ```WeBWorKLivePreview.crx``` file (in the build folder)
@@ -32,19 +32,16 @@ When a webpage matching the predefined URL pattern loads, the extension performs
 1. The current contents of the input field that triggered the event are placed into the associated injected ```<div>```
 2. The modified AMparseMath(str) function from AsciiMath is used to translate the input text into LaTeX
 3. An attempt is made to render the LaTeX using KaTeX
-4. Since KaTeX does not support as many function, if KaTeX throws an error, MathJax is used to typeset the raw AsciiMath (NOTE: for this to work, the AsciiMath must be surrounded by backticks);
+4. Since KaTeX does not support as many functions, if KaTeX throws an error, MathJax is used to typeset the raw AsciiMath (NOTE: for this to work, the AsciiMath must be surrounded by backticks);
 
 NOTE: When using MathJax, since it is much slower, there are actually two ```<div>```s for each input field, to avoid flashes when the text is being updated.
 When one ```<div>``` is being updated, it is hidden, then once it is finished being updated, it gets displayed
 and the other ```<div>``` is hidden and updated.
 
-# Notes
-The extension is currently configured to only run on ```https://webwork.elearning.ubc.ca/*``` webpages (although this can be easily modified).
-
 # License
 MIT License
 ```
-Copyright 2017 Noah Tajwar
+Copyright 2020 Noah Tajwar
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
