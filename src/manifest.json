@@ -29,7 +29,6 @@
 
     "permissions": [
         "storage",
-        "activeTab",
         "declarativeContent"
     ],
     "optional_permissions": [
