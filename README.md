@@ -1,13 +1,16 @@
 # WeBWorK MathView
-A Chrome extension to provide live previews of math equations entered into WeBWorK text fields using KaTeX, MathJax and AsciiMath
+A Chrome extension to provide live previews of math equations entered into WeBWorK text fields using KaTeX, MathJax and AsciiMath.
 
-![Screenshot](/img/screenshot.png?raw=true)
+[WeBWorK MathView on the Chrome Web Store](https://chrome.google.com/webstore/detail/webwork-mathview/jcphgophoinpfmbnfecgekaeaoocbogd?hl=en)
+
+![Screenshot](/img/Demo.gif?raw=true)
 
 # Installation
-1. Download the ```WeBWorKLivePreview.crx``` file (in the build folder)
-2. Go to the Extensions Page in Chrome (Menu Button > More tools > Extensions or ```chrome://extensions/```)
-3. Drag and drop the downloaded file onto the Extensions page
-4. Click "Add Extension" when prompted (there may be a 2-3 second delay before the prompt appears)
+1. Clone the repository
+2. Go to the Extensions Page in Chrome (Menu Button > More tools > Extensions or enter ```chrome://extensions/``` in the URL bar)
+3. Click "Load unpacked" in the top-left corner
+4. Select the ```src``` folder of the repository
+5. The extension settings page will automatically launch so you can enable / configure it
 
 # Libraries
 This extension makes use of the following open source libraries:
@@ -19,9 +22,17 @@ This extension makes use of the following open source libraries:
    * This extension uses a modified version of the ASCIIMathTeXImg.js file that returns a LaTeX string for a given AsciiMath input
 
 # How it Works
+**Auto-Detect vs. Manual Domain Entry**
+
+There are two modes of operation to give users the options of granting fewer permissions to the extension.
+
+If Auto-Detect is enabled, the extension will execute its content script when the current page contains inputs with the class ```codeshard```. To detect this, the extension has to request the ```<all urls>``` permission.
+
+Alternatively, the user can manually enter the domain of their WeBWorK site and the extension will only execute its content script on those domains. In this case, the extension only has to request permissions for that particular domain.
+
 **Loading a webpage**
 
-When a webpage matching the predefined URL pattern loads, the extension performs the following:
+When the content script executes, it does the following:
 * Injects a ```<script>``` tag containing a callback for onkeyup events in the page's text inputs
 * Inserts ```<div>``` elements next to each input with the class ```"codeshard"```
 * Assigns attributes to the ```"codeshard"``` inputs to uniquely identify them within the page (an index number)
