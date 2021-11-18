@@ -59,6 +59,10 @@ var webworkSetup = function () {
                 // Attach onclick listener
                 clearAnswers.addEventListener("click", function (e) {
                     e.preventDefault();
+                    if (!confirm("Are you sure you want to clear all answer boxes on this page. This cannot be undone.")) {
+                        return;
+                    }
+
                     var textInputs = retrieveTextInputs();
                     for (var i = 0; i < textInputs.length; i++) {
                         var theInput = textInputs[i];
