@@ -2,256 +2,190 @@ console.log("[WeBWorK MathView] ext-config.js");
 
 var ExtConfig = new function () {
 
-    var HOSTNAME_WOLFRAM_ALPHA = "www.wolframalpha.com";
+    var WEBWORK_SLUG = "webwork2";
+
+    var CSS_DEPENDENCIES = [
+        "lib/katex/katex.css",
+        "math-view.css"
+    ];
+
+    var JS_DEPENDENCIES = [
+        "lib/katex/katex.min.js",
+        "lib/asciimath/ASCIIMathTeXImg.js",
+        "math-view.js",
+        "content-webwork.js"
+    ];
 
     /**
-     * @typedef {Object} ExtConfig.Storage.Data
-     * @property {boolean} autoDetectWW
-     * @property {string[]} wwHosts
-     * @property {boolean} enableWolfram
+     * Extracts the hostname from a piece of text that either contains just a hostname or a full URL
+     * @param {string} text the text from which to extract the hostname
      */
+    var extractHostname = function (url) {
+        return new URL(url).hostname;
+    }
 
-    this.Storage = new function () {
+    var createURLPattern = function (origin) {
+        return `*://${origin}/${WEBWORK_SLUG}/*`
+    }
 
-        /**
-         * Constructor for an object to represent our stored data
-         * @param {boolean} autoDetectWW if true, the scripts will automatically run on WeBWorK sites
-         * @param {string[]} wwHosts a list of hosts (e.g. "webwork.university.ca") on which to run the scripts,
-         *                             ignored if autoDetectWW is true
-         * @param {boolean} enableWolfram if true, the scripts will run on WolframAlpha
-         * 
-         * @constructor
-         */
-        this.Data = function (autoDetectWW, wwHosts, enableWolfram) {
-            this.autoDetectWW = autoDetectWW;
-            this.wwHosts = wwHosts;
-            this.enableWolfram = enableWolfram;
-        }
+    var createContentScriptID = function (origin) {
+        return `webwork-${origin}`;
+    }
 
-        /**
-         * Persists data in this extension's local storage
-         * @param {Object} data the data to persist
-         * @param {setCallback} callback a function to call after the data is persisted
-         */
-        this.setData = function (data, callback) {
-            chrome.storage.sync.set(data, callback);
+    var createContentScriptSpec = function (origin) {
+        return {
+            "id": createContentScriptID(origin),
+            "allFrames": true,
+            "css": CSS_DEPENDENCIES,
+            "js": JS_DEPENDENCIES,
+            "matches": [createURLPattern(origin)]
         };
-
-        /**
-         * Retrieves data from this extension's local storage
-         * @param {Function} callback a function to call with the retrieved data
-         */
-        this.getData = function (callback) {
-            chrome.storage.sync.get(new this.Data(false, [], false), callback);
-        };
-
-        /**
-         * Deletes the provided keys from this extension's local storage
-         * @param {string[]} keys keys to be deleted
-         * @param {Function} callback a function to call after the data is deleted
-         */
-        this.delete = function (keys, callback) {
-            chrome.storage.sync.remove(keys, callback);
-        }
     };
 
-    this.Permissions = new function () {
+    var createPermissionSpec = function (origin) {
+        return {
+            "origins": [createURLPattern(origin)]
+        };
+    }
 
-        var PERMISSION_ALL_URLS = "<all_urls>";
+    var registerContentScript = async function (origin) {
+        var contentScriptSpec = createContentScriptSpec(origin);
+        var contentScripts = await chrome.scripting.getRegisteredContentScripts({
+            "ids": [contentScriptSpec.id]
+        });
+        if (contentScripts && contentScripts.length > 0) {
+            // Update the content script if it already is registered
+            await chrome.scripting.updateContentScripts([contentScriptSpec]);
+        } else {
+            await chrome.scripting.registerContentScripts([contentScriptSpec]);
+        }
+    }
 
-        /**
-         * Converts a hostname string into a URL pattern string representing all URLs with that hostname
-         * @param {string} hostname the hostname
-         */
-        var getUrlPattern = function (hostname) {
-            return "*://" + hostname + "/*";
+    var unregisterContentScript = async function (origin) {
+        if (await hasContentScript(origin)) {
+            await chrome.scripting.unregisterContentScripts({
+                "ids": [createContentScriptID(origin)]
+            });
+        }
+    }
+
+    var hasPermission = async function (origin) {
+        var permissionSpec = createPermissionSpec(origin);
+        return await chrome.permissions.contains(permissionSpec);
+    }
+
+    var hasContentScript = async function (origin) {
+        var contentScriptSpec = createContentScriptSpec(origin);
+        var contentScripts = await chrome.scripting.getRegisteredContentScripts({
+            "ids": [contentScriptSpec.id]
+        });
+        if (!contentScripts || contentScripts.length <= 0) {
+            return false;
         }
 
-        var generatePermissions = function (data) {
-            if (data.autoDetectWW) {
-                return { origins: [PERMISSION_ALL_URLS] };
-            }
-            else {
-                var urlPatterns = data.wwHosts.map(getUrlPattern);
+        return true;
+    }
 
-                if (data.enableWolfram) {
-                    urlPatterns.push(getUrlPattern(HOSTNAME_WOLFRAM_ALPHA));
-                }
+    this.configureAction = function () {
+        // Page actions are disabled by default and enabled on select tabs
+        chrome.action.disable();
 
-                return { origins: urlPatterns };
+        // Clear all rules to ensure only our expected rules are set
+        chrome.declarativeContent.onPageChanged.removeRules(undefined, () => {
+            // Declare a rule to enable the action on webwork pages
+            var rule = {
+                conditions: [
+                    new chrome.declarativeContent.PageStateMatcher({
+                        pageUrl: {pathPrefix: `/${WEBWORK_SLUG}`},
+                    })
+                ],
+                actions: [new chrome.declarativeContent.ShowAction()],
+            };
+            // Apply the rule
+            chrome.declarativeContent.onPageChanged.addRules([rule]);
+        });
+    }
+
+    this.tryEnableGlobal = async function () {
+        // Check if we have global permissions
+        if (await hasPermission("*")) {
+            // Register the content script globally since we have permissions anyway
+            await registerContentScript("*");
+            return true;
+        }
+        return false;
+    }
+
+    this.addWebworkSite = async function (url) {
+        var origin = extractHostname(url);
+
+        // Check if we have the necessary permissions
+        if (!hasPermission(origin)) {
+            // Request permission if we don't already have it
+            var granted = await chrome.permissions.request(permissionSpec);
+            if (!granted) {
+                return false;
             }
         }
 
-        /**
-         * Requests extension permissions necessary for the provided configuration data
-         * @param {ExtConfig.Storage.Data} data the configuration data
-         * @param {Function} callback a function to call after the permission has been denied or granted.
-         *                            Argument to the function indicates if the permissions were successfully updated
-         */
-        this.updatePermissions = function (data, callback) {
-            // Generate new origins
-            var newPermissions = generatePermissions(data);
-            var newOrigins = newPermissions.origins;
+        // Handle content script registration
+        await registerContentScript(origin);
 
-            // Retrieve old origins
-            chrome.permissions.getAll(function (oldPermissions) {
-                var oldOrigins = oldPermissions.origins;
-
-                // Compare new and old origins
-                var originsToRemove = [];
-                var originsToRequest = [];
-                
-                for(var i = 0; i < oldOrigins.length; i++) {
-                    var origin = oldOrigins[i];
-                    if(!newOrigins.includes(origin)) {
-                        originsToRemove.push(origin);
-                    }
-                }
-
-                for(var i = 0; i < newOrigins.length; i++) {
-                    var origin = newOrigins[i];
-                    if(!oldOrigins.includes(origin)) {
-                        originsToRequest.push(origin);
-                    }
-                }
-
-                // Remove old origins and add new origins if required
-
-                if (originsToRemove.length > 0) {
-                    // Remove old permissions
-                    chrome.permissions.remove({
-                        origins: originsToRemove
-                    }, function (removed) {
-                        if (removed) {
-                            // Old permissions removed
-                            // Request new permissions
-                            if (originsToRequest.length > 0) {
-                                chrome.permissions.request({
-                                    origins: originsToRequest
-                                }, callback);
-                            }
-                            else {
-                                // No permissions to add, remove was successful
-                                callback(true);
-                            }
-                        }
-                        else {
-                            // Failed to remove permissions
-                            callback(false);
-                        }
-                    });
-                }
-                else if (originsToRequest.length > 0) {
-                    // No permissions to remove
-                    // Request new permissions
-                    chrome.permissions.request({
-                        origins: originsToRequest
-                    }, callback);
-                }
-                else {
-                    // No permissions to remove or request
-                    callback(true);
-                }
-            });
-        };
-
+        return true;
     };
 
-    this.Events = new function () {
+    this.hasGlobalWebworkSite = async function () {
+        // Check for global configuration
+        if (await hasPermission("*") && await hasContentScript("*")) {
+            return true;
+        }
+        return false;
+    }
 
-        var CONTENT_WEBWORK_JS = "content-webwork.js";
-        var CONTENT_WOLFRAM_JS = "content-wolfram.js";
+    this.hasWebworkSite = async function (url) {
+        // Check for the specific origin
+        var origin = extractHostname(url);
+        if (await hasPermission(origin) && await hasContentScript(origin)) {
+            return true;
+        }
 
-        /**
-         * Core CSS files that are not specific to the extension's operation on any particular domain
-         */
-        var CORE_CSS = [
-        ];
+        return false;
+    }
 
-        /**
-         * Core JS files that are not specific to the extension's operation on any particular domain
-         */
-        var CORE_JS = [
-            "math-view-utils.js",
-            "math-view-ext.js"
-        ];
+    this.removeWebworkSite = async function (url) {
+        var origin = extractHostname(url);
 
-        /**
-         * Creates a RequestContentScript object containing the CSS and JS files required for operation
-         * @param {string} contentJSFile the filename of the content script to use
-         */
-        var createRequestContentScript = function (contentJSFile) {
-            var allJS = CORE_JS.slice();
-            allJS.push(contentJSFile);
+        // Remove the content script
+        await unregisterContentScript(origin);
 
-            return new chrome.declarativeContent.RequestContentScript({
-                "css": CORE_CSS,
-                "js": allJS
-            });
+        // Remove the permission
+        // TODO: Right now this is skipped because host permissions are horribly broken
+        // in manifest v3. Once they eventually get fixed, this can be added back in.
+
+        // var permissionSpec = createPermissionSpec(origin);
+        // console.log(permissionSpec);
+        // await chrome.permissions.remove(permissionSpec);
+    }
+
+    this.disableGlobal = async function () {
+        await unregisterContentScript("*");
+
+        // TODO remove permission
+    }
+
+    this.directInject = async function (tabID) {
+        var target = {
+            "allFrames": true,
+            "tabId": tabID
         };
 
-        /**
-         * Generates a set of rules describing when to run our scripts based on the provided configuration data
-         * @param {ExtConfig.Storage.Data} data the configuration data
-         * @returns an array of JSON objects representing the onPageChanged rules to register based on
-         * the provided arguments
-         */
-        var generateOnPageChangedRules = function (data) {
-            var rules = [];
-
-            if (data.autoDetectWW) {
-                rules.push({
-                    id: "wwAutoDetect",
-                    conditions: [new chrome.declarativeContent.PageStateMatcher({
-                        pageUrl: { schemes: ["https", "http"] },
-                        css: ["input.codeshard"]
-                    })],
-                    actions: [
-                        createRequestContentScript(CONTENT_WEBWORK_JS)
-                    ]
-                });
-            }
-            else {
-                for (let i = 0; i < data.wwHosts.length; i++) {
-                    rules.push({
-                        id: "wwDomain" + i,
-                        conditions: [new chrome.declarativeContent.PageStateMatcher({
-                            pageUrl: { hostEquals: data.wwHosts[i], schemes: ["https", "http"] },
-                        })],
-                        actions: [
-                            createRequestContentScript(CONTENT_WEBWORK_JS)
-                        ]
-                    });
-                }
-            }
-
-            if (data.enableWolfram) {
-                rules.push({
-                    id: "wolfram",
-                    conditions: [new chrome.declarativeContent.PageStateMatcher({
-                        pageUrl: { hostEquals: HOSTNAME_WOLFRAM_ALPHA, schemes: ["https", "http"] },
-                    })],
-                    actions: [
-                        createRequestContentScript(CONTENT_WOLFRAM_JS)
-                    ]
-                });
-            }
-
-            return rules;
-        };
-
-        /**
-         * Registers rules for the onPageChanged event to trigger our scripts according to the provided configuration data
-         * @param {ExtConfig.Storage.Data} data the configuration data
-         */
-        this.registerOnPageChangedRules = function (data) {
-            var newRules = generateOnPageChangedRules(data);
-
-            chrome.declarativeContent.onPageChanged.removeRules(undefined, function () {
-                chrome.declarativeContent.onPageChanged.addRules(newRules);
-            });
-        };
-
-    };
-
+        await chrome.scripting.insertCSS({
+            "files": CSS_DEPENDENCIES,
+            "target": target
+        });
+        await chrome.scripting.executeScript({
+            "files": JS_DEPENDENCIES,
+            "target": target
+        })
+    }
 };

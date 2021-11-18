@@ -1,5 +1,5 @@
 {
-    "manifest_version": 2,
+    "manifest_version": 3,
 
     "name": "WeBWorK MathView",
     "version": "1.4",
@@ -12,26 +12,34 @@
         "128": "icon/icon_128.png"
     },
 
-    "options_page": "options.html",
+    "action": {
+        "default_title": "WeBWorK MathView",
+        "default_popup": "popup.html",
+        "default_icon": {
+            "16": "icon/icon_16.png",
+            "32": "icon/icon_32.png",
+            "48": "icon/icon_48.png",
+            "128": "icon/icon_128.png"
+        }
+    },
 
     "background": {
-        "scripts": ["ext-config.js", "event-page.js"],
-        "persistent": false
+        "service_worker": "worker.js"
     },
 
     "web_accessible_resources": [
-        "katex/*",
-        "katex/fonts/*",
-        "asciimath-based/*",
-        "math-view.js",
-        "math-view.css"
+        {
+            "resources": ["lib/katex/fonts/*"],
+            "matches": ["<all_urls>"]
+        }
     ],
 
     "permissions": [
-        "storage",
-        "declarativeContent"
+        "activeTab",
+        "declarativeContent",
+        "scripting"
     ],
-    "optional_permissions": [
-        "<all_urls>"
+    "host_permissions": [
+        "*://*/*"
     ]
 }

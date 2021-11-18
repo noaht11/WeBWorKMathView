@@ -94,7 +94,6 @@ var MathView = new function () {
             hideOutput(outB);
         }
         catch (err) {
-            console.log(err);
             if (USE_MATHJAX_BACKUP) {
                 MathJax.Hub.Queue([hideOutput, outB], [updateTextMathJax, outB, amath], ["Typeset", MathJax.Hub, outB], [showOutput, outB],
                     [hideOutput, outA], [updateTextMathJax, outA, amath], ["Typeset", MathJax.Hub, outA], [showOutput, outA], [hideOutput, outB]);
