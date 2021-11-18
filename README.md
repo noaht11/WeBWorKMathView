@@ -14,7 +14,7 @@ A Chrome extension to provide live previews of math equations entered into WeBWo
 
 # Testing
 
-The extension can be tested on one of the WeBWorK demo sites listed on this page: https://webwork.maa.org/wiki/Introduction
+The extension can be tested on one of the WeBWorK demo sites listed on this page: [https://webwork.maa.org/wiki/Introduction](https://webwork.maa.org/wiki/Introduction)
 
 # Libraries
 This extension makes use of the following open source libraries:
@@ -24,6 +24,7 @@ This extension makes use of the following open source libraries:
      instance of MathJax
  * [AsciiMath](http://asciimath.org/)
    * This extension uses a modified version of the ASCIIMathTeXImg.js file that returns a LaTeX string for a given AsciiMath input
+   * The set of accepted AsciiMath inputs is heavily modified to reflect the functions actually supported by WeBWorK as listed here: [https://webwork.maa.org/wiki/Available_Functions](https://webwork.maa.org/wiki/Available_Functions)
 
 # How it Works
 **Auto-Detect vs. Manual Domain Entry**
