@@ -32,7 +32,6 @@
         "declarativeContent"
     ],
     "optional_permissions": [
-        "tabs",
         "<all_urls>"
     ]
 }
