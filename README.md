@@ -12,6 +12,10 @@ A Chrome extension to provide live previews of math equations entered into WeBWo
 4. Select the ```src``` folder of the repository
 5. The extension settings page will automatically launch so you can enable / configure it
 
+# Testing
+
+The extension can be tested on one of the WeBWorK demo sites listed on this page: https://webwork.maa.org/wiki/Introduction
+
 # Libraries
 This extension makes use of the following open source libraries:
  * [KaTeX](https://khan.github.io/KaTeX/)
