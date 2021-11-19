@@ -89,7 +89,7 @@ var Bracketeer = new function () {
 
         // Attach the onkeyup event
         var callback = function () {
-            Bracketeer.highlightBrackets(this, idx, this.value);
+            Bracketeer.highlightBrackets(this, idx);
         };
         inputSource.addEventListener("input", callback);    // Update highlight when text changes
         inputSource.addEventListener("mouseup", callback);  // Highlight brackets based on cursor position
@@ -98,7 +98,7 @@ var Bracketeer = new function () {
         inputSource.addEventListener("focusout", callback); // Un-highlight brackets when input loses focus
     };
 
-    this.highlightBrackets = function (input, idx, inputStr) {
+    this.highlightBrackets = function (input, idx) {
         var TYPE_OPEN = 0;
         var TYPE_CLOSE = 1;
 
@@ -131,6 +131,7 @@ var Bracketeer = new function () {
             return "";
         }
 
+        var inputStr = input.value;
         var position = input.selectionStart;
         var scrollPos = input.scrollLeft;
 

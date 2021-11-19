@@ -48,6 +48,7 @@ var webworkSetup = function () {
             // Only attach a Bracketeer if one hasn't already been attached
             if (!Bracketeer.hasBracketeer(theInput)) {
                 Bracketeer.attachBracketeer(i, theInput, MATH_FONT);
+                Bracketeer.highlightBrackets(theInput, i);
             }
         }
         console.log("[WeBWorK MathView] Rendered");
