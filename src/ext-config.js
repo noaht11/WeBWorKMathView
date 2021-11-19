@@ -6,13 +6,15 @@ var ExtConfig = new function () {
 
     var CSS_DEPENDENCIES = [
         "lib/katex/katex.css",
-        "math-view.css"
+        "math-view.css",
+        "bracketeer.css"
     ];
 
     var JS_DEPENDENCIES = [
         "lib/katex/katex.min.js",
         "lib/asciimath/ASCIIMathTeXImg.js",
         "math-view.js",
+        "bracketeer.js",
         "content-webwork.js"
     ];
 

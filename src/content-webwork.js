@@ -2,6 +2,11 @@ console.log("[WeBWorK MathView] content-webwork.js");
 
 // Prepare function to setup MathView on a webwork page
 var webworkSetup = function () {
+    var MATH_FONT = {
+        "size": "1.21em",
+        "family": "KaTeX_Main, Times New Roman, serif"
+    }
+
     var retrieveTextInputs = function () {
         // Get all answer fields (they seem to all have the CSS class name "codeshard")
         return document.getElementsByClassName("codeshard");
@@ -35,7 +40,14 @@ var webworkSetup = function () {
                 theInput.setAttribute("spellcheck", "false");
 
                 /********* Custom font *********/
-                theInput.style.font = "normal 1.21em KaTeX_Main, Times New Roman, serif";
+                theInput.style.fontSize = MATH_FONT.size;
+                theInput.style.fontFamily = MATH_FONT.family;
+            }
+
+            // TODO check if bracketeer is enabled
+            // Only attach a Bracketeer if one hasn't already been attached
+            if (!Bracketeer.hasBracketeer(theInput)) {
+                Bracketeer.attachBracketeer(i, theInput, MATH_FONT);
             }
         }
         console.log("[WeBWorK MathView] Rendered");
