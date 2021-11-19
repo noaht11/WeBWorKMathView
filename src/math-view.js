@@ -50,6 +50,10 @@ var MathView = new function () {
         inputSource.addEventListener("keyup", function () {
             MathView.updateMath(id, this.value);
         });
+        inputSource.addEventListener("paste", function (event) {
+            var paste = (event.clipboardData || window.clipboardData).getData('text');
+            MathView.updateMath(id, paste);
+        });
 
         // Create two math containers (a redundant one for while the other is updating if we're using MathJax)
         var mathOutA = createMathOut(id, "a", inputSource.value);
