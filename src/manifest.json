@@ -4,6 +4,9 @@
     "name": "WeBWorK MathView",
     "version": "2.0",
     "description": "Preview nicely formatted math equations as you type them into WeBWorK answer boxes!",
+    "author": "Noah Tajwar",
+
+    "minimum_chrome_version": "96",
 
     "icons": {
         "16": "icon/icon_16.png",
