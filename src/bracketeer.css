@@ -18,7 +18,7 @@
     color: transparent;
     margin: 0;
     padding: 0;
-    letter-spacing: 2px;
+    /* letter-spacing: 2px; */
 }
 
 .brcktr-wrapper input[type="text"] {
@@ -30,7 +30,7 @@
     box-shadow: none;
     border-radius: 0;
     background: transparent;
-    letter-spacing: 2px;
+    /* letter-spacing: 2px; */
 }
 
 .brcktr-wrapper, .brcktr-wrapper input[type="text"] {

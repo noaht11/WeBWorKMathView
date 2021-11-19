@@ -47,12 +47,8 @@ var MathView = new function () {
         inputSource.setAttribute(this.MV_ATTR_ATTACHED, id);
 
         // Attach the onkeyup event
-        inputSource.addEventListener("keyup", function () {
+        inputSource.addEventListener("input", function () {
             MathView.updateMath(id, this.value);
-        });
-        inputSource.addEventListener("paste", function (event) {
-            var paste = (event.clipboardData || window.clipboardData).getData('text');
-            MathView.updateMath(id, paste);
         });
 
         // Create two math containers (a redundant one for while the other is updating if we're using MathJax)

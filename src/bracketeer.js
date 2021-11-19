@@ -89,17 +89,16 @@ var Bracketeer = new function () {
 
         // Attach the onkeyup event
         var callback = function () {
-            Bracketeer.highlightBrackets(idx, this.value, this.selectionStart, this.scrollLeft);
+            Bracketeer.highlightBrackets(this, idx, this.value);
         };
-        inputSource.addEventListener("click", callback);
-        inputSource.addEventListener("keyup", callback);
-        inputSource.addEventListener("paste", function (event) {
-            var paste = (event.clipboardData || window.clipboardData).getData('text');
-            Bracketeer.highlightBrackets(idx, paste, this.selectionStart, this.scrollLeft);
-        });
+        inputSource.addEventListener("input", callback);    // Update highlight when text changes
+        inputSource.addEventListener("mouseup", callback);  // Highlight brackets based on cursor position
+        inputSource.addEventListener("keyup", callback);    // Highlight brackets based on cursor position
+        inputSource.addEventListener("scroll", callback);   // Update highlight scroll when input scrolls
+        inputSource.addEventListener("focusout", callback); // Un-highlight brackets when input loses focus
     };
 
-    this.highlightBrackets = function (idx, inputStr, position, scrollPos) {
+    this.highlightBrackets = function (input, idx, inputStr) {
         var TYPE_OPEN = 0;
         var TYPE_CLOSE = 1;
 
@@ -132,10 +131,18 @@ var Bracketeer = new function () {
             return "";
         }
 
+        var position = input.selectionStart;
+        var scrollPos = input.scrollLeft;
+
+        if (document.activeElement != input) {
+            // Don't highlight any brackets if the input isn't focused
+            position = 0;
+        }
+
         var bracket_stack = [];
         var token_list = [];
         var selectionChosen = false;
-        
+
         // Iterate over the string to process brackets
         for (var i = 0; i < inputStr.length; i++) {
             var char = inputStr.charAt(i);
