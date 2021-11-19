@@ -2,7 +2,7 @@
     "manifest_version": 3,
 
     "name": "WeBWorK MathView",
-    "version": "1.4",
+    "version": "2.0",
     "description": "Preview nicely formatted math equations as you type them into WeBWorK answer boxes!",
 
     "icons": {
